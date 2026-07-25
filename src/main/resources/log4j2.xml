@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %C{1}:%M => %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <!-- Harmless "Connection reset" noise when the WebDriver's async CDP socket closes on driver.quit() -->
+        <Logger name="org.asynchttpclient" level="ERROR"/>
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

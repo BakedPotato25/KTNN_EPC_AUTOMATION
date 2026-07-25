@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Regression Tests">
+    <!--    Listeners for TestNG-->
+    <listeners>
+        <listener class-name="com.ktnn.report.EmailReporter"/>
+    </listeners>
+
+    <test name="Regression" enabled="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.ktnn.projects.testscript.PickListTest"/>
+        </classes>
+    </test>
+</suite>

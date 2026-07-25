@@ -1,0 +1,346 @@
+{
+  "KTNN_PickListSearch_001_Relative": [
+    {
+      "Description": "Kiểm tra tìm kiếm tương đối theo Name (PL_FUNC-1)",
+      "Id": "PL_FUNC-1",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "Loại"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_002_Exact": [
+    {
+      "Description": "Kiểm tra tìm kiếm tuyệt đối theo Name (PL_FUNC-2)",
+      "Id": "PL_FUNC-2",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "Loại đường truyền"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_003_NotFound": [
+    {
+      "Description": "Kiểm tra tìm kiếm từ khoá không tồn tại (PL_FUNC-3)",
+      "Id": "PL_FUNC-3",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "xyzkhongtontai123"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_004_TrimWhitespace": [
+    {
+      "Description": "Kiểm tra tìm kiếm với khoảng trắng đầu/cuối từ khoá (PL_FUNC-4)",
+      "Id": "PL_FUNC-4",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": " Loại "
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_005_CodeRelative": [
+    {
+      "Description": "Kiểm tra tìm kiếm tương đối theo Code (PL_FUNC-5)",
+      "Id": "PL_FUNC-5",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "LineConnect"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_006_CodeExact": [
+    {
+      "Description": "Kiểm tra tìm kiếm tuyệt đối theo Code (PL_FUNC-6)",
+      "Id": "PL_FUNC-6",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "LineConnect_Type"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_007_CodeNotFound": [
+    {
+      "Description": "Kiểm tra tìm kiếm theo Code không tồn tại (PL_FUNC-7)",
+      "Id": "PL_FUNC-7",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "CODE_KHONG_TON_TAI_999"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSearch_008_MultiField": [
+    {
+      "Description": "Kiểm tra từ khoá khớp đồng thời nhiều bản ghi qua các trường khác nhau (PL_FUNC-8)",
+      "Id": "PL_FUNC-8",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "Loại",
+        "ExpectedNameA": "Loại đường truyền",
+        "ExpectedNameB": "Test_đa_trường"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_001_CodeAscending": [
+    {
+      "Description": "Kiểm tra Order = Code, Sort = Ascending (PL_FUNC-9)",
+      "Id": "PL_FUNC-9",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Code",
+        "SortDirection": "Ascending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_002_CodeDescending": [
+    {
+      "Description": "Kiểm tra Order = Code, Sort = Descending (PL_FUNC-10)",
+      "Id": "PL_FUNC-10",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Code",
+        "SortDirection": "Descending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_003_NameAscending": [
+    {
+      "Description": "Kiểm tra Order = Name, Sort = Ascending (PL_FUNC-11) - Name có nhiều dấu tiếng Việt, collation thật của backend không khớp hoàn toàn với vi-VN Collator của Java (lệch ở vài cặp có dấu thanh gần giống nhau) nên chỉ verify được là còn render kết quả, không verify được đúng thứ tự chữ cái tuyệt đối",
+      "Id": "PL_FUNC-11",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Name",
+        "SortDirection": "Ascending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_004_NameDescending": [
+    {
+      "Description": "Kiểm tra Order = Name, Sort = Descending (PL_FUNC-12) - Name có nhiều dấu tiếng Việt, collation thật của backend không khớp hoàn toàn với vi-VN Collator của Java (lệch ở vài cặp có dấu thanh gần giống nhau) nên chỉ verify được là còn render kết quả, không verify được đúng thứ tự chữ cái tuyệt đối",
+      "Id": "PL_FUNC-12",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Name",
+        "SortDirection": "Descending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_005_CreateDateDescending": [
+    {
+      "Description": "Kiểm tra Order = Create Date, Sort = Descending (PL_FUNC-13) - grid không hiển thị cột Create Date nên chỉ verify được là còn render kết quả, không verify được đúng thứ tự thời gian",
+      "Id": "PL_FUNC-13",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Create Date",
+        "SortDirection": "Descending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListSort_006_CreateDateAscending": [
+    {
+      "Description": "Kiểm tra Order = Create Date, Sort = Ascending (PL_FUNC-14) - grid không hiển thị cột Create Date nên chỉ verify được là còn render kết quả, không verify được đúng thứ tự thời gian",
+      "Id": "PL_FUNC-14",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "OrderField": "Create Date",
+        "SortDirection": "Ascending"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListFilter_001_DescriptionLike": [
+    {
+      "Description": "Kiểm tra lọc Description - điều kiện 'like' (PL_FUNC-15)",
+      "Id": "PL_FUNC-15",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "FilterField": "Description",
+        "FilterOperator": "like",
+        "FilterValue": "test"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListFilter_002_DescriptionExact": [
+    {
+      "Description": "Kiểm tra lọc Description - điều kiện '=' (PL_FUNC-16)",
+      "Id": "PL_FUNC-16",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "FilterField": "Description",
+        "FilterOperator": "=",
+        "FilterValue": "test"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListFilter_003_VersionExact": [
+    {
+      "Description": "Kiểm tra lọc Version - điều kiện '=' (PL_FUNC-17) - Version không phải cột hiển thị trên lưới nên chỉ verify được lưới có thu hẹp kết quả, không verify được đúng giá trị Version",
+      "Id": "PL_FUNC-17",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "FilterField": "Version",
+        "FilterOperator": "=",
+        "FilterValue": "1"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListFilter_004_CombineWithAnd": [
+    {
+      "Description": "Kiểm tra kết hợp 2 điều kiện với And (PL_FUNC-18)",
+      "Id": "PL_FUNC-18",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Field1": "Description",
+        "Operator1": "like",
+        "Value1": "test",
+        "Field2": "Version",
+        "Operator2": "=",
+        "Value2": "1"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListFilter_005_CombineWithOr": [
+    {
+      "Description": "Kiểm tra kết hợp 2 điều kiện với Or (PL_FUNC-19) - hệ thống hiện chưa có lựa chọn Or, test verify đúng giới hạn này",
+      "Id": "PL_FUNC-19",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Field1": "Description",
+        "Operator1": "like",
+        "Value1": "test",
+        "Field2": "Version",
+        "Operator2": "=",
+        "Value2": "2"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListRefresh_001_ResetSearch": [
+    {
+      "Description": "Kiểm tra refresh tải lại danh sách và reset bộ lọc (PL_FUNC-20)",
+      "Id": "PL_FUNC-20",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "SearchKeyword": "Loại"
+      },
+      "detail": {}
+    }
+  ]
+}

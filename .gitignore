@@ -1,0 +1,46 @@
+# Maven build output
+/target/
+**/target/
+dependency-reduced-pom.xml
+release.properties
+
+# Report / execution output (ExtentReports, Allure, screenshots, video)
+/reports/
+/ExtentReports/
+/Images/
+/ExportData/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+**/*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VSCode (giữ lại settings.json / extensions.json dùng chung cho team)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+logs/
+
+# Real credentials - see *.json.example for the expected shape
+src/test/resources/config/env.json
+src/test/resources/config/database.json
+
+# MCP server config (personal dev tooling, not a team convention yet)
+.mcp.json
+
+# Playwright MCP output (page snapshots/console logs may contain real system data)
+.playwright-mcp/

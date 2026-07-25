@@ -1,0 +1,18 @@
+{
+  "driver": {
+    "mysql": {
+      "dialect": "org.hibernate.dialect.MySQL5Dialect",
+      "driverClass": "com.mysql.jdbc.Driver"
+    },
+    "postgres": {
+      "dialect": "org.hibernate.dialect.PostgreSQLDialect",
+      "driverClass": "org.postgresql.Driver"
+    }
+  },
+  "env": {
+    "dev": [],
+    "sit": [],
+    "uat": [],
+    "prod": []
+  }
+}
