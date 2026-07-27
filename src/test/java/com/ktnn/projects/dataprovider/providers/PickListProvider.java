@@ -2,6 +2,7 @@ package com.ktnn.projects.dataprovider.providers;
 
 import com.ktnn.datadriven.BaseProvider;
 import com.ktnn.projects.dataprovider.DataPath;
+import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -133,5 +134,59 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListRefresh_001_ResetSearch(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListSearchModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_001_Valid")
+    public Object[][] KTNN_PickListAddNew_001_Valid(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_002_GridUpdates")
+    public Object[][] KTNN_PickListAddNew_002_GridUpdates(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_003_RequiredFieldsOnly")
+    public Object[][] KTNN_PickListAddNew_003_RequiredFieldsOnly(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_004_EmptyName")
+    public Object[][] KTNN_PickListAddNew_004_EmptyName(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_005_EmptyCode")
+    public Object[][] KTNN_PickListAddNew_005_EmptyCode(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_006_WhitespaceName")
+    public Object[][] KTNN_PickListAddNew_006_WhitespaceName(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_007_DuplicateCode")
+    public Object[][] KTNN_PickListAddNew_007_DuplicateCode(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_008_CloseDiscardsData")
+    public Object[][] KTNN_PickListAddNew_008_CloseDiscardsData(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_009_XDiscardsData")
+    public Object[][] KTNN_PickListAddNew_009_XDiscardsData(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
     }
 }

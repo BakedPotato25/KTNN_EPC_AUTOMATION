@@ -60,6 +60,16 @@ public class PickListObjects extends BaseObjects {
         return getTextElement(findWebElement(pickListLocator.getLblResultsCount()));
     }
 
+    /**
+     * Right after navigation the results-count text still briefly shows the "in 0 results"
+     * placeholder - its async fetch trails behind the grid rows populating, so waiting for rows
+     * alone isn't enough. Waits for the count text itself to move past that placeholder before an
+     * unfiltered-grid baseline read.
+     */
+    public void waitForGridPopulated() {
+        getWaitDriver().until(d -> !getResultsCountText().contains("in 0 results"));
+    }
+
     public String getSearchInputValue() {
         return getValueOfElement(findSearchInput());
     }
@@ -125,6 +135,82 @@ public class PickListObjects extends BaseObjects {
 
     public PickListObjects clickRefresh() {
         clickByJS(findWebElement(pickListLocator.getBtnRefresh()), "Refresh");
+        waitFor(1.5);
+        return this;
+    }
+
+    public PickListObjects clickAddNew() {
+        clickByJS(findWebElement(pickListLocator.getBtnAddNew()), "Add new (+)");
+        return this;
+    }
+
+    public boolean isAddNewDialogOpen() {
+        return !getListWebElement(By.xpath(pickListLocator.getLblAddNewTitle())).isEmpty();
+    }
+
+    public PickListObjects inputAddName(String value) {
+        inputText(findWebElement(pickListLocator.getTxtAddName()), "Add new - Name", value);
+        return this;
+    }
+
+    public PickListObjects inputAddCode(String value) {
+        inputText(findWebElement(pickListLocator.getTxtAddCode()), "Add new - Code", value);
+        return this;
+    }
+
+    public PickListObjects inputAddVersion(String value) {
+        inputText(findWebElement(pickListLocator.getTxtAddVersion()), "Add new - Version", value);
+        return this;
+    }
+
+    public PickListObjects inputAddDescription(String value) {
+        inputText(findWebElement(pickListLocator.getTxtAddDescription()), "Add new - Description", value);
+        return this;
+    }
+
+    /**
+     * Typing into either date input opens a calendar popup that intercepts the Save click - clicks
+     * the dialog title afterward to blur/close it before the caller proceeds.
+     */
+    public PickListObjects inputAddValidFor(String fromDate, String toDate) {
+        WebElement fromInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "1"));
+        inputText(fromInput, "Add new - Valid For from", fromDate);
+        WebElement toInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "2"));
+        inputText(toInput, "Add new - Valid For to", toDate);
+        clickByJS(findWebElement(pickListLocator.getLblAddNewTitle()), "Add new (dialog title, closes calendar popup)");
+        return this;
+    }
+
+    public PickListObjects clickAddNewSave() {
+        clickByJS(findWebElement(pickListLocator.getBtnAddNewSave()), "Save (Add new)");
+        waitFor(1.5);
+        return this;
+    }
+
+    public PickListObjects clickAddNewClose() {
+        clickByJS(findWebElement(pickListLocator.getBtnAddNewClose()), "Close (Add new)");
+        waitFor(1);
+        return this;
+    }
+
+    public PickListObjects clickAddNewCloseX() {
+        clickByJS(findWebElement(pickListLocator.getIcoAddNewCloseX()), "X (Add new)");
+        waitFor(1);
+        return this;
+    }
+
+    public String getRequiredFieldError(String fieldLabel) {
+        List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrMsgByFieldLabel(), fieldLabel));
+        return errors.isEmpty() ? "" : getTextElement(errors.get(0));
+    }
+
+    /**
+     * Deletes the (single) row left after a search narrows the grid down to the record just
+     * created - used to clean up test data right after verifying a successful Add new.
+     */
+    public PickListObjects deleteFirstRowResult() {
+        clickByJS(findWebElement(pickListLocator.getIcoRowDelete()), "Delete (row)");
+        clickByJS(findWebElement(pickListLocator.getBtnConfirmYes()), "Yes (confirm delete)");
         waitFor(1.5);
         return this;
     }

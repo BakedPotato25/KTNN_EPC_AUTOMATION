@@ -1,7 +1,9 @@
 package com.ktnn.projects.pages.pages;
 
 import com.ktnn.consts.FrameConst.FailureHandling;
+import com.ktnn.datadriven.DataModel;
 import com.ktnn.projects.common.BasePage;
+import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.pages.objects.PickListObjects;
 
 import org.openqa.selenium.support.PageFactory;
@@ -11,6 +13,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PickListPage extends BasePage {
     private final PickListObjects pickListObjects;
@@ -190,6 +194,7 @@ public class PickListPage extends BasePage {
     }
 
     public PickListPage captureResultsCountBaseline() {
+        pickListObjects.waitForGridPopulated();
         baselineResultsCount = pickListObjects.getResultsCountText();
         return this;
     }
@@ -206,6 +211,104 @@ public class PickListPage extends BasePage {
         assertTrueCondition(null, isReset, FailureHandling.CONTINUE_ON_FAILURE,
                 String.format("Verify search box cleared and grid reset to baseline results (expected '%s', actual '%s')",
                         baselineResultsCount, currentResultsCount));
+        return this;
+    }
+
+    public PickListPage openAddNewForm() {
+        pickListObjects.clickAddNew();
+        return this;
+    }
+
+    private static boolean hasValue(DataModel model) {
+        return model != null && model.getValue() != null && !model.getValue().isEmpty();
+    }
+
+    public PickListPage fillAddNewForm(PickListAddNewModel model) {
+        if (hasValue(model.getName())) pickListObjects.inputAddName(model.getName().getValue());
+        if (hasValue(model.getCode())) pickListObjects.inputAddCode(model.getCode().getValue());
+        if (hasValue(model.getVersion())) pickListObjects.inputAddVersion(model.getVersion().getValue());
+        if (hasValue(model.getValidForFrom()) && hasValue(model.getValidForTo())) {
+            pickListObjects.inputAddValidFor(model.getValidForFrom().getValue(), model.getValidForTo().getValue());
+        }
+        if (hasValue(model.getDescription())) pickListObjects.inputAddDescription(model.getDescription().getValue());
+        return this;
+    }
+
+    public PickListPage clickAddNewSave() {
+        pickListObjects.clickAddNewSave();
+        return this;
+    }
+
+    public PickListPage closeAddNewForm() {
+        pickListObjects.clickAddNewClose();
+        return this;
+    }
+
+    public PickListPage closeAddNewFormByX() {
+        pickListObjects.clickAddNewCloseX();
+        return this;
+    }
+
+    public PickListPage verifyAddNewDialogClosed() {
+        boolean closed = !pickListObjects.isAddNewDialogOpen();
+        assertTrueCondition(null, closed, FailureHandling.CONTINUE_ON_FAILURE, "Verify Add new dialog closed (save succeeded)");
+        return this;
+    }
+
+    /**
+     * Backend rejects a duplicate Code (400 "Code is unique"), but the toast notification that
+     * would normally surface it depends on a notification endpoint that 500s on this environment -
+     * no error message ever renders. The dialog staying open is the only reliable save-failed signal.
+     */
+    public PickListPage verifyAddNewDialogStillOpen() {
+        boolean stillOpen = pickListObjects.isAddNewDialogOpen();
+        assertTrueCondition(null, stillOpen, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Add new dialog stays open (save failed - duplicate Code)");
+        return this;
+    }
+
+    public PickListPage verifyRequiredFieldError(String fieldLabel) {
+        String errorText = pickListObjects.getRequiredFieldError(fieldLabel);
+        boolean hasError = errorText.toLowerCase(Locale.ROOT).contains("required");
+        assertTrueCondition(null, hasError, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify required-field error shown for '%s' (actual: '%s')", fieldLabel, errorText));
+        return this;
+    }
+
+    private static int parseResultsCount(String resultsText) {
+        Matcher matcher = Pattern.compile("in (\\d+) results").matcher(resultsText);
+        return matcher.find() ? Integer.parseInt(matcher.group(1)) : -1;
+    }
+
+    /**
+     * The grid re-fetches its count asynchronously after Save closes the dialog, so a single
+     * immediate read can still show the pre-save count - poll briefly for the expected value
+     * instead of reading once.
+     */
+    public PickListPage verifyResultsCountIncreasedByOne() {
+        int before = parseResultsCount(baselineResultsCount);
+        int expected = before + 1;
+        int after;
+        try {
+            after = getWaitDriver().until(d -> {
+                int current = parseResultsCount(pickListObjects.getResultsCountText());
+                return current == expected ? current : null;
+            });
+        } catch (Exception e) {
+            after = parseResultsCount(pickListObjects.getResultsCountText());
+        }
+        assertTrueCondition(null, before >= 0 && after == expected, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify results count increased by 1 (before: %d, after: %d)", before, after));
+        return this;
+    }
+
+    /**
+     * Cleanup helper - searches by the (unique) keyword used to create a test record, then deletes
+     * the single row it narrows down to, so Add new tests don't leave data behind on shared dev.
+     */
+    public PickListPage deleteRecordByExactSearch(String keyword) {
+        pickListObjects.searchByKeyword(keyword);
+        pickListObjects.deleteFirstRowResult();
         return this;
     }
 }

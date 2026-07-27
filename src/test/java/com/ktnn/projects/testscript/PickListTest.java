@@ -4,6 +4,7 @@ import com.ktnn.annotations.FrameAnnotation;
 import com.ktnn.consts.AuthorType;
 import com.ktnn.consts.FrameConst.CategoryType;
 import com.ktnn.projects.common.TestBase;
+import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -31,9 +32,14 @@ public class PickListTest extends TestBase {
         pickListPage = homePage.gotoPickListPage();
     }
 
-    @FrameAnnotation(category = {CategoryType.REGRESSION}, author = {AuthorType.SWEETPOTATO}, reviewer = {AuthorType.SWEETPOTATO})
-    @Test(description = "Kiểm tra tìm kiếm tương đối theo Name (PL_FUNC-1)",
-            dataProvider = "KTNN_PickListSearch_001_Relative", dataProviderClass = PickListProvider.class)
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION}, 
+        author = {AuthorType.SWEETPOTATO}, 
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tìm kiếm tương đối theo Name (PL_FUNC-1)",
+        dataProvider = "KTNN_PickListSearch_001_Relative", 
+        dataProviderClass = PickListProvider.class)
     public void KTNN_PickListSearch_001_Relative(PickListSearchModel model) {
         pickListPage
                 .searchByKeyword(model.getSearchKeyword().getValue())
@@ -218,5 +224,167 @@ public class PickListTest extends TestBase {
                 .searchByKeyword(model.getSearchKeyword().getValue())
                 .clickRefresh()
                 .verifySearchAndFilterReset();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập dữ liệu hợp lệ vào tất cả các trường (PL_FUNC-21)",
+        dataProvider = "KTNN_PickListAddNew_001_Valid",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_001_Valid(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra lưới cập nhật sau khi thêm mới thành công (PL_FUNC-22)",
+        dataProvider = "KTNN_PickListAddNew_002_GridUpdates",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_002_GridUpdates(PickListAddNewModel model) {
+        pickListPage
+                .captureResultsCountBaseline()
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyResultsCountIncreasedByOne()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập dữ liệu hợp lệ chỉ vào các trường bắt buộc (PL_FUNC-23)",
+        dataProvider = "KTNN_PickListAddNew_003_RequiredFieldsOnly",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_003_RequiredFieldsOnly(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra để trống trường Name (PL_FUNC-24)",
+        dataProvider = "KTNN_PickListAddNew_004_EmptyName",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_004_EmptyName(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyRequiredFieldError("Name")
+                .closeAddNewForm();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra để trống trường Code (PL_FUNC-25)",
+        dataProvider = "KTNN_PickListAddNew_005_EmptyCode",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_005_EmptyCode(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyRequiredFieldError("Code")
+                .closeAddNewForm();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập khoảng trắng vào trường bắt buộc (PL_FUNC-26)",
+        dataProvider = "KTNN_PickListAddNew_006_WhitespaceName",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_006_WhitespaceName(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyRequiredFieldError("Name")
+                .closeAddNewForm();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập trùng Code đã tồn tại (PL_FUNC-27)",
+        dataProvider = "KTNN_PickListAddNew_007_DuplicateCode",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_007_DuplicateCode(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyAddNewDialogStillOpen()
+                .closeAddNewForm();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích [Close] không lưu dữ liệu (PL_FUNC-28)",
+        dataProvider = "KTNN_PickListAddNew_008_CloseDiscardsData",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_008_CloseDiscardsData(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .closeAddNewForm()
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchNoResults();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích [X] không lưu dữ liệu (PL_FUNC-29)",
+        dataProvider = "KTNN_PickListAddNew_009_XDiscardsData",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_009_XDiscardsData(PickListAddNewModel model) {
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .closeAddNewFormByX()
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchNoResults();
     }
 }
