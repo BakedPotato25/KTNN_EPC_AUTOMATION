@@ -86,10 +86,7 @@ public class PickListPage extends BasePage {
     }
 
     /**
-     * Backend collation is case-insensitive Vietnamese collation, not raw Unicode code-point order -
-     * e.g. "Unit" sorts before "tyty" (case-insensitive), and "...Loại định danh" sorts before
-     * "...Loại tổ chức" ('đ' < 't' in the Vietnamese alphabet, but 'đ' > 't' by raw code point).
-     * Plain/case-insensitive String::compareTo doesn't match either quirk - need a vi-VN Collator.
+     * Backend sorts with a case-insensitive Vietnamese collation, not raw Unicode order - needs vi-VN Collator.
      */
     private boolean isSorted(List<String> values, String direction) {
         Collator vnCollator = Collator.getInstance(new Locale("vi", "VN"));
@@ -103,15 +100,8 @@ public class PickListPage extends BasePage {
     }
 
     /**
-     * Weaker check used for two different verification gaps:
-     * - Order = Create Date (PL_FUNC-13/14): grid has no visible Create Date column, so exact
-     *   chronological order can't be verified from UI at all (matches QA's own N/A note).
-     * - Order = Name (PL_FUNC-11/12): Name is full of Vietnamese diacritics/tone marks, and the
-     *   backend's real collation doesn't fully match Java's bundled vi-VN Collator on tone-mark
-     *   tie-breaks (verified empirically - e.g. "Trang bị" vs "Trả trước" disagree at every
-     *   Collator strength) - not something reproducible client-side without the exact backend
-     *   collation, so we don't assert a byte-exact order for it either.
-     * Either way, this only confirms the sort action itself didn't break rendering.
+     * Weaker check for Order = Create Date/Name: exact order can't be verified from the UI
+     * (no Create Date column; Name's Vietnamese collation doesn't match Java's Collator).
      */
     public PickListPage verifyGridStillRendersResults() {
         List<String> rows = pickListObjects.getAllRowTexts();
