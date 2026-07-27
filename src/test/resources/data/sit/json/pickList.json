@@ -366,7 +366,7 @@
   ],
   "KTNN_PickListAddNew_002_GridUpdates": [
     {
-      "Description": "Kiểm tra lưới cập nhật sau khi thêm mới thành công (PL_FUNC-22) - viết độc lập với PL_FUNC-21 (tự tạo + tự xoá dữ liệu riêng) thay vì phụ thuộc bản ghi của case trước, tránh test bị vỡ khi chạy lẻ hoặc chạy lại",
+      "Description": "Kiểm tra lưới cập nhật sau khi thêm mới thành công (PL_FUNC-22) - tự tạo và tự xoá dữ liệu riêng, không phụ thuộc PL_FUNC-21",
       "Id": "PL_FUNC-22",
       "Category": "REGRESSION",
       "Executed": true,
@@ -449,7 +449,7 @@
   ],
   "KTNN_PickListAddNew_007_DuplicateCode": [
     {
-      "Description": "Kiểm tra nhập trùng Code đã tồn tại (PL_FUNC-27) - backend trả 400 'Code is unique' đúng như kỳ vọng nhưng cơ chế hiển thị toast lỗi của app đang bị lỗi (endpoint notification trả 500) nên không có thông báo nào hiển thị trên UI - verify qua tín hiệu đáng tin cậy hơn: dialog Add new không đóng lại (lưu thất bại)",
+      "Description": "Kiểm tra nhập trùng Code đã tồn tại (PL_FUNC-27) - verify qua toast lỗi 'Code is unique' và dialog không đóng",
       "Id": "PL_FUNC-27",
       "Category": "REGRESSION",
       "Executed": true,

@@ -14,6 +14,9 @@ public class PickListObjects extends BaseObjects {
     @Getter
     public static PickListObjects instance = new PickListObjects();
 
+    // toast shows ~0.25s after the action and auto-dismisses after ~3.2s
+    private static final long TOAST_WAIT_SECONDS = 5;
+
     private final PickListLocator pickListLocator;
 
     private PickListObjects() {
@@ -60,12 +63,7 @@ public class PickListObjects extends BaseObjects {
         return getTextElement(findWebElement(pickListLocator.getLblResultsCount()));
     }
 
-    /**
-     * Right after navigation the results-count text still briefly shows the "in 0 results"
-     * placeholder - its async fetch trails behind the grid rows populating, so waiting for rows
-     * alone isn't enough. Waits for the count text itself to move past that placeholder before an
-     * unfiltered-grid baseline read.
-     */
+    /** Count text briefly shows "in 0 results" right after navigation - wait past that first. */
     public void waitForGridPopulated() {
         getWaitDriver().until(d -> !getResultsCountText().contains("in 0 results"));
     }
@@ -148,13 +146,21 @@ public class PickListObjects extends BaseObjects {
         return !getListWebElement(By.xpath(pickListLocator.getLblAddNewTitle())).isEmpty();
     }
 
+    /** Retypes once if the value didn't stick - guards against an occasional empty-field flake. */
+    private void inputTextWithVerify(WebElement element, String title, String value) {
+        inputText(element, title, value);
+        if (!value.equals(getValueOfElement(element))) {
+            inputText(element, title, value);
+        }
+    }
+
     public PickListObjects inputAddName(String value) {
-        inputText(findWebElement(pickListLocator.getTxtAddName()), "Add new - Name", value);
+        inputTextWithVerify(findWebElement(pickListLocator.getTxtAddName()), "Add new - Name", value);
         return this;
     }
 
     public PickListObjects inputAddCode(String value) {
-        inputText(findWebElement(pickListLocator.getTxtAddCode()), "Add new - Code", value);
+        inputTextWithVerify(findWebElement(pickListLocator.getTxtAddCode()), "Add new - Code", value);
         return this;
     }
 
@@ -168,10 +174,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /**
-     * Typing into either date input opens a calendar popup that intercepts the Save click - clicks
-     * the dialog title afterward to blur/close it before the caller proceeds.
-     */
+    /** Clicks the dialog title after typing to close the calendar popup the date inputs open. */
     public PickListObjects inputAddValidFor(String fromDate, String toDate) {
         WebElement fromInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "1"));
         inputText(fromInput, "Add new - Valid For from", fromDate);
@@ -182,8 +185,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     public PickListObjects clickAddNewSave() {
+        waitFor(0.5); // lets Vue finish processing the last keystroke before Save reads form state
         clickByJS(findWebElement(pickListLocator.getBtnAddNewSave()), "Save (Add new)");
-        waitFor(1.5);
         return this;
     }
 
@@ -204,14 +207,37 @@ public class PickListObjects extends BaseObjects {
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));
     }
 
-    /**
-     * Deletes the (single) row left after a search narrows the grid down to the record just
-     * created - used to clean up test data right after verifying a successful Add new.
-     */
+    /** Deletes the 1 row left after a search narrows to the record just created. */
     public PickListObjects deleteFirstRowResult() {
         clickByJS(findWebElement(pickListLocator.getIcoRowDelete()), "Delete (row)");
         clickByJS(findWebElement(pickListLocator.getBtnConfirmYes()), "Yes (confirm delete)");
-        waitFor(1.5);
         return this;
     }
+
+    /** Clears leftover toasts so the next read can't pick up an old message. */
+    public PickListObjects dismissAllToasts() {
+        getJsExecutor().executeScript(
+                "document.querySelectorAll('.p-toast-close-button').forEach(b => b.click());");
+        return this;
+    }
+
+    /**
+     * Reads the toast raised by the previous action - call dismissAllToasts() before that action so
+     * only the new one is present. Returns "" if none shows up, letting the caller assert softly.
+     */
+    public String getLatestToastMessage() {
+        try {
+            return getWaitDriver(TOAST_WAIT_SECONDS).until(d -> {
+                List<WebElement> details = getListWebElement(By.xpath(pickListLocator.getTxtToastDetail()));
+                for (int i = details.size() - 1; i >= 0; i--) {
+                    String text = getTextElement(details.get(i));
+                    if (!text.isEmpty()) return text; // skips the blank node of a leaving toast
+                }
+                return null;
+            });
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }
+

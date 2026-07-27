@@ -551,6 +551,11 @@ Cuối cùng, đăng ký class test vào `src/test/resources/suites/ExecutionSui
   `getByXpathDynamic`.
 - **Javadoc ngắn**: comment `/** ... */` 1-2 dòng mô tả *mục đích* method, không mô tả lại
   từng dòng code. Nhiều method không cần javadoc nếu tên đã đủ rõ.
+- **Mọi comment trong code đều phải ngắn gọn và dùng từ ngữ đơn giản** (không riêng javadoc) —
+  tối đa 1-2 dòng, nêu đúng *lý do*/*quirk* không tự thấy được từ code, không kể lể quá trình
+  điều tra/debug hay liệt kê từng bước suy luận. Tránh câu chữ phức tạp, thuật ngữ hoa mỹ không
+  cần thiết. Nếu cần giải thích dài hơn, đưa vào PR description/commit message thay vì để lại
+  trong source.
 - **`region`/`endregion` comment**: dùng `//region Xxx` ... `//endregion` để nhóm method liên
   quan trong file dài (xem `WebUI`, `FrameConst`, `BasePage`).
 - **Không hard-code URL/domain** trong Page/Objects — luôn lấy qua

@@ -46,12 +46,10 @@ public class PickListLocator extends BaseLocator {
     String cboFilterOperatorByRow = "(//div[contains(@class,'search-list-conditions-node')])[%s]//div[contains(@class,'operators')]//span[@role='combobox']";
     String txtFilterValueByRow = "(//div[contains(@class,'search-list-conditions-node')])[%s]//input[@type='text']";
 
-    // 1st addon button next to search (pi-plus=Add new) - see btnRefresh comment for the other 2
+    // 1st addon button next to search (pi-plus=Add new)
     String btnAddNew = "(//div[contains(@class,'p-inputgroupaddon')]//button)[1]";
 
-    // "Add new" is a PrimeVue modal dialog (distinct from the inline Edit side panel) - its title
-    // doubles as an open/closed check and as a neutral click target to blur the Valid For date
-    // inputs (typing into them opens a calendar popup that intercepts the Save click otherwise)
+    // also doubles as a blur target to close the Valid For calendar popup
     String lblAddNewTitle = "//span[contains(@class,'p-dialog-title')][normalize-space()='Add new']";
     String txtAddName = "//input[@placeholder='Enter name']";
     String txtAddCode = "//input[@placeholder='Enter Code']";
@@ -66,8 +64,10 @@ public class PickListLocator extends BaseLocator {
     // required-field inline error message, located relative to its field's label text (e.g. "Name")
     String errMsgByFieldLabel = "//label[.//span[starts-with(normalize-space(.),'%s')]]/parent::div/following-sibling::div[contains(@class,'error')][1]//small";
 
-    // row action icons: 1st = edit (pi-pen-to-square), 2nd = delete (pi-trash) - used for cleanup
-    // after a search narrows the grid down to exactly the 1 record just created
+    // PrimeVue toast detail text (success/error variants share this class)
+    String txtToastDetail = "//div[contains(@class,'p-toast-detail')]";
+
+    // 1st row's delete icon (pi-trash) - used after search narrows to exactly 1 record
     String icoRowDelete = "(//table//tbody//tr)[1]//span[contains(@class,'pi-trash')]";
     // Yes/No confirm buttons have no aria-label, only plain visible text
     String btnConfirmYes = "//button[normalize-space()='Yes']";

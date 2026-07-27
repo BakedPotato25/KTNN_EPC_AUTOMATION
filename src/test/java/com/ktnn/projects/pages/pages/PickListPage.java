@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class PickListPage extends BasePage {
     private final PickListObjects pickListObjects;
     private String baselineResultsCount;
+    private String lastToastMessage;
 
     public PickListPage() {
         super();
@@ -103,10 +104,7 @@ public class PickListPage extends BasePage {
         return true;
     }
 
-    /**
-     * Weaker check for Order = Create Date/Name: exact order can't be verified from the UI
-     * (no Create Date column; Name's Vietnamese collation doesn't match Java's Collator).
-     */
+    /** Weaker check for Order = Create Date/Name - exact order can't be verified from the UI. */
     public PickListPage verifyGridStillRendersResults() {
         List<String> rows = pickListObjects.getAllRowTexts();
         assertTrueCondition(null, !rows.isEmpty(), FailureHandling.CONTINUE_ON_FAILURE,
@@ -181,10 +179,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /**
-     * Version isn't a visible grid column, so this only confirms the filter actually narrowed
-     * the grid (vs. the full unfiltered dataset) rather than validating the Version value itself.
-     */
+    /** Version isn't a visible column, so this only checks the filter narrowed the grid. */
     public PickListPage verifyFilterNarrowedResults() {
         String resultsText = pickListObjects.getResultsCountText();
         boolean hasResults = !resultsText.contains("in 0 results");
@@ -235,7 +230,17 @@ public class PickListPage extends BasePage {
     }
 
     public PickListPage clickAddNewSave() {
+        pickListObjects.dismissAllToasts();
         pickListObjects.clickAddNewSave();
+        lastToastMessage = pickListObjects.getLatestToastMessage();
+        return this;
+    }
+
+    public PickListPage verifyToastMessageContains(String expectedSubstring) {
+        boolean matches = lastToastMessage != null
+                && lastToastMessage.toLowerCase(Locale.ROOT).contains(expectedSubstring.toLowerCase(Locale.ROOT));
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify toast message contains '%s' (actual: '%s')", expectedSubstring, lastToastMessage));
         return this;
     }
 
@@ -249,17 +254,19 @@ public class PickListPage extends BasePage {
         return this;
     }
 
+    /** Dialog closes after the Save response arrives, not on click - poll instead of checking once. */
     public PickListPage verifyAddNewDialogClosed() {
-        boolean closed = !pickListObjects.isAddNewDialogOpen();
+        boolean closed;
+        try {
+            closed = getWaitDriver().until(d -> !pickListObjects.isAddNewDialogOpen());
+        } catch (Exception e) {
+            closed = false;
+        }
         assertTrueCondition(null, closed, FailureHandling.CONTINUE_ON_FAILURE, "Verify Add new dialog closed (save succeeded)");
         return this;
     }
 
-    /**
-     * Backend rejects a duplicate Code (400 "Code is unique"), but the toast notification that
-     * would normally surface it depends on a notification endpoint that 500s on this environment -
-     * no error message ever renders. The dialog staying open is the only reliable save-failed signal.
-     */
+    /** Secondary signal alongside the toast check - dialog stays open when save fails. */
     public PickListPage verifyAddNewDialogStillOpen() {
         boolean stillOpen = pickListObjects.isAddNewDialogOpen();
         assertTrueCondition(null, stillOpen, FailureHandling.CONTINUE_ON_FAILURE,
@@ -280,11 +287,7 @@ public class PickListPage extends BasePage {
         return matcher.find() ? Integer.parseInt(matcher.group(1)) : -1;
     }
 
-    /**
-     * The grid re-fetches its count asynchronously after Save closes the dialog, so a single
-     * immediate read can still show the pre-save count - poll briefly for the expected value
-     * instead of reading once.
-     */
+    /** Count re-fetches asynchronously after Save - poll for the expected value instead of reading once. */
     public PickListPage verifyResultsCountIncreasedByOne() {
         int before = parseResultsCount(baselineResultsCount);
         int expected = before + 1;
@@ -302,13 +305,15 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /**
-     * Cleanup helper - searches by the (unique) keyword used to create a test record, then deletes
-     * the single row it narrows down to, so Add new tests don't leave data behind on shared dev.
-     */
+    /** Cleanup helper - deletes the record matching keyword, then re-searches to confirm it's gone. */
     public PickListPage deleteRecordByExactSearch(String keyword) {
         pickListObjects.searchByKeyword(keyword);
+        pickListObjects.dismissAllToasts();
         pickListObjects.deleteFirstRowResult();
+        lastToastMessage = pickListObjects.getLatestToastMessage();
+        verifyToastMessageContains("successfully");
+        pickListObjects.searchByKeyword(keyword);
+        verifySearchNoResults();
         return this;
     }
 }
