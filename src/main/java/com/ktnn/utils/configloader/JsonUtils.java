@@ -141,8 +141,8 @@ public class JsonUtils {
     /**
      * Build a model data
      *
-     * @param data       : HashMap data can doi
-     * @param configMaps : Config chung
+     * @param data       : Raw data map
+     * @param configMaps : Shared config
      * @param keyName    : Key name / Dev Name
      */
     private DataModel buildDataModel(HashMap<String, Object> data, HashMap<String, List<String>> configMaps, String keyName) {
@@ -158,8 +158,8 @@ public class JsonUtils {
     /**
      * Build a model data
      *
-     * @param value      : HashMap data can doi
-     * @param configMaps : Config chung
+     * @param value      : Raw value
+     * @param configMaps : Shared config
      * @param keyName    : Key name / Dev Name
      */
     private DataModel buildDataModel(String value, HashMap<String, List<String>> configMaps, String keyName) {
@@ -189,17 +189,17 @@ public class JsonUtils {
     }
 
     private boolean checkIsExist(List<String> colList, String colName) {
+        // "^ALL" -> not fill ALL
         boolean isResult = colList.stream().noneMatch(v -> v.equalsIgnoreCase(String.format("^%s", "ALL")));
-        // Chứa ^ALL -> Not Fill ALL
 
-        // Chứa ALL  -> Fill ALL
+        // "ALL" -> fill ALL
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase("ALL"))) isResult = true;
 
-        // Chứa ^Col -> Not fill this col
+        // "^Col" -> not fill this col
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // Chứa Col -> Fill this column
+        // "Col" -> fill this column
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }

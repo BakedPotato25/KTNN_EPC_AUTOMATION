@@ -35,8 +35,7 @@ public class PickListTest extends TestBase {
         pickListPage = homePage.gotoPickListPage();
     }
 
-    // Safety net: cleans up even if a mid-flow exception skips the test's own cleanup step.
-    // Deletes without asserting - a cleanup step must not be able to fail the test it follows.
+    // Safety net for mid-flow exceptions; never asserts so cleanup itself can't fail the test.
     @AfterMethod(alwaysRun = true)
     public void cleanupPendingTestData() {
         if (pendingCleanupKeyword == null) return;
@@ -538,8 +537,7 @@ public class PickListTest extends TestBase {
                 .fillEditForm(model)
                 .clickEditSave()
                 .verifyToastMessageContains("successfully");
-        // cleanup keyword stays the initial name on purpose - it's a prefix of the new one, so it
-        // still matches if the rename didn't go through and the record kept its old name
+        // cleanup keyword stays the initial name - still matches if the rename didn't go through
         pickListPage
                 .searchByKeyword(newName)
                 .verifySearchResultExactName(newName)
@@ -565,8 +563,7 @@ public class PickListTest extends TestBase {
                 .fillEditForm(model)
                 .clickEditSave()
                 .verifyToastMessageContains("successfully");
-        // cleanup keyword stays the initial name on purpose - it's a prefix of the new one, so it
-        // still matches if the rename didn't go through and the record kept its old name
+        // cleanup keyword stays the initial name - still matches if the rename didn't go through
         pickListPage
                 .searchByKeyword(newName)
                 .verifySearchResultExactName(newName)

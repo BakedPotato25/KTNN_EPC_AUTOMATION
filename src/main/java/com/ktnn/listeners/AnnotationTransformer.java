@@ -23,9 +23,6 @@ public class AnnotationTransformer implements IAnnotationTransformer {
         if (Objects.isNull(testMethod)) return;
         currentTestGroups.set(getGroupsFromTestClass(testMethod));
         annotation.setGroups(currentTestGroups.get());
-
-         /*Exclude the module for execution
-        excludeModule(annotation, testMethod);*/
     }
 
     @Override

@@ -56,11 +56,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Grid re-renders asynchronously after search/filter/sort/refresh - polls the visible row
-     * texts instead of a blind sleep so a slow response can't be read too soon. Compares full row
-     * content (not just count) because sort only reorders rows without changing how many there
-     * are. Falls through on timeout (the rare case where the new state matches the old one)
-     * instead of failing here - the caller's own verify step catches a genuinely stale read.
+     * Polls row content until it changes from the pre-action state, instead of a blind sleep.
+     * Compares full content, not just count, since sort only reorders existing rows.
      */
     private void waitForGridToRerender(List<String> before) {
         try {
@@ -70,9 +67,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Checks for a row that can actually be deleted. Deliberately not a row-count check: the
-     * empty "no data" state still renders a &lt;tr&gt;, so counting rows reports 1 on an empty
-     * grid. Only a real data row carries the delete icon.
+     * Not a row-count check - the empty "no data" state also renders a &lt;tr&gt;.
+     * Only a real data row carries the delete icon.
      */
     public boolean hasDeletableRow() {
         return !getListWebElement(By.xpath(pickListLocator.getIcoRowDelete())).isEmpty();
@@ -241,7 +237,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Polls instead of a blind sleep - falls through on timeout so the caller's own verify still catches a real "still open" bug. */
+    /** Polls instead of a blind sleep; falls through on timeout so the caller's verify catches a real bug. */
     private void waitForAddNewDialogClosed() {
         try {
             getWaitDriver().until(d -> !isAddNewDialogOpen());
@@ -262,25 +258,17 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Clears leftover toasts so the next read can't pick up an old message. Clicking close only
-     * starts the leave transition - the detail text lingers in the DOM briefly after, so poll
-     * until it's actually gone instead of returning right after the click.
+     * Clears leftover toasts so the next read can't mistake an old message for a new result.
+     * Clicking close only starts the leave animation, so also blank the text immediately.
      */
     public PickListObjects dismissAllToasts() {
-        // Clicking close only starts the leave animation - the old text stays readable for a
-        // while, long enough for the next action to read it as its own result (a delete step once
-        // "passed" on the previous save's toast). Blanking the text as well makes leftovers
-        // invisible to getLatestToastMessage immediately, since that already skips blank nodes.
         getJsExecutor().executeScript(
                 "document.querySelectorAll('.p-toast-close-button').forEach(b => b.click());"
                         + "document.querySelectorAll('.p-toast-detail').forEach(el => el.textContent = '');");
         return this;
     }
 
-    /**
-     * Reads the toast raised by the previous action - call dismissAllToasts() before that action so
-     * only the new one is present. Returns "" if none shows up, letting the caller assert softly.
-     */
+    /** Reads the latest toast; call dismissAllToasts() beforehand. Returns "" if none shows up. */
     public String getLatestToastMessage() {
         try {
             return getWaitDriver(TOAST_WAIT_SECONDS).until(d -> {
@@ -300,11 +288,7 @@ public class PickListObjects extends BaseObjects {
         return findWebElement(pickListLocator.getIcoRowEdit());
     }
 
-    /**
-     * The panel mounts before its data arrives - its buttons show up first, then the record loads
-     * and overwrites whatever is in the fields. Typing between those two moments silently loses
-     * the value, so wait until Name is actually populated, not just until the panel is on screen.
-     */
+    /** Panel mounts before its data loads, so wait for Name to populate, not just the panel to appear. */
     public PickListObjects clickRowEditIcon() {
         clickByJS(findRowEditIcon(), "Edit (row icon)");
         waitForElementVisible(By.xpath(pickListLocator.getBtnEditCancel()));
@@ -321,11 +305,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /**
-     * Clears the Name field entirely to trigger the required-field validation. clear()+sendKeys("")
-     * doesn't register here since sendKeys("") is a no-op and clear() alone doesn't notify Vue -
-     * needs the native setter + dispatched input event instead.
-     */
+    /** Clears Name to trigger required-field validation; clear()+sendKeys("") doesn't notify Vue. */
     public PickListObjects clearEditName() {
         setValueByNativeSetter(findWebElement(pickListLocator.getTxtEditName()), "");
         return this;
@@ -341,11 +321,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /**
-     * PrimeVue's real switch input is intentionally invisible (a styled sibling shows the visual
-     * slider), so findWebElement's visibility wait never succeeds on it - look it up by presence
-     * only instead.
-     */
+    /** PrimeVue's real switch input is invisible by design, so look it up by presence, not visibility. */
     public PickListObjects toggleEditIsActive() {
         List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtEditIsActive()));
         clickByJS(matches.isEmpty() ? null : matches.get(0), "Is Active toggle");
@@ -370,7 +346,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Polls instead of a blind sleep - falls through on timeout so the caller's own verify still catches a real "still open" bug. */
+    /** Polls instead of a blind sleep; falls through on timeout so the caller's verify catches a real bug. */
     private void waitForEditPanelClosed() {
         try {
             getWaitDriver().until(d -> !isEditPanelOpen());
@@ -378,8 +354,7 @@ public class PickListObjects extends BaseObjects {
         }
     }
 
-    /** Anchor text should be a fragment like "required" - deliberately not the field label, since a
-     * required-field marker on the label itself could otherwise false-match. */
+    /** Anchor text should be a message fragment like "required", not the field label (could false-match). */
     public String getEditErrorMessageContaining(String anchorText) {
         List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrEditMessageContaining(), anchorText));
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));

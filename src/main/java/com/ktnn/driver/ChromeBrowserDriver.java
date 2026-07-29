@@ -33,7 +33,7 @@ public class ChromeBrowserDriver extends BrowserDriver {
         chromeOptions.addArguments("--disable-session-crashed-bubble");
         chromeOptions.addArguments("--disable-features=InfiniteSessionRestore");
 
-        // Turn off Chrome's save-password / breach-warning popups - native UI, not the page's
+        // Disable Chrome's native save-password / breach-warning popups
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);

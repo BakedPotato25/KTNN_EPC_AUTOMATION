@@ -52,20 +52,17 @@ public class BasePage extends WebUI {
      * Hash deep-links get redirected back to home on this app, so we click the card instead.
      */
     protected void gotoModuleViaHomeCard(ProjectConst.ModuleURL module) {
-        // Close whatever module tab @BeforeMethod left open from the previous test - otherwise
-        // running the full suite (100+ test methods) piles up that many tabs in the app's own
-        // tab-bar. Home has no close icon, so this is a no-op when already on Home.
+        // Close leftover module tab from the previous test, else tabs pile up across the suite
         closeActiveModuleTab();
 
-        // @BeforeMethod may run this from inside a module page left over from the previous test,
-        // so always return to Home first instead of assuming we're already there
+        // Don't assume we're on Home already - previous test may have left a module page open
         WebElement homeTab = findWebElement(HomeLocator.getInstance().getTabHome());
         clickByJS(homeTab, "Home");
         waitForElementVisible(getByXpathDynamic(HomeLocator.getInstance().getCardByName(), module.getName()));
         WebElement card = findWebElement(getByXpathDynamic(HomeLocator.getInstance().getCardByName(), module.getName()));
         clickByJS(card, module.getName());
         try {
-            // single-spa route change is async - URL doesn't update until the new module finishes mounting
+            // single-spa route change is async, URL updates only after the module mounts
             getWaitDriver().until(ExpectedConditions.urlContains(module.getPath()));
         } catch (Exception e) {
             log.error("gotoModuleViaHomeCard: URL never changed to contain '{}'", module.getPath());

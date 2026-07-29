@@ -393,18 +393,18 @@ public class ExcelHelpers {
     private boolean isExisted(String data, String fieldName, String colName) {
         var colList = new JSONObject(data).getJSONArray(fieldName).toList();
         boolean isResult = true;
-        // Chứa ^ALL -> Not Fill ALL
+        // "^ALL" -> not fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", "ALL"))))
             isResult = false;
 
-        // Chứa ALL  -> Fill ALL
+        // "ALL" -> fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase("ALL"))) isResult = true;
 
-        // Chứa ^Col -> Not fill this col
+        // "^Col" -> not fill this col
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // Chứa Col -> Fill this column
+        // "Col" -> fill this column
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }
@@ -660,16 +660,16 @@ public class ExcelHelpers {
 
     private boolean checkIsExist(List<Object> colList, String colName) {
         boolean isResult = colList.stream().noneMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", "ALL")));
-        // Chứa ^ALL -> Not Fill ALL
+        // "^ALL" -> not fill ALL
 
-        // Chứa ALL  -> Fill ALL
+        // "ALL" -> fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase("ALL"))) isResult = true;
 
-        // Chứa ^Col -> Not fill this col
+        // "^Col" -> not fill this col
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // Chứa Col -> Fill this column
+        // "Col" -> fill this column
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }

@@ -53,7 +53,7 @@ public abstract class AbsPropertyUtils {
     public static String getValue(String key) {
         String keyValue = null;
         try {
-            // Lấy giá trị từ file đã Set
+            // Read value from loaded properties
             keyValue = properties.getProperty(key);
             return LanguageUtils.convertCharset_ISO_8859_1_To_UTF8(keyValue);
         } catch (Exception e) {

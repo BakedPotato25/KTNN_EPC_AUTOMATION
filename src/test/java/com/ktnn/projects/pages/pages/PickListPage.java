@@ -321,12 +321,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /**
-     * Deletes records left behind by an earlier failed run - dev is shared and a record that
-     * survived cleanup blocks the next run with a duplicate Code error. Search is a "contains"
-     * match, so this also catches the renamed copy (e.g. "..._EDITED"). Silent when nothing
-     * matches; the loop cap keeps a mis-typed keyword from wiping half the list.
-     */
+    /** Deletes records left behind by an earlier failed run, so they don't block this one with a duplicate Code. */
     public PickListPage removeLeftoverRecords(String keyword) {
         for (int i = 0; i < MAX_LEFTOVER_CLEANUP; i++) {
             pickListObjects.searchByKeyword(keyword);
@@ -338,11 +333,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /**
-     * Setup helper for the Edit test group - creates a record via Add new so there's one of our
-     * own to edit. A successful create auto-opens that record's Edit panel, so this closes it
-     * again via Cancel to leave a clean list behind for the test's own "click Edit icon" step.
-     */
+    /** Creates a record to edit, then cancels the auto-opened Edit panel to leave a clean list. */
     public PickListPage setupRecordToEdit(String name, String code) {
         removeLeftoverRecords(name);
         openAddNewForm();

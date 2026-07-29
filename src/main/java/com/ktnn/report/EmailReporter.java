@@ -246,11 +246,6 @@ public class EmailReporter implements IReporter {
         writerSuite.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE suite SYSTEM \"https://testng.org/testng-1.0.dtd\">");
         writerResult.println("Testcase\tDescription\tClass\tResult");
         for (SuiteResult suiteResult : suiteResults) {
-            /*
-            writer.print("<tbody><tr><th colspan=\"6\" class=\"alignLeft\">");
-            writer.print(Utils.escapeHtml("Test Suite: " + suiteResult.getSuiteName()));
-            writer.print("</th></tr></tbody>");
-            */
             writerSuite.println(String.format("<suite name=\"%s - Retry\" parallel=\"%s\" thread-count=\"%s\">", suiteResult.getSuiteName(), suiteResult.parallel, suiteResult.noThread));
             if (!suiteResult.listeners.isEmpty()) {
                 writerSuite.println("\t<listeners>");
@@ -309,11 +304,6 @@ public class EmailReporter implements IReporter {
     private int writeScenarioSummary(String description, List<ClassResult> classResults, int startingScenarioIndex) {
         int scenarioCount = 0;
         if (!classResults.isEmpty()) {
-            /*
-            writer.print("<tr><th colspan=\"6\">Test class: ");
-            writer.print(description);
-            writer.print("</th></tr>");
-             */
             writerSuite.println("\t\t<classes>");
             int scenarioIndex = startingScenarioIndex;
             for (ClassResult classResult : classResults) {

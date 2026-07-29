@@ -23,7 +23,7 @@ public class FrameConst {
     public static final String LANG_VI = "vi";
     public static final String LANG_EN = "en";
     public static String PROJECT_NAME = "KTNN_EPC_AUTO";           // Project Name
-    public static String PROJECT_KEY_NAME = "KTNN";                // Support Generate Test Case automatically then upload to Jira
+    public static String PROJECT_KEY_NAME = "KTNN";                // Used when uploading generated test cases to Jira
     public static String PROJECT_RESULT_DB = "";                   // Database Name for storing test results
     public static String JIRA_DOMAIN = "";                         // e.g. https://your-domain.atlassian.net/browse/
     public static String LOG_LEVEL = "DEBUG";

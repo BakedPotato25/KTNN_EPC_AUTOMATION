@@ -108,7 +108,7 @@ public class BaseProvider {
                     try {
                         var obj = f.get(item);
                         if (f.getType().equals(List.class)) {
-                            var shData = (List) data.get(f.getName()); // Cần đặt name of sheet giống với tên biến
+                            var shData = (List) data.get(f.getName()); // sheet name must match field name
                             if (Objects.isNull(shData) || shData.isEmpty()) return;
                             String ownerClassName = ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0].getTypeName();
                             Object itemClass = Class.forName(ownerClassName).getDeclaredConstructor().newInstance();

@@ -471,10 +471,8 @@ public class WebUI {
     }
 
     /**
-     * Sets a value through the input/textarea's native property setter and dispatches
-     * input/change events - needed for some Vue-bound fields where clear()+sendKeys() doesn't
-     * register (e.g. clearing to empty, where sendKeys("") is a no-op and clear() alone isn't
-     * enough for Vue to pick up), or long strings that don't take sendKeys reliably.
+     * Sets value via native property setter + dispatches input/change events.
+     * Needed for Vue-bound fields where clear()+sendKeys() doesn't register.
      */
     public void setValueByNativeSetter(WebElement element, String value) {
         String script = "var el = arguments[0]; var value = arguments[1];" +
@@ -491,10 +489,8 @@ public class WebUI {
     }
 
     /**
-     * Blurs the currently focused input via JS so Vue's v-model commits the value immediately -
-     * use before an action (e.g. Save) that reads reactive form state right after the last
-     * keystroke, since some fields only sync their model on blur/change rather than every input
-     * event. Deterministic alternative to a blind wait for "Vue to catch up".
+     * Blurs the focused input via JS so Vue's v-model commits the value.
+     * Use before actions (e.g. Save) that read form state right after a keystroke.
      */
     public void blurActiveElement() {
         getJsExecutor().executeScript("if (document.activeElement) document.activeElement.blur();");
@@ -999,11 +995,11 @@ public class WebUI {
      * Upload files using EventKey
      */
     public static void uploadFileUseRobot(WebElement element, String filePath) {
-        //Click để mở form upload
+        // Click to open upload dialog
         getActions().moveToElement(element).click().perform();
         waitFor(WAIT_IMPLICIT);
 
-        // Khởi tạo Robot class
+        // Init Robot
         Robot rb = null;
         try {
             rb = new Robot();
@@ -1011,19 +1007,17 @@ public class WebUI {
             log.error("Exception init robot: {}", e.getMessage());
         }
 
-        // Copy File path vào Clipboard
+        // Copy file path to clipboard
         StringSelection str = new StringSelection(filePath);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
-        // Nhấn Control+V để dán
+        // Paste via Ctrl+V
         rb.keyPress(KeyEvent.VK_CONTROL);
         rb.keyPress(KeyEvent.VK_V);
 
-        // Xác nhận Control V
         rb.keyRelease(KeyEvent.VK_CONTROL);
         rb.keyRelease(KeyEvent.VK_V);
         waitFor(WAIT_IMPLICIT);
-        // Nhấn Enter
         rb.keyPress(KeyEvent.VK_ENTER);
         rb.keyRelease(KeyEvent.VK_ENTER);
         addReportInfo(LogType.INFO, "Upload file .." + filePath, "Upload File", getLocatorFromWebElement(element));
@@ -1044,15 +1038,4 @@ public class WebUI {
         assertEqualCondition(webElement, elementText.trim(), expectedValue.trim(),
                 FailureHandling.CONTINUE_ON_FAILURE, "Verify the text of element");
     }
-
-//    public void waitForEleValueNotEmpty(WebElement element) {
-//        getWebWait().until(ExpectedConditions.attributeToBeNotEmpty(element, "value"));
-//    }
-//
-//    // Wait until the element value is different from the old value
-//    public void waitForEleValueChanged(WebElement element, String oldValue) {
-//        getWebWait().until(ExpectedConditions.not(
-//                ExpectedConditions.attributeToBe(element, "value", oldValue)
-//        ));
-//    }
 }

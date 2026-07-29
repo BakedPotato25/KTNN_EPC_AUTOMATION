@@ -12,8 +12,8 @@ import static com.ktnn.consts.FrameConst.ExecuteConfig.HEADLESS_FLAG;
 public class FirefoxBrowserDriver extends BrowserDriver {
     @Override
     public WebDriver createDriver(boolean... isLoadings) {
+        // TODO: handle missing Firefox install
         return new FirefoxDriver((FirefoxOptions) getOptions(isLoadings));
-        // TODO: Need to catch the error when PC does not have the firefox browser
     }
 
     @Override

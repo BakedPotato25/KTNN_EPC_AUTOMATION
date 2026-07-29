@@ -55,7 +55,7 @@ public class PickListLocator extends BaseLocator {
     String txtAddCode = "//input[@placeholder='Enter Code']";
     String txtAddVersion = "//input[@placeholder='Enter version']";
     String txtAddDescription = "//textarea[@placeholder='Enter description']";
-    // Valid For has 2 date inputs sharing the same placeholder - 1-based index via %s (1=from, 2=to)
+    // Valid For has 2 date inputs sharing a placeholder, %s picks 1=from, 2=to
     String txtAddValidForByIndex = "(//input[@placeholder='dd/mm/yyyy'])[%s]";
     String btnAddNewSave = "CSS|.btn-save";
     String btnAddNewClose = "//button[@aria-label='Close']";
@@ -75,13 +75,10 @@ public class PickListLocator extends BaseLocator {
     // 1st row's edit icon (pi-pen-to-square) - opens the Edit side panel for that record
     String icoRowEdit = "(//table//tbody//tr)[1]//span[contains(@class,'pi-pen-to-square')]";
 
-    // Edit panel is a slide-out side panel next to the grid, NOT a dialog like Add new - it's a
-    // different component: Code stays editable here (contradicts spec, see PL_FUNC-33), the
-    // buttons are Save/Cancel instead of Close/Save, and the "Code" placeholder is lowercase
-    // ("Enter code" vs Add new's "Enter Code") - needs its own locators, can't reuse Add new's.
-    // All wrapped in [last()]: closing then reopening the panel can briefly leave the outgoing
-    // instance's elements matching alongside the new one, and Selenium's visibility wait always
-    // re-fetches the FIRST match - if that's the stale one it never resolves, so pick the last.
+    // Edit panel is a separate component from Add new (own labels/buttons), can't reuse locators.
+    // Code stays editable here, contradicts spec - see PL_FUNC-33.
+    // [last()]: reopening the panel can briefly leave a stale element matching too, and the
+    // visibility wait re-fetches the first match, so pick the last to avoid the stale one.
     String txtEditName = "(//input[@placeholder='Enter name'])[last()]";
     String txtEditCode = "(//input[@placeholder='Enter code'])[last()]";
     String txtEditVersion = "(//input[@placeholder='Enter version'])[last()]";
@@ -91,7 +88,6 @@ public class PickListLocator extends BaseLocator {
     String btnEditSave = "(//button[@aria-label='Save'])[last()]";
     String btnEditCancel = "(//button[@aria-label='Cancel'])[last()]";
 
-    // Edit panel's inline validation message - a plain span, not the ancestor-based block the
-    // Add new dialog uses; message text names the field itself (e.g. "Name is required.")
+    // Edit panel's inline validation message - a plain span, unlike Add new's ancestor-based block
     String errEditMessageContaining = "//span[contains(@class,'text-red-500')][contains(.,'%s')]";
 }
