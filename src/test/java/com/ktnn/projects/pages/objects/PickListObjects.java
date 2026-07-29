@@ -239,10 +239,18 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Clears leftover toasts so the next read can't pick up an old message. */
+    /**
+     * Clears leftover toasts so the next read can't pick up an old message. Clicking close only
+     * starts the leave transition - the detail text lingers in the DOM briefly after, so poll
+     * until it's actually gone instead of returning right after the click.
+     */
     public PickListObjects dismissAllToasts() {
         getJsExecutor().executeScript(
                 "document.querySelectorAll('.p-toast-close-button').forEach(b => b.click());");
+        try {
+            getWaitDriver(3).until(d -> getListWebElement(By.xpath(pickListLocator.getTxtToastDetail())).isEmpty());
+        } catch (Exception ignored) {
+        }
         return this;
     }
 
