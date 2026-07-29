@@ -267,12 +267,13 @@ public class PickListObjects extends BaseObjects {
      * until it's actually gone instead of returning right after the click.
      */
     public PickListObjects dismissAllToasts() {
+        // Clicking close only starts the leave animation - the old text stays readable for a
+        // while, long enough for the next action to read it as its own result (a delete step once
+        // "passed" on the previous save's toast). Blanking the text as well makes leftovers
+        // invisible to getLatestToastMessage immediately, since that already skips blank nodes.
         getJsExecutor().executeScript(
-                "document.querySelectorAll('.p-toast-close-button').forEach(b => b.click());");
-        try {
-            getWaitDriver(3).until(d -> getListWebElement(By.xpath(pickListLocator.getTxtToastDetail())).isEmpty());
-        } catch (Exception ignored) {
-        }
+                "document.querySelectorAll('.p-toast-close-button').forEach(b => b.click());"
+                        + "document.querySelectorAll('.p-toast-detail').forEach(el => el.textContent = '');");
         return this;
     }
 
