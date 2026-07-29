@@ -44,3 +44,6 @@ src/test/resources/config/database.json
 
 # Playwright MCP output (page snapshots/console logs may contain real system data)
 .playwright-mcp/
+
+# Document - Sources of Truth
+KTNN_EPC - PL_FUNC.pdf
