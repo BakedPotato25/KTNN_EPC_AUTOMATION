@@ -277,9 +277,15 @@ public class PickListObjects extends BaseObjects {
         return findWebElement(pickListLocator.getIcoRowEdit());
     }
 
+    /**
+     * The panel mounts before its data arrives - its buttons show up first, then the record loads
+     * and overwrites whatever is in the fields. Typing between those two moments silently loses
+     * the value, so wait until Name is actually populated, not just until the panel is on screen.
+     */
     public PickListObjects clickRowEditIcon() {
         clickByJS(findRowEditIcon(), "Edit (row icon)");
-        waitForElementVisible(By.xpath(pickListLocator.getBtnEditCancel())); // panel finished mounting
+        waitForElementVisible(By.xpath(pickListLocator.getBtnEditCancel()));
+        waitForInputValueNotEmpty(findWebElement(pickListLocator.getTxtEditName()));
         return this;
     }
 
