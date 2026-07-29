@@ -56,6 +56,15 @@ public class PickListObjects extends BaseObjects {
         }
     }
 
+    /**
+     * Checks for a row that can actually be deleted. Deliberately not a row-count check: the
+     * empty "no data" state still renders a &lt;tr&gt;, so counting rows reports 1 on an empty
+     * grid. Only a real data row carries the delete icon.
+     */
+    public boolean hasDeletableRow() {
+        return !getListWebElement(By.xpath(pickListLocator.getIcoRowDelete())).isEmpty();
+    }
+
     public List<String> getAllNameCellTexts() {
         return getListWebElement(By.xpath(pickListLocator.getCellName())).stream()
                 .map(el -> getTextElement(el))

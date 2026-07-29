@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PickListPage extends BasePage {
+    // safety cap so a too-broad keyword can't delete row after row
+    private static final int MAX_LEFTOVER_CLEANUP = 3;
+
     private final PickListObjects pickListObjects;
     private String baselineResultsCount;
     private String lastToastMessage;
@@ -319,11 +322,29 @@ public class PickListPage extends BasePage {
     }
 
     /**
+     * Deletes records left behind by an earlier failed run - dev is shared and a record that
+     * survived cleanup blocks the next run with a duplicate Code error. Search is a "contains"
+     * match, so this also catches the renamed copy (e.g. "..._EDITED"). Silent when nothing
+     * matches; the loop cap keeps a mis-typed keyword from wiping half the list.
+     */
+    public PickListPage removeLeftoverRecords(String keyword) {
+        for (int i = 0; i < MAX_LEFTOVER_CLEANUP; i++) {
+            pickListObjects.searchByKeyword(keyword);
+            if (!pickListObjects.hasDeletableRow()) return this;
+            pickListObjects.dismissAllToasts();
+            pickListObjects.deleteFirstRowResult();
+            pickListObjects.getLatestToastMessage();
+        }
+        return this;
+    }
+
+    /**
      * Setup helper for the Edit test group - creates a record via Add new so there's one of our
      * own to edit. A successful create auto-opens that record's Edit panel, so this closes it
      * again via Cancel to leave a clean list behind for the test's own "click Edit icon" step.
      */
     public PickListPage setupRecordToEdit(String name, String code) {
+        removeLeftoverRecords(name);
         openAddNewForm();
         pickListObjects.inputAddName(name);
         pickListObjects.inputAddCode(code);
