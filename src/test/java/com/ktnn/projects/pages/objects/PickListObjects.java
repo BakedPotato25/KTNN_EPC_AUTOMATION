@@ -202,21 +202,29 @@ public class PickListObjects extends BaseObjects {
     }
 
     public PickListObjects clickAddNewSave() {
-        waitFor(0.5); // lets Vue finish processing the last keystroke before Save reads form state
+        blurActiveElement(); // commits the last field's Vue model before Save reads form state
         clickByJS(findWebElement(pickListLocator.getBtnAddNewSave()), "Save (Add new)");
         return this;
     }
 
     public PickListObjects clickAddNewClose() {
         clickByJS(findWebElement(pickListLocator.getBtnAddNewClose()), "Close (Add new)");
-        waitFor(1);
+        waitForAddNewDialogClosed();
         return this;
     }
 
     public PickListObjects clickAddNewCloseX() {
         clickByJS(findWebElement(pickListLocator.getIcoAddNewCloseX()), "X (Add new)");
-        waitFor(1);
+        waitForAddNewDialogClosed();
         return this;
+    }
+
+    /** Polls instead of a blind sleep - falls through on timeout so the caller's own verify still catches a real "still open" bug. */
+    private void waitForAddNewDialogClosed() {
+        try {
+            getWaitDriver().until(d -> !isAddNewDialogOpen());
+        } catch (Exception ignored) {
+        }
     }
 
     public String getRequiredFieldError(String fieldLabel) {
