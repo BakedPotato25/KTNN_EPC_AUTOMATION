@@ -3,6 +3,7 @@ package com.ktnn.projects.dataprovider.providers;
 import com.ktnn.datadriven.BaseProvider;
 import com.ktnn.projects.dataprovider.DataPath;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -188,5 +189,35 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListAddNew_009_XDiscardsData(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_001_Valid")
+    public Object[][] KTNN_PickListEdit_001_Valid(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_002_GridUpdates")
+    public Object[][] KTNN_PickListEdit_002_GridUpdates(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_003_EmptyName")
+    public Object[][] KTNN_PickListEdit_003_EmptyName(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_004_CodeEditable")
+    public Object[][] KTNN_PickListEdit_004_CodeEditable(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_005_CancelDiscardsChanges")
+    public Object[][] KTNN_PickListEdit_005_CancelDiscardsChanges(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListEditModel(), dataList);
     }
 }

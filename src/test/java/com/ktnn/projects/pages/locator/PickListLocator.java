@@ -71,4 +71,27 @@ public class PickListLocator extends BaseLocator {
     String icoRowDelete = "(//table//tbody//tr)[1]//span[contains(@class,'pi-trash')]";
     // Yes/No confirm buttons have no aria-label, only plain visible text
     String btnConfirmYes = "//button[normalize-space()='Yes']";
+
+    // 1st row's edit icon (pi-pen-to-square) - opens the Edit side panel for that record
+    String icoRowEdit = "(//table//tbody//tr)[1]//span[contains(@class,'pi-pen-to-square')]";
+
+    // Edit panel is a slide-out side panel next to the grid, NOT a dialog like Add new - it's a
+    // different component: Code stays editable here (contradicts spec, see PL_FUNC-33), the
+    // buttons are Save/Cancel instead of Close/Save, and the "Code" placeholder is lowercase
+    // ("Enter code" vs Add new's "Enter Code") - needs its own locators, can't reuse Add new's.
+    // All wrapped in [last()]: closing then reopening the panel can briefly leave the outgoing
+    // instance's elements matching alongside the new one, and Selenium's visibility wait always
+    // re-fetches the FIRST match - if that's the stale one it never resolves, so pick the last.
+    String txtEditName = "(//input[@placeholder='Enter name'])[last()]";
+    String txtEditCode = "(//input[@placeholder='Enter code'])[last()]";
+    String txtEditVersion = "(//input[@placeholder='Enter version'])[last()]";
+    String txtEditDescription = "(//textarea[@placeholder='Enter description'])[last()]";
+    // scoped to the panel - the same toggle-switch component is also used for the EN/VI nav switch
+    String swtEditIsActive = "(//div[contains(@class,'tab-content-parent')]//input[@type='checkbox'][@role='switch'])[last()]";
+    String btnEditSave = "(//button[@aria-label='Save'])[last()]";
+    String btnEditCancel = "(//button[@aria-label='Cancel'])[last()]";
+
+    // Edit panel's inline validation message - a plain span, not the ancestor-based block the
+    // Add new dialog uses; message text names the field itself (e.g. "Name is required.")
+    String errEditMessageContaining = "//span[contains(@class,'text-red-500')][contains(.,'%s')]";
 }

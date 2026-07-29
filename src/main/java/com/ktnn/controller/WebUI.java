@@ -470,6 +470,36 @@ public class WebUI {
         addReportInfo(LogType.INFO, msg, "clickElementByJs_", locator);
     }
 
+    /**
+     * Sets a value through the input/textarea's native property setter and dispatches
+     * input/change events - needed for some Vue-bound fields where clear()+sendKeys() doesn't
+     * register (e.g. clearing to empty, where sendKeys("") is a no-op and clear() alone isn't
+     * enough for Vue to pick up), or long strings that don't take sendKeys reliably.
+     */
+    public void setValueByNativeSetter(WebElement element, String value) {
+        String script = "var el = arguments[0]; var value = arguments[1];" +
+                "var proto = el.tagName === 'TEXTAREA' ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;" +
+                "var setter = Object.getOwnPropertyDescriptor(proto, 'value').set;" +
+                "setter.call(el, value);" +
+                "el.dispatchEvent(new Event('input', {bubbles: true}));" +
+                "el.dispatchEvent(new Event('change', {bubbles: true}));";
+        getJsExecutor().executeScript(script, element, value);
+
+        String locator = getLocatorFromWebElement(element);
+        String msg = String.format("Set value via native setter <b>[%s]</b>  <br/> <span style='font-size: 0.75em'>(Element's locator:  %s)</span>", value, locator);
+        addReportInfo(LogType.INFO, msg, "setValueByNativeSetter_", locator);
+    }
+
+    /**
+     * Blurs the currently focused input via JS so Vue's v-model commits the value immediately -
+     * use before an action (e.g. Save) that reads reactive form state right after the last
+     * keystroke, since some fields only sync their model on blur/change rather than every input
+     * event. Deterministic alternative to a blind wait for "Vue to catch up".
+     */
+    public void blurActiveElement() {
+        getJsExecutor().executeScript("if (document.activeElement) document.activeElement.blur();");
+    }
+
 
     /**
      * Upload file using sendKeys

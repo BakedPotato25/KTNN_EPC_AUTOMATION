@@ -497,5 +497,98 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListEdit_001_Valid": [
+    {
+      "Description": "Kiểm tra sửa dữ liệu hợp lệ vào tất cả các trường có thể sửa (PL_FUNC-30) - tự tạo bản ghi riêng để sửa (bản ghi TEST_PL_001 gốc trong case đã bị PL_FUNC-21 tự xoá), không phụ thuộc case khác",
+      "Id": "PL_FUNC-30",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "InitialName": "TEST_PL_EDIT_001",
+        "InitialCode": "TEST_CODE_EDIT_001",
+        "NewName": "TEST_PL_EDIT_001_EDITED",
+        "NewDescription": "Updated",
+        "NewVersion": "2",
+        "NewIsActive": "OFF"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_002_GridUpdates": [
+    {
+      "Description": "Kiểm tra lưới cập nhật sau khi sửa thành công (PL_FUNC-31) - tự tạo và tự sửa bản ghi riêng, không phụ thuộc PL_FUNC-30",
+      "Id": "PL_FUNC-31",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "InitialName": "TEST_PL_EDIT_GRIDUPDATE_001",
+        "InitialCode": "TEST_CODE_EDIT_GRIDUPDATE_001",
+        "NewName": "TEST_PL_EDIT_GRIDUPDATE_001_EDITED",
+        "NewDescription": "Updated grid check"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_003_EmptyName": [
+    {
+      "Description": "Kiểm tra xoá trắng trường Name (bắt buộc) khi sửa (PL_FUNC-32)",
+      "Id": "PL_FUNC-32",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "InitialName": "TEST_PL_EDIT_003",
+        "InitialCode": "TEST_CODE_EDIT_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_004_CodeEditable": [
+    {
+      "Description": "Kiểm tra trường Code cho phép sửa (PL_FUNC-33) - Excel gốc ghi kỳ vọng 'Code bị disable, không cho phép chỉnh sửa', nhưng đã xác nhận lại hành vi đúng của hệ thống là Code được phép sửa - test viết theo hành vi đã xác nhận, khác với chữ trong Excel gốc, cần cập nhật lại Excel/báo QA để đồng bộ",
+      "Id": "PL_FUNC-33",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "InitialName": "TEST_PL_EDIT_004",
+        "InitialCode": "TEST_CODE_EDIT_004",
+        "AttemptedCode": "TEST_CODE_EDIT_004_CHANGED"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_005_CancelDiscardsChanges": [
+    {
+      "Description": "Kiểm tra kích [Cancel] không lưu thay đổi (PL_FUNC-34)",
+      "Id": "PL_FUNC-34",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "InitialName": "TEST_PL_EDIT_005",
+        "InitialCode": "TEST_CODE_EDIT_005",
+        "NewName": "TEST_PL_EDIT_005_SHOULD_NOT_SAVE"
+      },
+      "detail": {}
+    }
   ]
 }

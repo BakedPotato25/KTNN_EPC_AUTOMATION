@@ -5,6 +5,7 @@ import com.ktnn.consts.AuthorType;
 import com.ktnn.consts.FrameConst.CategoryType;
 import com.ktnn.projects.common.TestBase;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -40,6 +41,10 @@ public class PickListTest extends TestBase {
         if (pendingCleanupKeyword == null) return;
         try {
             pickListPage.closeAddNewForm();
+        } catch (Exception ignored) {
+        }
+        try {
+            pickListPage.clickEditCancel();
         } catch (Exception ignored) {
         }
         try {
@@ -512,5 +517,129 @@ public class PickListTest extends TestBase {
                 .verifyAddNewDialogClosed()
                 .searchByKeyword(model.getName().getValue())
                 .verifySearchNoResults();
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra sửa dữ liệu hợp lệ vào tất cả các trường có thể sửa (PL_FUNC-30)",
+        dataProvider = "KTNN_PickListEdit_001_Valid",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_001_Valid(PickListEditModel model) {
+        String initialName = model.getInitialName().getValue();
+        String newName = model.getNewName().getValue();
+        pendingCleanupKeyword = initialName;
+        pickListPage
+                .setupRecordToEdit(initialName, model.getInitialCode().getValue())
+                .openEditFormByExactSearch(initialName)
+                .fillEditForm(model)
+                .clickEditSave()
+                .verifyToastMessageContains("successfully");
+        pendingCleanupKeyword = newName;
+        pickListPage
+                .searchByKeyword(newName)
+                .verifySearchResultExactName(newName)
+                .deleteRecordByExactSearch(newName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra lưới cập nhật sau khi sửa thành công (PL_FUNC-31)",
+        dataProvider = "KTNN_PickListEdit_002_GridUpdates",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_002_GridUpdates(PickListEditModel model) {
+        String initialName = model.getInitialName().getValue();
+        String newName = model.getNewName().getValue();
+        pendingCleanupKeyword = initialName;
+        pickListPage
+                .setupRecordToEdit(initialName, model.getInitialCode().getValue())
+                .openEditFormByExactSearch(initialName)
+                .fillEditForm(model)
+                .clickEditSave()
+                .verifyToastMessageContains("successfully");
+        pendingCleanupKeyword = newName;
+        pickListPage
+                .searchByKeyword(newName)
+                .verifySearchResultExactName(newName)
+                .verifyFilterResultsExactDescription(model.getNewDescription().getValue())
+                .deleteRecordByExactSearch(newName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá trắng trường Name (bắt buộc) khi sửa (PL_FUNC-32)",
+        dataProvider = "KTNN_PickListEdit_003_EmptyName",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_003_EmptyName(PickListEditModel model) {
+        String initialName = model.getInitialName().getValue();
+        pendingCleanupKeyword = initialName;
+        pickListPage
+                .setupRecordToEdit(initialName, model.getInitialCode().getValue())
+                .openEditFormByExactSearch(initialName)
+                .clearEditName()
+                .clickEditSave()
+                .verifyToastMessageContains("Name is required")
+                .verifyEditRequiredFieldError("Name")
+                .clickEditCancel()
+                .deleteRecordByExactSearch(initialName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Code cho phép sửa (PL_FUNC-33)",
+        dataProvider = "KTNN_PickListEdit_004_CodeEditable",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_004_CodeEditable(PickListEditModel model) {
+        String initialName = model.getInitialName().getValue();
+        String initialCode = model.getInitialCode().getValue();
+        String attemptedCode = model.getAttemptedCode().getValue();
+        pendingCleanupKeyword = initialName;
+        pickListPage
+                .setupRecordToEdit(initialName, initialCode)
+                .openEditFormByExactSearch(initialName)
+                .inputEditCode(attemptedCode)
+                .clickEditSave()
+                .verifyToastMessageContains("successfully")
+                .searchByKeyword(initialName)
+                .verifySearchResultExactCode(attemptedCode)
+                .deleteRecordByExactSearch(initialName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích [Cancel] không lưu thay đổi (PL_FUNC-34)",
+        dataProvider = "KTNN_PickListEdit_005_CancelDiscardsChanges",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_005_CancelDiscardsChanges(PickListEditModel model) {
+        String initialName = model.getInitialName().getValue();
+        pendingCleanupKeyword = initialName;
+        pickListPage
+                .setupRecordToEdit(initialName, model.getInitialCode().getValue())
+                .openEditFormByExactSearch(initialName)
+                .fillEditForm(model)
+                .clickEditCancel()
+                .verifyEditPanelClosed()
+                .searchByKeyword(initialName)
+                .verifySearchResultExactName(initialName)
+                .deleteRecordByExactSearch(initialName);
+        pendingCleanupKeyword = null;
     }
 }

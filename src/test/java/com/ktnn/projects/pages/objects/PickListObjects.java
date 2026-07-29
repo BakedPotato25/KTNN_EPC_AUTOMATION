@@ -256,5 +256,88 @@ public class PickListObjects extends BaseObjects {
             return "";
         }
     }
+
+    public WebElement findRowEditIcon() {
+        return findWebElement(pickListLocator.getIcoRowEdit());
+    }
+
+    public PickListObjects clickRowEditIcon() {
+        clickByJS(findRowEditIcon(), "Edit (row icon)");
+        waitForElementVisible(By.xpath(pickListLocator.getBtnEditCancel())); // panel finished mounting
+        return this;
+    }
+
+    public boolean isEditPanelOpen() {
+        return !getListWebElement(By.xpath(pickListLocator.getBtnEditCancel())).isEmpty();
+    }
+
+    public PickListObjects inputEditName(String value) {
+        inputTextWithVerify(findWebElement(pickListLocator.getTxtEditName()), "Edit - Name", value);
+        return this;
+    }
+
+    /**
+     * Clears the Name field entirely to trigger the required-field validation. clear()+sendKeys("")
+     * doesn't register here since sendKeys("") is a no-op and clear() alone doesn't notify Vue -
+     * needs the native setter + dispatched input event instead.
+     */
+    public PickListObjects clearEditName() {
+        setValueByNativeSetter(findWebElement(pickListLocator.getTxtEditName()), "");
+        return this;
+    }
+
+    public PickListObjects inputEditDescription(String value) {
+        inputText(findWebElement(pickListLocator.getTxtEditDescription()), "Edit - Description", value);
+        return this;
+    }
+
+    public PickListObjects inputEditVersion(String value) {
+        inputText(findWebElement(pickListLocator.getTxtEditVersion()), "Edit - Version", value);
+        return this;
+    }
+
+    /**
+     * PrimeVue's real switch input is intentionally invisible (a styled sibling shows the visual
+     * slider), so findWebElement's visibility wait never succeeds on it - look it up by presence
+     * only instead.
+     */
+    public PickListObjects toggleEditIsActive() {
+        List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtEditIsActive()));
+        clickByJS(matches.isEmpty() ? null : matches.get(0), "Is Active toggle");
+        return this;
+    }
+
+    /** Types into Code to prove the field accepts edits (PL_FUNC-33) - caller saves and re-verifies from the grid. */
+    public PickListObjects attemptInputEditCode(String value) {
+        inputText(findWebElement(pickListLocator.getTxtEditCode()), "Edit - Code (attempt)", value);
+        return this;
+    }
+
+    public PickListObjects clickEditSave() {
+        blurActiveElement(); // commits the last field's Vue model before Save reads form state
+        clickByJS(findWebElement(pickListLocator.getBtnEditSave()), "Save (Edit)");
+        return this;
+    }
+
+    public PickListObjects clickEditCancel() {
+        clickByJS(findWebElement(pickListLocator.getBtnEditCancel()), "Cancel (Edit)");
+        waitForEditPanelClosed();
+        return this;
+    }
+
+    /** Polls instead of a blind sleep - falls through on timeout so the caller's own verify still catches a real "still open" bug. */
+    private void waitForEditPanelClosed() {
+        try {
+            getWaitDriver().until(d -> !isEditPanelOpen());
+        } catch (Exception ignored) {
+        }
+    }
+
+    /** Anchor text should be a fragment like "required" - deliberately not the field label, since a
+     * required-field marker on the label itself could otherwise false-match. */
+    public String getEditErrorMessageContaining(String anchorText) {
+        List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrEditMessageContaining(), anchorText));
+        return errors.isEmpty() ? "" : getTextElement(errors.get(0));
+    }
 }
 

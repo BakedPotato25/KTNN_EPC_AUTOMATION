@@ -4,6 +4,7 @@ import com.ktnn.consts.FrameConst.FailureHandling;
 import com.ktnn.datadriven.DataModel;
 import com.ktnn.projects.common.BasePage;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.pages.objects.PickListObjects;
 
 import org.openqa.selenium.support.PageFactory;
@@ -314,6 +315,85 @@ public class PickListPage extends BasePage {
         verifyToastMessageContains("successfully");
         pickListObjects.searchByKeyword(keyword);
         verifySearchNoResults();
+        return this;
+    }
+
+    /**
+     * Setup helper for the Edit test group - creates a record via Add new so there's one of our
+     * own to edit. A successful create auto-opens that record's Edit panel, so this closes it
+     * again via Cancel to leave a clean list behind for the test's own "click Edit icon" step.
+     */
+    public PickListPage setupRecordToEdit(String name, String code) {
+        openAddNewForm();
+        pickListObjects.inputAddName(name);
+        pickListObjects.inputAddCode(code);
+        clickAddNewSave();
+        pickListObjects.clickEditCancel();
+        return this;
+    }
+
+    /** Narrows the grid to exactly 1 record via exact search, then opens its Edit panel. */
+    public PickListPage openEditFormByExactSearch(String keyword) {
+        pickListObjects.searchByKeyword(keyword);
+        pickListObjects.clickRowEditIcon();
+        return this;
+    }
+
+    public PickListPage fillEditForm(PickListEditModel model) {
+        if (hasValue(model.getNewName())) pickListObjects.inputEditName(model.getNewName().getValue());
+        if (hasValue(model.getNewDescription())) pickListObjects.inputEditDescription(model.getNewDescription().getValue());
+        if (hasValue(model.getNewVersion())) pickListObjects.inputEditVersion(model.getNewVersion().getValue());
+        if (hasValue(model.getNewIsActive()) && "OFF".equalsIgnoreCase(model.getNewIsActive().getValue())) {
+            pickListObjects.toggleEditIsActive();
+        }
+        return this;
+    }
+
+    public PickListPage clearEditName() {
+        pickListObjects.clearEditName();
+        return this;
+    }
+
+    public PickListPage clickEditSave() {
+        pickListObjects.dismissAllToasts();
+        pickListObjects.clickEditSave();
+        lastToastMessage = pickListObjects.getLatestToastMessage();
+        return this;
+    }
+
+    public PickListPage clickEditCancel() {
+        // clears any lingering error toast (e.g. a required-field message) so a cleanup step
+        // right after doesn't mistake it for the result of its own action
+        pickListObjects.dismissAllToasts();
+        pickListObjects.clickEditCancel();
+        return this;
+    }
+
+    /** Panel closes right after Cancel, but poll instead of checking once to avoid a race. */
+    public PickListPage verifyEditPanelClosed() {
+        boolean closed;
+        try {
+            closed = getWaitDriver().until(d -> !pickListObjects.isEditPanelOpen());
+        } catch (Exception e) {
+            closed = false;
+        }
+        assertTrueCondition(null, closed, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Edit panel closed (Cancel discarded changes)");
+        return this;
+    }
+
+    public PickListPage verifyEditRequiredFieldError(String fieldLabel) {
+        String errorText = pickListObjects.getEditErrorMessageContaining("required");
+        boolean hasError = errorText.toLowerCase(Locale.ROOT).contains("required")
+                && errorText.toLowerCase(Locale.ROOT).contains(fieldLabel.toLowerCase(Locale.ROOT));
+        assertTrueCondition(null, hasError, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify required-field error shown for '%s' (actual: '%s')", fieldLabel, errorText));
+        return this;
+    }
+
+    /** PL_FUNC-33: Code is editable - types the new value, caller still needs to Save + re-verify from the grid. */
+    public PickListPage inputEditCode(String value) {
+        pickListObjects.attemptInputEditCode(value);
         return this;
     }
 }
