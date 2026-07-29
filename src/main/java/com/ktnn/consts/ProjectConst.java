@@ -4,17 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Project-specific constants for KTNN_EPC_AUTO.
- * Add one enum value per module/page/schema as they are implemented -
- * do not pre-create entries for pages that do not exist yet.
+ * Constant riêng của project KTNN_EPC_AUTO.
+ * Thêm 1 enum value cho mỗi module/page/schema khi được implement -
+ * không tạo trước entry cho page chưa tồn tại.
  */
 @Getter
 @Setter
 public class ProjectConst {
 
     /**
-     * One entry per top-level page/module of the application under test.
-     * Used by BasePage.gotoXxxPage() shortcuts, e.g.:
+     * Mỗi entry ứng với 1 page/module cấp cao nhất của ứng dụng đang test.
+     * Dùng bởi các shortcut BasePage.gotoXxxPage(), vd:
      * <pre>
      * DASHBOARD("Dashboard", APP_DOMAIN + "/dashboard"),
      * </pre>
@@ -34,8 +34,8 @@ public class ProjectConst {
     }
 
     /**
-     * One entry per logical database connection declared in config/database.json.
-     * The name here must match DatabaseInfo.name used when the connection is registered.
+     * Mỗi entry ứng với 1 kết nối database khai báo trong config/database.json.
+     * Tên ở đây phải khớp với DatabaseInfo.name dùng khi đăng ký kết nối.
      */
     @Getter
     public enum Databases {
@@ -49,8 +49,8 @@ public class ProjectConst {
     }
 
     /**
-     * One entry per DB schema/table group that needs per-environment name mapping
-     * (dev/sit/uat/prd), consumed via BaseRepository.getDBSchema(...).
+     * Mỗi entry ứng với 1 nhóm DB schema/table cần map tên theo từng environment
+     * (dev/sit/uat/prd), dùng qua BaseRepository.getDBSchema(...).
      */
     @Getter
     public enum DBSchema {

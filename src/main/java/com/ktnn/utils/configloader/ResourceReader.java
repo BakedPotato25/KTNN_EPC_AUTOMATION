@@ -9,11 +9,11 @@ import java.util.Properties;
 public class ResourceReader {
 
     /**
-     * Read data from a resource file
+     * Đọc data từ resource file
      *
-     * @param filePath : file path in the resources directory
-     * @return content of the file as a String
-     * @throws IOException if an I/O error occurs
+     * @param filePath : đường dẫn file trong resources
+     * @return nội dung file dạng String
+     * @throws IOException nếu lỗi I/O
      */
     public static String readDataFromResource(String filePath) throws IOException {
         ClassLoader classLoader = ResourceReader.class.getClassLoader();
@@ -26,11 +26,11 @@ public class ResourceReader {
     }
 
     /**
-     * Load all configuration files using ClassLoader
+     * Load tất cả config file bằng ClassLoader
      *
-     * @param filePaths : List of file paths in the resources directory
-     * @return Properties object containing all the loaded properties
-     * @throws IOException if an I/O error occurs
+     * @param filePaths : danh sách đường dẫn file trong resources
+     * @return Properties object chứa toàn bộ property đã load
+     * @throws IOException nếu lỗi I/O
      */
     public static Properties loadAllConfigFiles(List<String> filePaths) throws IOException {
         Properties properties = new Properties();

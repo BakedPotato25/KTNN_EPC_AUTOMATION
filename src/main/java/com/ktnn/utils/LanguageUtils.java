@@ -29,10 +29,10 @@ public class LanguageUtils {
             'U', 'u', 'U', 'u',};
 
     /**
-     * Remove accent from a character
+     * Bỏ dấu 1 ký tự
      *
-     * @param ch The character
-     * @return The character without accent
+     * @param ch Ký tự đầu vào
+     * @return Ký tự đã bỏ dấu
      */
     public static char removeAccent(char ch) {
         int index = Arrays.binarySearch(SOURCE_CHARACTERS, ch);
@@ -43,10 +43,10 @@ public class LanguageUtils {
     }
 
     /**
-     * Remove accent from a string
+     * Bỏ dấu 1 chuỗi
      *
-     * @param str The string
-     * @return The string without accent
+     * @param str Chuỗi đầu vào
+     * @return Chuỗi đã bỏ dấu
      */
     public static String removeAccent(String str) {
         StringBuilder sb = new StringBuilder(str);

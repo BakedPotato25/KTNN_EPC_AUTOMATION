@@ -4,7 +4,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Browser driver, you can create the driver and get the options.
+ * Driver trình duyệt, dùng để tạo driver và lấy options.
  */
 public abstract class BrowserDriver {
     protected WebDriver driver;

@@ -1,7 +1,7 @@
 package com.ktnn.projects.pages.locator;
 
 /**
- * Initializes the constants or common variables
+ * Khởi tạo các hằng số/biến dùng chung
  */
 public class BaseLocator {
 

@@ -4,7 +4,7 @@ import com.ktnn.consts.FrameConst.Browser;
 import com.ktnn.report.ReportConfig.*;
 
 /**
- * Class for getting browser icon and OS icon and display on the report
+ * Class lấy icon browser và icon OS để hiển thị trên report
  */
 public final class IconUtils {
     public static String getBrowserIcon(String browser) {
@@ -33,7 +33,7 @@ public final class IconUtils {
     }
 
     /**
-     * Get OS system
+     * Lấy thông tin OS
      */
     public static String getOSInfo() {
         return System.getProperty("os.name").trim();

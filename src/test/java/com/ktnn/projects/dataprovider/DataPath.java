@@ -3,7 +3,7 @@ package com.ktnn.projects.dataprovider;
 import com.ktnn.consts.FrameConst;
 
 /**
- * One path constant per test-data JSON file, matching files under data/{env}/json/.
+ * Mỗi hằng số path ứng với 1 file JSON test-data, khớp file dưới data/{env}/json/.
  */
 public interface DataPath {
     String env = FrameConst.ExecuteConfig.EXE_ENV.toLowerCase();

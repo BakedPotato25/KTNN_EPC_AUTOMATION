@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PickListPage extends BasePage {
-    // safety cap so a too-broad keyword can't delete row after row
+    // giới hạn an toàn để keyword quá rộng không xoá liên tục hàng loạt row
     private static final int MAX_LEFTOVER_CLEANUP = 3;
 
     private final PickListObjects pickListObjects;
@@ -95,11 +95,11 @@ public class PickListPage extends BasePage {
     }
 
     /**
-     * Backend sorts with a case-insensitive Vietnamese collation, not raw Unicode order - needs vi-VN Collator.
+     * Backend sort theo collation tiếng Việt không phân biệt hoa/thường, không phải thứ tự Unicode thô - cần vi-VN Collator.
      */
     private boolean isSorted(List<String> values, String direction) {
         Collator vnCollator = Collator.getInstance(new Locale("vi", "VN"));
-        vnCollator.setStrength(Collator.SECONDARY); // ignore case, keep diacritics/base-letter distinctions
+        vnCollator.setStrength(Collator.SECONDARY); // bỏ qua hoa/thường, giữ phân biệt dấu/chữ cái gốc
         Comparator<String> comparator = vnCollator::compare;
         if ("Descending".equalsIgnoreCase(direction)) comparator = comparator.reversed();
         for (int i = 0; i < values.size() - 1; i++) {
@@ -108,7 +108,7 @@ public class PickListPage extends BasePage {
         return true;
     }
 
-    /** Weaker check for Order = Create Date/Name - exact order can't be verified from the UI. */
+    /** Check nhẹ hơn cho Order = Create Date/Name - không verify được thứ tự chính xác từ UI. */
     public PickListPage verifyGridStillRendersResults() {
         List<String> rows = pickListObjects.getAllRowTexts();
         assertTrueCondition(null, !rows.isEmpty(), FailureHandling.CONTINUE_ON_FAILURE,
@@ -183,7 +183,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Version isn't a visible column, so this only checks the filter narrowed the grid. */
+    /** Version không phải cột hiển thị, nên chỉ check filter đã thu hẹp grid. */
     public PickListPage verifyFilterNarrowedResults() {
         String resultsText = pickListObjects.getResultsCountText();
         boolean hasResults = !resultsText.contains("in 0 results");
@@ -258,7 +258,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Dialog closes after the Save response arrives, not on click - poll instead of checking once. */
+    /** Dialog đóng sau khi có response của Save, không phải ngay khi click - poll thay vì check 1 lần. */
     public PickListPage verifyAddNewDialogClosed() {
         boolean closed;
         try {
@@ -270,7 +270,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Secondary signal alongside the toast check - dialog stays open when save fails. */
+    /** Tín hiệu phụ bên cạnh check toast - dialog vẫn mở khi save fail. */
     public PickListPage verifyAddNewDialogStillOpen() {
         boolean stillOpen = pickListObjects.isAddNewDialogOpen();
         assertTrueCondition(null, stillOpen, FailureHandling.CONTINUE_ON_FAILURE,
@@ -291,7 +291,7 @@ public class PickListPage extends BasePage {
         return matcher.find() ? Integer.parseInt(matcher.group(1)) : -1;
     }
 
-    /** Count re-fetches asynchronously after Save - poll for the expected value instead of reading once. */
+    /** Count fetch lại bất đồng bộ sau Save - poll tới giá trị mong đợi thay vì đọc 1 lần. */
     public PickListPage verifyResultsCountIncreasedByOne() {
         int before = parseResultsCount(baselineResultsCount);
         int expected = before + 1;
@@ -309,7 +309,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Cleanup helper - deletes the record matching keyword, then re-searches to confirm it's gone. */
+    /** Helper cleanup - xoá record khớp keyword, rồi search lại để xác nhận đã mất. */
     public PickListPage deleteRecordByExactSearch(String keyword) {
         pickListObjects.searchByKeyword(keyword);
         pickListObjects.dismissAllToasts();
@@ -321,7 +321,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Deletes records left behind by an earlier failed run, so they don't block this one with a duplicate Code. */
+    /** Xoá record còn sót lại từ lần chạy fail trước, để không bị chặn bởi trùng Code. */
     public PickListPage removeLeftoverRecords(String keyword) {
         for (int i = 0; i < MAX_LEFTOVER_CLEANUP; i++) {
             pickListObjects.searchByKeyword(keyword);
@@ -333,7 +333,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Creates a record to edit, then cancels the auto-opened Edit panel to leave a clean list. */
+    /** Tạo 1 record để edit, rồi cancel Edit panel tự mở ra để giữ list sạch. */
     public PickListPage setupRecordToEdit(String name, String code) {
         removeLeftoverRecords(name);
         openAddNewForm();
@@ -344,7 +344,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** Narrows the grid to exactly 1 record via exact search, then opens its Edit panel. */
+    /** Thu hẹp grid về đúng 1 record bằng exact search, rồi mở Edit panel của nó. */
     public PickListPage openEditFormByExactSearch(String keyword) {
         pickListObjects.searchByKeyword(keyword);
         pickListObjects.clickRowEditIcon();
@@ -374,14 +374,14 @@ public class PickListPage extends BasePage {
     }
 
     public PickListPage clickEditCancel() {
-        // clears any lingering error toast (e.g. a required-field message) so a cleanup step
-        // right after doesn't mistake it for the result of its own action
+        // dọn toast lỗi còn sót lại (vd message required-field) để bước cleanup
+        // ngay sau đó không nhầm nó là kết quả của action của chính nó
         pickListObjects.dismissAllToasts();
         pickListObjects.clickEditCancel();
         return this;
     }
 
-    /** Panel closes right after Cancel, but poll instead of checking once to avoid a race. */
+    /** Panel đóng ngay sau Cancel, nhưng poll thay vì check 1 lần để tránh race condition. */
     public PickListPage verifyEditPanelClosed() {
         boolean closed;
         try {
@@ -403,7 +403,7 @@ public class PickListPage extends BasePage {
         return this;
     }
 
-    /** PL_FUNC-33: Code is editable - types the new value, caller still needs to Save + re-verify from the grid. */
+    /** PL_FUNC-33: Code vẫn cho sửa - gõ giá trị mới, caller vẫn cần Save + verify lại từ grid. */
     public PickListPage inputEditCode(String value) {
         pickListObjects.attemptInputEditCode(value);
         return this;

@@ -1,13 +1,13 @@
 package com.ktnn.exceptions;
 
 /**
- * InvalidPathForFilesException class with catch the file exception
+ * Class InvalidPathForFilesException để bắt exception liên quan tới file
  */
 public class InvalidPathForFilesException extends FrameworkException {
 
 	/**
-	 * Throw the invalid path exception when interacting with files
-	 * @param message : The detail error message
+	 * Throw exception khi đường dẫn không hợp lệ lúc thao tác với file
+	 * @param message : Nội dung lỗi chi tiết
 	 */
 	public InvalidPathForFilesException(String message) {
 		super(message);

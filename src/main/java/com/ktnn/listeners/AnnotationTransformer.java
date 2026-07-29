@@ -31,14 +31,14 @@ public class AnnotationTransformer implements IAnnotationTransformer {
             annotation.setGroups(currentTestGroups.get());
         }
 
-        annotation.setTimeOut(7 * 60 * 1000); //7 mins
+        annotation.setTimeOut(7 * 60 * 1000); //7 phút
     }
 
     /**
-     * Get all groups for each test method
+     * Lấy tất cả group của mỗi test method
      *
      * @param testMethod : Test Case
-     * @return : List of group values
+     * @return : Danh sách group value
      */
     private String[] getGroupsFromTestClass(Method testMethod) {
         List<String> result = new ArrayList<>();
@@ -46,13 +46,13 @@ public class AnnotationTransformer implements IAnnotationTransformer {
         Test testAnnotation;
 
         for (Method method : testMethod.getDeclaringClass().getMethods()) {
-            // Filter only testing methods
+            // Chỉ lọc các test method
             if (!method.getName().equals(testMethod.getName())) continue;
             testAnnotation = method.getAnnotation(Test.class);
             if (testAnnotation != null && testAnnotation.groups().length > 0) {
                 result.add(Arrays.toString(testAnnotation.groups()));
             }
-            // Filter custom annotation
+            // Lọc custom annotation
             var fwAnnotations = testMethod.getAnnotation(FrameAnnotation.class);
             if (Objects.nonNull(fwAnnotations)) {
                 FrameConst.CategoryType[] tcCate = fwAnnotations.category();

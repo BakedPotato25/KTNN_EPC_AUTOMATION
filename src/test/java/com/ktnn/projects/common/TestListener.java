@@ -20,7 +20,7 @@ import static com.ktnn.consts.FrameConst.ExecuteConfig.EXE_BROWSER;
 import static com.ktnn.report.ReportConfig.*;
 
 /*
- * Purpose: Implement the testing listener
+ * Mục đích: Implement testing listener
  * Datetime:
  */
 @Slf4j
@@ -72,7 +72,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
             CaptureUtils.captureScreenshot(DriverManager.getDriver(), EXECUTED_TESTCASE_NAME);
         }
 
-        //ExtentReports log operation for passed tests.
+        //Ghi log ExtentReports cho test pass.
         ExtentReportManager.logMessage(Status.PASS, "Test case: " + getTestName(iTestResult) + " - PASS");
         ExtentReportManager.unloadTest();
     }
@@ -90,7 +90,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
             addTestToExtentReport(iTestResult);
         }
 
-        //Extent report screenshot file and log
+        //Extent report ghi screenshot file và log
         ExtentReportManager.addScreenShot(Status.FAIL, getTestName(iTestResult));
         ExtentReportManager.logMessage(Status.FAIL, "Test case: " + getTestName(iTestResult) + " - FAIL");
         if (Objects.nonNull(iTestResult.getThrowable())) {

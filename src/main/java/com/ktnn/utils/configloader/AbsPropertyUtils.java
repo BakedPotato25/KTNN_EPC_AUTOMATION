@@ -29,17 +29,17 @@ public abstract class AbsPropertyUtils {
                 locale = ENGLISH;
                 break;
             case LANG_VI:
-            default:    // Default value: VI
+            default:    // Giá trị mặc định: VI
                 break;
         }
         LANGUAGE_RESOURCE = ResourceBundle.getBundle("language", locale);
     }
 
     /**
-     * Get language for application
+     * Lấy ngôn ngữ cho application
      *
-     * @param key : Language keyword
-     * @return : The value of language keyword
+     * @param key : keyword ngôn ngữ
+     * @return : giá trị của keyword ngôn ngữ
      */
     public static String getLanguageValue(String key) {
         try {
@@ -53,7 +53,7 @@ public abstract class AbsPropertyUtils {
     public static String getValue(String key) {
         String keyValue = null;
         try {
-            // Read value from loaded properties
+            // Lấy giá trị từ file đã Set
             keyValue = properties.getProperty(key);
             return LanguageUtils.convertCharset_ISO_8859_1_To_UTF8(keyValue);
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public abstract class AbsPropertyUtils {
     }
 
     /**
-     * Load all errCode for the testing project.
+     * Load toàn bộ errCode cho testing project.
      */
     public void loadErrorBundle() {
         ERROR_CODE_RESOURCE.put(LANG_VI, ResourceBundle.getBundle("errCode", new Locale(LANG_VI)));
@@ -85,7 +85,7 @@ public abstract class AbsPropertyUtils {
     }
 
     /**
-     * Update property
+     * Cập nhật property
      *
      * @param property : Properties object
      * @param key      : Key
@@ -96,12 +96,12 @@ public abstract class AbsPropertyUtils {
     public abstract void executionInfo(Properties properties);
 
     /**
-     * Load all properties for the testing project.
+     * Load toàn bộ properties cho testing project.
      */
     public abstract void loadAllProperties();
 
     /**
-     * Update env and property
+     * Cập nhật env và property
      */
     public abstract void updateMavenProperties(Properties property, JSONObject configObjects);
 }

@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * Read Json Data
+ * Đọc Json Data
  */
 
 @Slf4j
@@ -24,9 +24,9 @@ public class JsonUtils {
     }
 
     /**
-     * Read data from Json file
+     * Đọc data từ Json file
      *
-     * @param filePath : Json file Path
+     * @param filePath : đường dẫn Json file
      */
     public static String readDataFromJsonFile(String filePath) {
         try {
@@ -42,9 +42,9 @@ public class JsonUtils {
     }
 
     /**
-     * Read data from resource
+     * Đọc data từ resource
      *
-     * @param filePath : file path
+     * @param filePath : đường dẫn file
      */
     public static String readFileDataFromResource(String filePath) {
         try {
@@ -57,9 +57,9 @@ public class JsonUtils {
     }
 
     /**
-     * Read data from XLS file then return Data Object
+     * Đọc data từ XLS file rồi trả về Data Object
      *
-     * @param tcName : TC Name
+     * @param tcName : tên TC
      * @return Data Provider Object
      */
     public List<Hashtable<String, Object>> readDataDrivenFromJSON(String jsonFilePath, String tcName) {
@@ -81,9 +81,9 @@ public class JsonUtils {
     }
 
     /**
-     * Read data from XLS file then return Data Object
+     * Đọc data từ XLS file rồi trả về Data Object
      *
-     * @param tcName : TC Name
+     * @param tcName : tên TC
      * @return Data Provider Object
      */
     public List<Hashtable<String, Object>> readDataTestFromJSON(String jsonFilePath, String tcName) {
@@ -97,7 +97,7 @@ public class JsonUtils {
             maps.forEach(data -> {
                 Hashtable<String, Object> rowDataMap = new Hashtable<>();
 
-                // Handle Master Data
+                // Xử lý Master Data
                 var masterData = (HashMap<String, Object>) data.get("master");
                 var masterConfig = (HashMap<String, Object>) masterData.get("config");
                 masterConfig.keySet().forEach(k -> configMaps.put(String.valueOf(k), (List<String>) masterConfig.get(k)));
@@ -108,7 +108,7 @@ public class JsonUtils {
                     rowDataMap.put(key, buildDataModel(value, configMaps, key));
                 });
 
-                // Handle Detail Data
+                // Xử lý Detail Data
                 HashMap<String, Object> detailData = (HashMap<String, Object>) data.get("detail");
                 if (Objects.nonNull(detailData)) {
                     detailData.keySet().forEach(key -> {
@@ -124,7 +124,7 @@ public class JsonUtils {
                                 var modelDataJson = (HashMap<String, Object>) item.get(keyDetail);
                                 rowDetailDataMap.put(String.valueOf(keyDetail), buildDataModel(modelDataJson, configMaps, String.valueOf(keyDetail)));
                             });
-                            // Add to list for each detail
+                            // Thêm vào list cho từng detail
                             if (!rowDetailDataMap.isEmpty()) rowDetailData.add(rowDetailDataMap);
                         }
                         rowDataMap.put(String.valueOf(key), rowDetailData);
@@ -139,10 +139,10 @@ public class JsonUtils {
     }
 
     /**
-     * Build a model data
+     * Build data model
      *
-     * @param data       : Raw data map
-     * @param configMaps : Shared config
+     * @param data       : HashMap data cần đổi
+     * @param configMaps : Config chung
      * @param keyName    : Key name / Dev Name
      */
     private DataModel buildDataModel(HashMap<String, Object> data, HashMap<String, List<String>> configMaps, String keyName) {
@@ -156,10 +156,10 @@ public class JsonUtils {
     }
 
     /**
-     * Build a model data
+     * Build data model
      *
-     * @param value      : Raw value
-     * @param configMaps : Shared config
+     * @param value      : HashMap data cần đổi
+     * @param configMaps : Config chung
      * @param keyName    : Key name / Dev Name
      */
     private DataModel buildDataModel(String value, HashMap<String, List<String>> configMaps, String keyName) {
@@ -172,10 +172,10 @@ public class JsonUtils {
     }
 
     /**
-     * Read data from json file
+     * Đọc data từ json file
      *
-     * @param filePath : The file path
-     * @return : A JSONObject
+     * @param filePath : đường dẫn file
+     * @return : một JSONObject
      */
     public JSONObject readContentFromJsonFile(String filePath) {
         try {
@@ -189,17 +189,17 @@ public class JsonUtils {
     }
 
     private boolean checkIsExist(List<String> colList, String colName) {
-        // "^ALL" -> not fill ALL
         boolean isResult = colList.stream().noneMatch(v -> v.equalsIgnoreCase(String.format("^%s", "ALL")));
+        // Chứa ^ALL -> Not Fill ALL
 
-        // "ALL" -> fill ALL
+        // Chứa ALL  -> Fill ALL
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase("ALL"))) isResult = true;
 
-        // "^Col" -> not fill this col
+        // Chứa ^Col -> Not fill this col
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // "Col" -> fill this column
+        // Chứa Col -> Fill this column
         if (colList.stream().anyMatch(v -> v.equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }

@@ -1,13 +1,13 @@
 package com.ktnn.exceptions;
 
 /**
- * Define the exception when using the invalid execution target
+ * Định nghĩa exception khi dùng execution target không hợp lệ
  */
 public class TargetNotValidException extends IllegalStateException {
 
     /**
-     * Creates an exception when using the invalid execution target
-     * @param target : The target which you want to execute
+     * Tạo exception khi dùng execution target không hợp lệ
+     * @param target : Target muốn thực thi
      */
     public TargetNotValidException(String target) {
         super(String.format("Target %s not supported. Use either local or gird", target));

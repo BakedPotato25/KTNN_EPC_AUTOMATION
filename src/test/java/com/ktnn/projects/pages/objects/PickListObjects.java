@@ -15,7 +15,7 @@ public class PickListObjects extends BaseObjects {
     @Getter
     public static PickListObjects instance = new PickListObjects();
 
-    // toast shows ~0.25s after the action and auto-dismisses after ~3.2s
+    // toast hiện ra ~0.25s sau action và tự biến mất sau ~3.2s
     private static final long TOAST_WAIT_SECONDS = 5;
 
     private final PickListLocator pickListLocator;
@@ -29,8 +29,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Retries once on staleness: the app re-renders the whole list area after a save or delete,
-     * which can swap out the search box between finding it and typing into it.
+     * Retry 1 lần nếu bị stale: app re-render toàn bộ list area sau khi save/delete,
+     * có thể thay search box giữa lúc find và lúc gõ vào nó.
      */
     public PickListObjects searchByKeyword(String keyword) {
         try {
@@ -56,8 +56,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Polls row content until it changes from the pre-action state, instead of a blind sleep.
-     * Compares full content, not just count, since sort only reorders existing rows.
+     * Poll nội dung row tới khi khác trạng thái trước action, thay vì sleep mù.
+     * So sánh toàn bộ nội dung chứ không chỉ số lượng, vì sort chỉ đổi thứ tự các row có sẵn.
      */
     private void waitForGridToRerender(List<String> before) {
         try {
@@ -67,8 +67,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Not a row-count check - the empty "no data" state also renders a &lt;tr&gt;.
-     * Only a real data row carries the delete icon.
+     * Không phải check số lượng row - trạng thái "no data" rỗng cũng render ra &lt;tr&gt;.
+     * Chỉ row có data thật mới có icon delete.
      */
     public boolean hasDeletableRow() {
         return !getListWebElement(By.xpath(pickListLocator.getIcoRowDelete())).isEmpty();
@@ -96,7 +96,7 @@ public class PickListObjects extends BaseObjects {
         return getTextElement(findWebElement(pickListLocator.getLblResultsCount()));
     }
 
-    /** Count text briefly shows "in 0 results" right after navigation - wait past that first. */
+    /** Text count hiện tạm "in 0 results" ngay sau khi điều hướng - chờ qua trạng thái đó trước. */
     public void waitForGridPopulated() {
         getWaitDriver().until(d -> !getResultsCountText().contains("in 0 results"));
     }
@@ -181,7 +181,7 @@ public class PickListObjects extends BaseObjects {
         return !getListWebElement(By.xpath(pickListLocator.getLblAddNewTitle())).isEmpty();
     }
 
-    /** Retypes once if the value didn't stick - guards against an occasional empty-field flake. */
+    /** Gõ lại 1 lần nếu giá trị không ăn - phòng trường hợp field thỉnh thoảng bị rỗng do flake. */
     private void inputTextWithVerify(WebElement element, String title, String value) {
         inputText(element, title, value);
         if (!value.equals(getValueOfElement(element))) {
@@ -209,7 +209,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Clicks the dialog title after typing to close the calendar popup the date inputs open. */
+    /** Click title dialog sau khi nhập để đóng popup calendar mà input ngày mở ra. */
     public PickListObjects inputAddValidFor(String fromDate, String toDate) {
         WebElement fromInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "1"));
         inputText(fromInput, "Add new - Valid For from", fromDate);
@@ -220,7 +220,7 @@ public class PickListObjects extends BaseObjects {
     }
 
     public PickListObjects clickAddNewSave() {
-        blurActiveElement(); // commits the last field's Vue model before Save reads form state
+        blurActiveElement(); // commit Vue model của field cuối trước khi Save đọc form state
         clickByJS(findWebElement(pickListLocator.getBtnAddNewSave()), "Save (Add new)");
         return this;
     }
@@ -237,7 +237,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Polls instead of a blind sleep; falls through on timeout so the caller's verify catches a real bug. */
+    /** Poll thay vì sleep mù; timeout thì bỏ qua để verify ở caller bắt được lỗi thật. */
     private void waitForAddNewDialogClosed() {
         try {
             getWaitDriver().until(d -> !isAddNewDialogOpen());
@@ -250,7 +250,7 @@ public class PickListObjects extends BaseObjects {
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));
     }
 
-    /** Deletes the 1 row left after a search narrows to the record just created. */
+    /** Xoá đúng 1 row còn lại sau khi search thu hẹp về record vừa tạo. */
     public PickListObjects deleteFirstRowResult() {
         clickByJS(findWebElement(pickListLocator.getIcoRowDelete()), "Delete (row)");
         clickByJS(findWebElement(pickListLocator.getBtnConfirmYes()), "Yes (confirm delete)");
@@ -258,8 +258,8 @@ public class PickListObjects extends BaseObjects {
     }
 
     /**
-     * Clears leftover toasts so the next read can't mistake an old message for a new result.
-     * Clicking close only starts the leave animation, so also blank the text immediately.
+     * Dọn toast còn sót lại để lần đọc sau không nhầm message cũ thành kết quả mới.
+     * Click close chỉ bắt đầu animation biến mất, nên phải xoá text ngay lập tức luôn.
      */
     public PickListObjects dismissAllToasts() {
         getJsExecutor().executeScript(
@@ -268,14 +268,14 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Reads the latest toast; call dismissAllToasts() beforehand. Returns "" if none shows up. */
+    /** Đọc toast mới nhất; gọi dismissAllToasts() trước đó. Trả về "" nếu không có toast nào. */
     public String getLatestToastMessage() {
         try {
             return getWaitDriver(TOAST_WAIT_SECONDS).until(d -> {
                 List<WebElement> details = getListWebElement(By.xpath(pickListLocator.getTxtToastDetail()));
                 for (int i = details.size() - 1; i >= 0; i--) {
                     String text = getTextElement(details.get(i));
-                    if (!text.isEmpty()) return text; // skips the blank node of a leaving toast
+                    if (!text.isEmpty()) return text; // bỏ qua node rỗng của toast đang biến mất
                 }
                 return null;
             });
@@ -288,7 +288,7 @@ public class PickListObjects extends BaseObjects {
         return findWebElement(pickListLocator.getIcoRowEdit());
     }
 
-    /** Panel mounts before its data loads, so wait for Name to populate, not just the panel to appear. */
+    /** Panel mount trước khi data load xong, nên chờ Name có giá trị chứ không chỉ chờ panel xuất hiện. */
     public PickListObjects clickRowEditIcon() {
         clickByJS(findRowEditIcon(), "Edit (row icon)");
         waitForElementVisible(By.xpath(pickListLocator.getBtnEditCancel()));
@@ -305,7 +305,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Clears Name to trigger required-field validation; clear()+sendKeys("") doesn't notify Vue. */
+    /** Xoá Name để trigger validation required-field; clear()+sendKeys("") không notify Vue. */
     public PickListObjects clearEditName() {
         setValueByNativeSetter(findWebElement(pickListLocator.getTxtEditName()), "");
         return this;
@@ -321,21 +321,21 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** PrimeVue's real switch input is invisible by design, so look it up by presence, not visibility. */
+    /** Input switch thật của PrimeVue cố tình vô hình, nên tìm bằng presence chứ không phải visibility. */
     public PickListObjects toggleEditIsActive() {
         List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtEditIsActive()));
         clickByJS(matches.isEmpty() ? null : matches.get(0), "Is Active toggle");
         return this;
     }
 
-    /** Types into Code to prove the field accepts edits (PL_FUNC-33) - caller saves and re-verifies from the grid. */
+    /** Gõ vào Code để chứng minh field vẫn cho sửa (PL_FUNC-33) - caller save rồi verify lại từ grid. */
     public PickListObjects attemptInputEditCode(String value) {
         inputText(findWebElement(pickListLocator.getTxtEditCode()), "Edit - Code (attempt)", value);
         return this;
     }
 
     public PickListObjects clickEditSave() {
-        blurActiveElement(); // commits the last field's Vue model before Save reads form state
+        blurActiveElement(); // commit Vue model của field cuối trước khi Save đọc form state
         clickByJS(findWebElement(pickListLocator.getBtnEditSave()), "Save (Edit)");
         return this;
     }
@@ -346,7 +346,7 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Polls instead of a blind sleep; falls through on timeout so the caller's verify catches a real bug. */
+    /** Poll thay vì sleep mù; timeout thì bỏ qua để verify ở caller bắt được lỗi thật. */
     private void waitForEditPanelClosed() {
         try {
             getWaitDriver().until(d -> !isEditPanelOpen());
@@ -354,7 +354,7 @@ public class PickListObjects extends BaseObjects {
         }
     }
 
-    /** Anchor text should be a message fragment like "required", not the field label (could false-match). */
+    /** Anchor text nên là một đoạn message như "required", không phải label field (dễ match sai). */
     public String getEditErrorMessageContaining(String anchorText) {
         List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrEditMessageContaining(), anchorText));
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));

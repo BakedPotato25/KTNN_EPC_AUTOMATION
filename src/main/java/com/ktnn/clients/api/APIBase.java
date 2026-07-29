@@ -24,10 +24,10 @@ import static com.ktnn.consts.FrameConst.*;
 public class APIBase {
 
     /**
-     * Add more information for Report: Including Extent and Allure.
-     * You can add more report at this function.
+     * Thêm thông tin cho Report: bao gồm Extent và Allure.
+     * Có thể thêm report khác tại function này.
      *
-     * @param extMsg : The message to show on report
+     * @param extMsg : Message hiển thị trên report
      */
     public static void addReportInfo(FrameConst.LogType logType, String extMsg, boolean isResult, String responseCodeBlock) {
         ExtentTestManager.addReportInfo(logType, extMsg, isResult, responseCodeBlock);
@@ -38,10 +38,10 @@ public class APIBase {
     //endregion
     //region Rest API
     /**
-     * Create request default for RequestSpecification
+     * Tạo request mặc định cho RequestSpecification
      *
-     * @param apiPath  : The path of api
-     * @param isSecure : use secure or not
+     * @param apiPath  : Path của api
+     * @param isSecure : có dùng secure hay không
      */
     public RequestSpecification createDefaultRequest(String apiPath, boolean isSecure, String... uris) {
         String endPoint = uris.length > 0 ? uris[0] : API_DOMAIN;
@@ -55,10 +55,10 @@ public class APIBase {
 
 
     /**
-     * Call Rest API
+     * Gọi Rest API
      *
-     * @param method  : The method type
-     * @param request : The request
+     * @param method  : Loại method
+     * @param request : Request
      * @return API response
      */
     public Response callRestAPI(HTTPMethod method, RequestSpecification request) {
@@ -96,7 +96,7 @@ public class APIBase {
 //region Extract data from Response
 
     /**
-     * Convert json to Object
+     * Convert json thành Object
      *
      * @param jsonData : Json Data
      * @return : T Object
@@ -113,7 +113,7 @@ public class APIBase {
 
 
     /**
-     * Convert a map to an object
+     * Convert map thành object
      *
      * @return : T Object
      */
@@ -165,7 +165,7 @@ public class APIBase {
     }
 
     /**
-     * Get default value
+     * Lấy giá trị mặc định
      */
     public String getStringValueOrDefault(Object object, String defVal) {
         return Objects.isNull(object) ? defVal : object.toString();

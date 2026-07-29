@@ -1,8 +1,8 @@
 package com.ktnn.consts;
 
 /**
- * Define the author/reviewer for each test case/test class/test suites.
- * Add one value per team member, form: [Account] // [FullName - Title - Dept]
+ * Định nghĩa author/reviewer cho mỗi test case/test class/test suite.
+ * Thêm 1 value cho mỗi thành viên team, dạng: [Account] // [FullName - Title - Dept]
  */
 public enum AuthorType {
     ADMIN,

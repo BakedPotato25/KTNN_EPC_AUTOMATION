@@ -6,7 +6,7 @@ import static com.ktnn.consts.FrameConst.LANG_EN;
 import static com.ktnn.consts.FrameConst.LANG_VI;
 
 /**
- * Class for using language local
+ * Class dùng cho ngôn ngữ local
  */
 public class APILanguageProperty {
     private static ThreadLocal<String> LANGUAGE = new ThreadLocal<>();

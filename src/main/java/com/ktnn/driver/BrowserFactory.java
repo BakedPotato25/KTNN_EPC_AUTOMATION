@@ -17,7 +17,7 @@ import static com.ktnn.consts.FrameConst.ExecuteConfig.EXE_ENV_TARGET;
 import static com.ktnn.consts.FrameConst.SeleniumConfig;
 
 /**
- * Browser Factory, you can create the driver and get the options.
+ * Factory tạo driver trình duyệt, dùng để tạo driver và lấy options.
  */
 @Slf4j
 public class BrowserFactory {
@@ -35,14 +35,14 @@ public class BrowserFactory {
     }
 
     /**
-     * Create the Selenium Web Driver with the specific browser depending on the target can be LOCAL or REMOTE
-     * - LOCAL: The browser will be executed in the local machine with specific browser
-     * - REMOTE: The browser will be executed with multiple browsers in the remote machine
+     * Tạo Selenium Web Driver với browser cụ thể, tuỳ theo target là LOCAL hay REMOTE
+     * - LOCAL: browser sẽ chạy trên máy local với browser cụ thể
+     * - REMOTE: browser sẽ chạy với nhiều loại browser trên máy remote
      *
-     * @param browser : The browser name
+     * @param browser : Tên browser
      */
     public static void initWebDriver(String browser, boolean... isLoadings) {
-        // Use the browser from ExecuteConfig if it is set or passed as a parameter
+        // Dùng browser từ ExecuteConfig nếu đã set, ngược lại lấy từ tham số truyền vào
         if (Objects.nonNull(ExecuteConfig.EXE_BROWSER)) {
             browser = ExecuteConfig.EXE_BROWSER;
         } else ExecuteConfig.EXE_BROWSER = browser;
@@ -51,7 +51,7 @@ public class BrowserFactory {
         try {
             FrameConst.Browser browserType = FrameConst.Browser.valueOf(browser.toUpperCase());
 
-            /* Init the browser driver */
+            /* Khởi tạo browser driver */
             BrowserDriver browserDriver = browserDriverMap.get(browserType);
             switch (EXE_ENV_TARGET) {
                 case LOCAL:
@@ -66,16 +66,16 @@ public class BrowserFactory {
             throw new IllegalArgumentException("Browser|Target not supported: " + e.getMessage());
         }
 
-        /* Update the WebDriverManager with the current WebDriver */
+        /* Cập nhật WebDriverManager với WebDriver hiện tại */
         webdriver = ThreadGuard.protect(webdriver);
         DriverManager.setDriver(webdriver);
     }
 
     /**
-     * Create the Selenium RemoteWebDriver for Remote instances
+     * Tạo Selenium RemoteWebDriver cho các instance Remote
      *
-     * @param capability : The browser capabilities
-     * @return The Selenium RemoteWebDriver
+     * @param capability : Capabilities của browser
+     * @return Selenium RemoteWebDriver
      */
     private static RemoteWebDriver initRemoteWebDriver(MutableCapabilities capability) {
         RemoteWebDriver remoteWebDriver = null;

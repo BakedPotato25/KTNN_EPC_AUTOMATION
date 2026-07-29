@@ -205,7 +205,7 @@ public class EmailReporter implements IReporter {
             }
         }
 
-        // Print totals if there was more than one test
+        // In tổng nếu có nhiều hơn 1 test
         if (testIndex > 1) {
             writerReport.print("<tr>");
             writerReport.print("<th>Total</th>");
@@ -223,7 +223,7 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Writes a summary of all the test scenarios.
+     * Ghi summary của toàn bộ test scenario.
      */
     protected void writeScenarioSummary() {
         writerReport.println("<br><h4>List FAIL and SKIP testcases:</h4>");
@@ -298,8 +298,7 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Writes the scenario summary for the results of a given state for a single
-     * test.
+     * Ghi scenario summary cho kết quả của 1 state của 1 test.
      */
     private int writeScenarioSummary(String description, List<ClassResult> classResults, int startingScenarioIndex) {
         int scenarioCount = 0;
@@ -381,7 +380,7 @@ public class EmailReporter implements IReporter {
                 }
                 writerSuite.println(strTestBuffer);
 
-                // Write the test results for the class
+                // Ghi kết quả test của class này
                 writerReport.print("<tr>");
                 writerReport.print("<td rowspan=\"");
                 writerReport.print(scenariosPerClass);
@@ -398,44 +397,40 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Writes a TH element with the specified contents and CSS class names.
+     * Ghi element TH với nội dung và CSS class chỉ định.
      *
-     * @param html       the HTML contents
-     * @param cssClasses the space-delimited CSS classes or null if there are no
-     *                   classes to apply
+     * @param html       nội dung HTML
+     * @param cssClasses các CSS class cách nhau bởi dấu cách, hoặc null nếu không áp dụng class nào
      */
     protected void writeTableHeader(String html, String cssClasses) {
         writeTag("th", html, cssClasses);
     }
 
     /**
-     * Writes a TD element with the specified contents.
+     * Ghi element TD với nội dung chỉ định.
      *
-     * @param html the HTML contents
+     * @param html nội dung HTML
      */
     protected void writeTableData(String html) {
         writeTableData(html, null);
     }
 
     /**
-     * Writes a TD element with the specified contents and CSS class names.
+     * Ghi element TD với nội dung và CSS class chỉ định.
      *
-     * @param html       the HTML contents
-     * @param cssClasses the space-delimited CSS classes or null if there are no
-     *                   classes to apply
+     * @param html       nội dung HTML
+     * @param cssClasses các CSS class cách nhau bởi dấu cách, hoặc null nếu không áp dụng class nào
      */
     protected void writeTableData(String html, String cssClasses) {
         writeTag("td", html, cssClasses);
     }
 
     /**
-     * Writes an arbitrary HTML element with the specified contents and CSS
-     * class names.
+     * Ghi 1 element HTML bất kỳ với nội dung và CSS class chỉ định.
      *
-     * @param tag        the tag name
-     * @param html       the HTML contents
-     * @param cssClasses the space-delimited CSS classes or null if there are no
-     *                   classes to apply
+     * @param tag        tên tag
+     * @param html       nội dung HTML
+     * @param cssClasses các CSS class cách nhau bởi dấu cách, hoặc null nếu không áp dụng class nào
      */
     protected void writeTag(String tag, String html, String cssClasses) {
         writerReport.print("<");
@@ -453,7 +448,7 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Groups {@link TestResult}s by suite.
+     * Gom nhóm {@link TestResult} theo suite.
      */
     protected static class SuiteResult {
         @Getter
@@ -480,15 +475,15 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Groups {@link ClassResult}s by test, type (configuration or test), and
+     * Gom nhóm {@link ClassResult} theo test, type (configuration hoặc test), và
      * status.
      */
     @Getter
     @Setter
     protected static class TestResult {
         /**
-         * Orders test results by class name and then by method name (in
-         * lexicographic order).
+         * Sắp xếp test result theo tên class rồi theo tên method (thứ tự
+         * bảng chữ cái).
          */
         protected static final Comparator<ITestResult> RESULT_COMPARATOR = (o1, o2) -> {
             int result = o1.getTestClass().getName()
@@ -584,7 +579,7 @@ public class EmailReporter implements IReporter {
 
                     String className = result.getTestClass().getName();
                     if (!previousClassName.equals(className)) {
-                        // Different class implies different method
+                        // Class khác đồng nghĩa method khác
                         assert !resultsPerMethod.isEmpty();
                         MethodResult methodResult = new MethodResult(previousMethodName, resultsPerMethod);
                         resultsPerClass.add(methodResult);
@@ -623,7 +618,7 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Groups {@link MethodResult}s by class.
+     * Gom nhóm {@link MethodResult} theo class.
      */
     @Getter
     @Setter
@@ -659,7 +654,7 @@ public class EmailReporter implements IReporter {
     }
 
     /**
-     * Groups test results by method.
+     * Gom nhóm test result theo method.
      */
     @Setter
     @Getter
@@ -705,7 +700,7 @@ public class EmailReporter implements IReporter {
 
     }
 
-    /* Convert long type milliseconds to format hh:mm:ss */
+    /* Đổi milliseconds (kiểu long) sang định dạng hh:mm:ss */
     public String convertTimeToString(long miliSeconds) {
         int hrs = (int) TimeUnit.MILLISECONDS.toHours(miliSeconds) % 24;
         int min = (int) TimeUnit.MILLISECONDS.toMinutes(miliSeconds) % 60;

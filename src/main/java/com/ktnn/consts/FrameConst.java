@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * FrameworkConst defines the framework constants, including properties and configuration
- * Purpose: Define some final values, ex: project part
+ * FrameworkConst định nghĩa các hằng số của framework, gồm property và config
+ * Mục đích: định nghĩa các giá trị cố định, vd: project part
  **/
 @Data
 @NoArgsConstructor
@@ -22,10 +22,10 @@ public class FrameConst {
     public static final String PROJECT_PATH = System.getProperty("user.dir");
     public static final String LANG_VI = "vi";
     public static final String LANG_EN = "en";
-    public static String PROJECT_NAME = "KTNN_EPC_AUTO";           // Project Name
-    public static String PROJECT_KEY_NAME = "KTNN";                // Used when uploading generated test cases to Jira
-    public static String PROJECT_RESULT_DB = "";                   // Database Name for storing test results
-    public static String JIRA_DOMAIN = "";                         // e.g. https://your-domain.atlassian.net/browse/
+    public static String PROJECT_NAME = "KTNN_EPC_AUTO";           // Tên project
+    public static String PROJECT_KEY_NAME = "KTNN";                // Dùng khi đẩy test case đã generate lên Jira
+    public static String PROJECT_RESULT_DB = "";                   // Tên database lưu kết quả test
+    public static String JIRA_DOMAIN = "";                         // vd: https://your-domain.atlassian.net/browse/
     public static String LOG_LEVEL = "DEBUG";
     public static String LANG = LANG_VI;
 
@@ -45,8 +45,8 @@ public class FrameConst {
     public static class AppConfig {
         public static String APP_VERSION = "1.0";
         public static String APP_LANGUAGE = "EN";
-        public static String APP_DOMAIN = "";                      // Overridden by baseUrl in env.json at runtime
-        public static String API_DOMAIN = "";                      // Overridden by apiUrl in env.json at runtime
+        public static String APP_DOMAIN = "";                      // Bị ghi đè bởi baseUrl trong env.json lúc runtime
+        public static String API_DOMAIN = "";                      // Bị ghi đè bởi apiUrl trong env.json lúc runtime
         public static String USER_NAME;
         public static String PASSWORD;
     }
@@ -111,10 +111,10 @@ public class FrameConst {
 
     @Getter
     public enum ExeTarget {
-        LOCAL,          // Local Environment (Your PC, GitLab)
+        LOCAL,          // Môi trường local (máy cá nhân, GitLab)
         AWS,            // Device Farm
         LAMBDA,
-        REMOTE          // For Web
+        REMOTE          // Dùng cho Web
     }
 
     @Getter
@@ -171,11 +171,11 @@ public class FrameConst {
 
 
     /**
-     * Test case Type, used to categorize the test cases
-     * REGRESSION: Test cases for regression testing
-     * SMOKE: Test cases for smoke testing
-     * SANITY: Test cases for sanity testing
-     * You can add more types if needed
+     * Loại test case, dùng để phân nhóm test case
+     * REGRESSION: test case cho regression testing
+     * SMOKE: test case cho smoke testing
+     * SANITY: test case cho sanity testing
+     * Có thể thêm loại khác nếu cần
      */
     @Getter
     public enum CategoryType {

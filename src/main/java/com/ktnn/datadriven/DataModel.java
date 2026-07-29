@@ -8,7 +8,7 @@ import java.util.Objects;
 import static com.ktnn.controller.WebUI.getLanguageValue;
 
 /**
- * DataModel: saving data for each web element
+ * DataModel: lưu dữ liệu cho từng web element
  */
 @Getter
 @Setter
@@ -18,16 +18,16 @@ import static com.ktnn.controller.WebUI.getLanguageValue;
 @ToString
 public class DataModel {
     public String devName;         // DEV Name
-    public String description;     // The content at web element
-    public String value;           // The value inserted
+    public String description;     // Nội dung tại web element
+    public String value;           // Giá trị được nhập
     public String title;
-    public boolean fill;           // Determine the column need to fill, or not
-    public boolean verify;         // Determine the column need to verify, or not
-    public String langProperty;    // The property in bundle
+    public boolean fill;           // Xác định cột có cần fill hay không
+    public boolean verify;         // Xác định cột có cần verify hay không
+    public String langProperty;    // Property trong bundle
 
 
     /**
-     * Init a new DataModel
+     * Khởi tạo DataModel mới
      */
     public DataModel(DataModel model) {
         this.devName = model.getDevName();
@@ -40,7 +40,7 @@ public class DataModel {
     }
 
     /**
-     * Get title of the data
+     * Lấy title của data
      */
     public String getTitle() {
         if (Objects.nonNull(this.langProperty) && !Strings.isEmpty(this.langProperty)) {
@@ -55,9 +55,9 @@ public class DataModel {
     }
 
     /**
-     * Update the title when re-change langProperty
+     * Cập nhật title khi đổi lại langProperty
      *
-     * @param langProperty : property in bundle
+     * @param langProperty : property trong bundle
      */
     public void updateLangProperty(String langProperty) {
         this.langProperty = langProperty;

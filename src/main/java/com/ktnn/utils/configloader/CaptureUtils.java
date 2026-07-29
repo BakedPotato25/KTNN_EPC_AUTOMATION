@@ -22,8 +22,8 @@ import static org.monte.media.FormatKeys.*;
 import static org.monte.media.VideoFormatKeys.*;
 
 /**
- * CaptureHelpers class provides the ability to capture images or records video under execution
- * Using Monte Media library
+ * CaptureHelpers class cung cấp khả năng chụp ảnh hoặc quay video trong lúc chạy test
+ * Dùng thư viện Monte Media
  */
 @Slf4j
 public class CaptureUtils extends ScreenRecorder {
@@ -31,7 +31,7 @@ public class CaptureUtils extends ScreenRecorder {
     String name;
 
     /**
-     * Init the constructor
+     * Khởi tạo constructor
      */
     public CaptureUtils(GraphicsConfiguration cfg, Rectangle captureArea, Format fileFormat, Format screenFormat,
                         Format mouseFormat, Format audioFormat, File movieFolder, String name) throws IOException, AWTException {
@@ -40,9 +40,9 @@ public class CaptureUtils extends ScreenRecorder {
     }
 
     /**
-     * Start recording the video file
+     * Bắt đầu quay video
      *
-     * @param fileName : The name of video file
+     * @param fileName : Tên file video
      */
     public static void startRecord(String fileName) {
         File file = new File( EXPORT_VIDEO_PATH + File.separator + fileName + File.separator);
@@ -70,12 +70,12 @@ public class CaptureUtils extends ScreenRecorder {
     }
 
     /**
-     * Stop recording
+     * Dừng quay video
      */
     public static void stopRecord() {
         try {
             screenRecorder.stop();
-            // Wait for the video file to be created
+            // Chờ video file được tạo
             log.info("stopRecord: Video file created at: {}", EXPORT_VIDEO_PATH);
 
         } catch (IOException e) {
@@ -84,9 +84,9 @@ public class CaptureUtils extends ScreenRecorder {
     }
 
     /**
-     * Capture the screenshot
+     * Chụp screenshot
      *
-     * @param driver   : The Selenium WebDriver
+     * @param driver   : Selenium WebDriver
      * @param fileName :
      */
     public static void captureScreenshot(WebDriver driver, String fileName) {
@@ -107,10 +107,10 @@ public class CaptureUtils extends ScreenRecorder {
     }
 
     /**
-     * Create a new media file
+     * Tạo media file mới
      *
-     * @param fileFormat : Format of the file
-     * @return The media file
+     * @param fileFormat : Format của file
+     * @return Media file
      */
     @Override
     protected File createMovieFile(Format fileFormat) throws IOException {

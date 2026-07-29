@@ -26,8 +26,8 @@ import static com.ktnn.report.ReportConfig.EXECUTED_TESTCASE_NAME;
 import static com.ktnn.report.ReportConfig.VIDEO_RECORD;
 
 /**
- * Every test class extends this. Wires up driver lifecycle, DB connections and
- * ExtentReports for the whole run (suite/test/class/method level).
+ * Mọi test class đều extends class này. Quản lý vòng đời driver, kết nối DB và
+ * ExtentReports cho toàn bộ lần chạy (cấp suite/test/class/method).
  */
 @Listeners({TestListener.class})
 @Slf4j
@@ -39,7 +39,7 @@ public class TestBase {
     @BeforeSuite(alwaysRun = true)
     public void beforeSuite() {
         log.info("init beforeSuite");
-        // Connect databases
+        // Kết nối database
         if (FrameConst.DATABASE_CONNECT_CONFIG) {
             FrameConst.DATABASE_CONNECT_LIST.forEach(databaseInfo ->
                     DatabaseFactory.initDatabaseConnection(databaseInfo.getType(), databaseInfo.getName(), databaseInfo.getUserName(), databaseInfo.getPassword(), databaseInfo.getUrl()));
@@ -51,7 +51,7 @@ public class TestBase {
     public void beforeTest(@Optional("chrome") String browser, @Optional() String userName, @Optional() String password, ITestContext context) {
         BrowserFactory.initWebDriver(browser);
 
-        // Update user credentials if provided
+        // Cập nhật user credentials nếu được truyền vào
         if (!Objects.isNull(userName)) {
             USER_NAME = userName.trim();
         }
@@ -68,7 +68,7 @@ public class TestBase {
         log.info("TestBase: afterTest");
         ExtentReportManager.flushReports();
 
-        // Clear the driver after test execution
+        // Xoá driver sau khi chạy xong test
         DriverManager.quitDriver();
     }
 
@@ -122,7 +122,7 @@ public class TestBase {
     @AfterClass(alwaysRun = true)
     public void afterClass() {
         log.info("TestBase: afterClass");
-        // Clear the driver after class execution
+        // Xoá driver sau khi chạy xong class
         DriverManager.quitDriver();
     }
 

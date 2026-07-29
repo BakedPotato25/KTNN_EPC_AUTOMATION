@@ -36,14 +36,14 @@ import static com.ktnn.report.ReportConfig.*;
 import static java.lang.Thread.sleep;
 
 /**
- * WebUI provides the interaction method, based on the Selenium Automation Framework
+ * WebUI cung cấp các method thao tác, dựa trên Selenium Automation Framework
  */
 @Slf4j
 public class WebUI {
     /**
-     * Create a web drive wait
+     * Tạo web driver wait
      *
-     * @param duration : The interval in milliseconds to scan the element
+     * @param duration : khoảng thời gian (ms) để quét element
      */
     public static WebDriverWait getWaitDriver(long... duration) {
         long interval = duration.length > 0 && duration[0] != 0 ? duration[0] : WAIT_EXPLICIT;
@@ -51,14 +51,14 @@ public class WebUI {
     }
 
     /**
-     * Get Selenium Action
+     * Lấy Selenium Action
      */
     public static Actions getActions() {
         return new Actions(DriverManager.getDriver());
     }
 
     /**
-     * Initialize the JavaScript Executor
+     * Khởi tạo JavaScript Executor
      */
     public static JavascriptExecutor getJsExecutor() {
         return (JavascriptExecutor) DriverManager.getDriver();
@@ -68,7 +68,7 @@ public class WebUI {
     // region Navigation
 
     /**
-     * Open website with get URL
+     * Mở website bằng URL
      */
     public static void goToURL(String URL) {
         var currentURL = DriverManager.getDriver().getCurrentUrl();
@@ -83,7 +83,7 @@ public class WebUI {
     }
 
     /**
-     * Refresh the browser
+     * Refresh trình duyệt
      */
     public void refreshPage() {
         String URL = DriverManager.getDriver().getCurrentUrl();
@@ -95,7 +95,7 @@ public class WebUI {
 
 
     /**
-     * Back to previous page
+     * Quay lại trang trước
      */
     public void backPreviousPage() {
         DriverManager.getDriver().navigate().back();
@@ -106,7 +106,7 @@ public class WebUI {
     }
 
     /**
-     * Verify the URL Page
+     * Verify URL của trang
      */
     public static boolean verifyPageUrl(String pageUrl) {
         log.info("Actual URL: {}", DriverManager.getDriver().getCurrentUrl());
@@ -114,7 +114,7 @@ public class WebUI {
     }
 
     /**
-     * Open the new tab in the browser
+     * Mở tab mới trong trình duyệt
      */
     public static void openNewTab() {
         DriverManager.getDriver().switchTo().newWindow(WindowType.TAB);
@@ -122,7 +122,7 @@ public class WebUI {
     }
 
     /**
-     * Open the new browser window
+     * Mở cửa sổ trình duyệt mới
      */
     public static void openNewWindow() {
         DriverManager.getDriver().switchTo().newWindow(WindowType.WINDOW);
@@ -130,16 +130,16 @@ public class WebUI {
     }
 
     /**
-     * Get the current window
+     * Lấy cửa sổ hiện tại
      *
-     * @return The id of the current window
+     * @return id của cửa sổ hiện tại
      */
     public String getCurrentWindowHandle() {
         return DriverManager.getDriver().getWindowHandle();
     }
 
     /**
-     * Close the all windows at the browser
+     * Đóng tất cả cửa sổ trên trình duyệt
      */
     public void closeAllWindowExceptCurrent() {
         String currentWindow = DriverManager.getDriver().getWindowHandle();
@@ -160,19 +160,19 @@ public class WebUI {
     }
 
     /**
-     * Switch to the last window
+     * Chuyển sang cửa sổ cuối cùng
      */
     public static void switchToLastWindow() {
         Set<String> windowHandles = DriverManager.getDriver().getWindowHandles();
         DriverManager.getDriver().switchTo().window(DriverManager.getDriver().getWindowHandles().toArray()[windowHandles.size() - 1].toString());
     }
 
-    // Windows
+    // Cửa sổ
 
     /**
-     * Switch to the specified window by a position
+     * Chuyển sang cửa sổ theo vị trí chỉ định
      *
-     * @param position : The position of window
+     * @param position : vị trí cửa sổ
      */
     public static void switchToWindowOrTab(int position) {
         DriverManager.getDriver().switchTo().window(DriverManager.getDriver().getWindowHandles().toArray()[position].toString());
@@ -180,26 +180,26 @@ public class WebUI {
     }
 
     /**
-     * Verify the number of windows or tabs
+     * Verify số lượng windows/tabs
      *
-     * @param number : The expected number of windows
-     * @return true if the same, false otherwise
+     * @param number : số cửa sổ mong đợi
+     * @return true nếu giống, false nếu khác
      */
     public static boolean verifyNumberOfWindowsOrTab(int number) {
         return new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(WAIT_EXPLICIT)).until(ExpectedConditions.numberOfWindowsToBe(number));
     }
 
     /**
-     * Switch to the main window
+     * Chuyển sang cửa sổ chính
      */
     public static void switchToMainWindow() {
         DriverManager.getDriver().switchTo().window(DriverManager.getDriver().getWindowHandles().toArray()[0].toString());
     }
 
     /**
-     * Switch to the window by a window id
+     * Chuyển sang cửa sổ theo window id
      *
-     * @param windowHandle : The window id
+     * @param windowHandle : id của cửa sổ
      */
     public static void switchToWindowByHandle(String windowHandle) {
         DriverManager.getDriver().switchTo().window(windowHandle);
@@ -210,14 +210,14 @@ public class WebUI {
 
 
     /**
-     * Get Website Elements via locator
+     * Lấy element trên website qua locator
      *
-     * @param locator : The locator of element, format: "ID|value" or "CSS|value" or "xpath"
-     *                Example: "ID|username" or "CSS|login-button" or "//div[@class='login']"
-     * @return : The WebElement found by the locator
+     * @param locator : locator của element, format: "ID|value" hoặc "CSS|value" hoặc "xpath"
+     *                Ví dụ: "ID|username" hoặc "CSS|login-button" hoặc "//div[@class='login']"
+     * @return : WebElement tìm được theo locator
      */
     public static WebElement findWebElement(String locator) {
-        By byObject = By.xpath(locator); // Default to XPath if no match
+        By byObject = By.xpath(locator); // Mặc định XPath nếu không khớp prefix nào
         if (locator.contains("|")) {
             String[] locatorParts = locator.split("\\|");
             switch (locatorParts[0].toUpperCase()) {
@@ -233,20 +233,20 @@ public class WebUI {
     }
 
     /**
-     * Get Website Elements via locator
+     * Lấy element trên website qua locator
      *
-     * @param by : The By object of element, format: By.id("username") or By.cssSelector(".login-button") or By.xpath("//div[@class='login']")
-     * @return : The WebElement found by the locator
+     * @param by : By object của element, format: By.id("username") hoặc By.cssSelector(".login-button") hoặc By.xpath("//div[@class='login']")
+     * @return : WebElement tìm được theo locator
      */
     public static WebElement findWebElement(By by) {
         return waitForElementVisible(by);
     }
 
     /**
-     * Get all elements with a by object
+     * Lấy tất cả element theo by object
      *
-     * @param by : The by object of elements
-     * @return : The elements
+     * @param by : by object của các element
+     * @return : danh sách element
      */
     public static List<WebElement> getListWebElement(By by) {
         overwriteImplicitTimeout(Duration.ofSeconds(5));
@@ -257,11 +257,11 @@ public class WebUI {
 
 
     /**
-     * Get a by object of elements
+     * Lấy by object của elements
      *
-     * @param locatorForm : The locator format
-     * @param keyValues   : The key value for this format
-     * @return : a by object of elements
+     * @param locatorForm : định dạng locator
+     * @param keyValues   : giá trị key cho định dạng này
+     * @return : by object của elements
      */
     public static By getByXpathDynamic(String locatorForm, String... keyValues) {
         return By.xpath(getXPathDynamicStr(locatorForm, (Object[]) keyValues));
@@ -269,12 +269,12 @@ public class WebUI {
 
 
     /**
-     * Receives a wildcard string, replace the wildcard with the value and return to the caller
+     * Nhận chuỗi có wildcard, thay wildcard bằng giá trị rồi trả về cho caller
      *
-     * @param xpath Xpath with wildcard string
-     * @param value multi value to be replaced in place of wildcard
+     * @param xpath Xpath chứa wildcard string
+     * @param value các giá trị thay thế cho wildcard
      *              VD: ObjectUtils.getXpathDynamic("//button[normalize-space()='%s']//div[%d]//span[%d]", "Login", 2, 10);
-     * @return dynamic xpath string
+     * @return chuỗi xpath động
      */
     @SneakyThrows
     public static String getXPathDynamicStr(String xpath, Object... value) {
@@ -288,7 +288,7 @@ public class WebUI {
     }
 
     /**
-     * Get element or default
+     * Lấy element hoặc trả về default
      */
     public static WebElement getFirstElementOrDefault(WebElement scope, By by) {
         var webElement = scope.findElements(by);
@@ -301,7 +301,7 @@ public class WebUI {
     // region Base Action
 
     /**
-     * Click the object
+     * Click vào object
      */
     public void clickTo(WebElement element, String... titles) {
         element = waitForElementClickable(element);
@@ -350,7 +350,7 @@ public class WebUI {
 
 
     /**
-     * Clear text of element (especial case)
+     * Clear text của element (trường hợp đặc biệt)
      */
     public void clearTextForElement(WebElement element) {
         element.clear();
@@ -360,14 +360,14 @@ public class WebUI {
     }
 
     /**
-     * Get text of an element
+     * Lấy text của element
      */
     public static String getTextElement(By by) {
         return getTextElement(findWebElement(by));
     }
 
     /**
-     * Get text of an element
+     * Lấy text của element
      */
     public static String getTextElement(WebElement element) {
         return element.getText().trim();
@@ -375,21 +375,21 @@ public class WebUI {
 
 
     /**
-     * Get value of element with DOM
+     * Lấy value của element qua DOM
      */
     public String getValueOfElement(By by) {
         return getDomPropertyOfElement(by, ELEMENT_PROPERTY_VALUE.getValue());
     }
 
     /**
-     * Get value of element with DOM
+     * Lấy value của element qua DOM
      */
     public String getValueOfElement(WebElement element) {
         return getDomPropertyOfElement(element, ELEMENT_PROPERTY_VALUE.getValue());
     }
 
     /**
-     * Get the property of Element
+     * Lấy property của Element
      */
     public String getDomPropertyOfElement(By by, String propertyName) {
         WebElement webElement = findWebElement(by);
@@ -397,7 +397,7 @@ public class WebUI {
     }
 
     /**
-     * Get the property of Element
+     * Lấy property của Element
      */
     public String getDomPropertyOfElement(WebElement element, String propertyName) {
         try {
@@ -409,21 +409,21 @@ public class WebUI {
 
 
     /**
-     * Get the property of Element
+     * Lấy property của Element
      */
     public String getAttributeOfElement(WebElement element, String attName) {
         return element.getAttribute(attName);
     }
 
     /**
-     * scroll to element
+     * scroll tới element
      */
     public static void scrollToElement(WebElement element) {
         getJsExecutor().executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     /**
-     * scroll to element
+     * scroll tới element
      */
     public static void scrollToElementWithBy(By by) {
         if (Objects.nonNull(by)) {
@@ -447,7 +447,7 @@ public class WebUI {
     }
 
     /**
-     * Fires real mousedown/mouseup/click events - plain click() gets ignored on this app.
+     * Bắn chuỗi event mousedown/mouseup/click thật - click() thường bị app này bỏ qua.
      */
     public void clickByJS(WebElement element, String... titles) {
         if (Objects.isNull(element)) {
@@ -471,8 +471,8 @@ public class WebUI {
     }
 
     /**
-     * Sets value via native property setter + dispatches input/change events.
-     * Needed for Vue-bound fields where clear()+sendKeys() doesn't register.
+     * Set giá trị qua native property setter + bắn event input/change.
+     * Cần cho field Vue mà clear()+sendKeys() không nhận.
      */
     public void setValueByNativeSetter(WebElement element, String value) {
         String script = "var el = arguments[0]; var value = arguments[1];" +
@@ -489,8 +489,8 @@ public class WebUI {
     }
 
     /**
-     * Blurs the focused input via JS so Vue's v-model commits the value.
-     * Use before actions (e.g. Save) that read form state right after a keystroke.
+     * Blur input đang focus bằng JS để Vue's v-model commit giá trị.
+     * Dùng trước action (vd Save) đọc form ngay sau khi gõ phím.
      */
     public void blurActiveElement() {
         getJsExecutor().executeScript("if (document.activeElement) document.activeElement.blur();");
@@ -498,9 +498,9 @@ public class WebUI {
 
 
     /**
-     * Upload file using sendKeys
+     * Upload file bằng sendKeys
      *
-     * @param filePaths List of file Path
+     * @param filePaths danh sách đường dẫn file
      */
     public static void uploadFileSendKeys(By by, String... filePaths) {
         WebElement element = findWebElement(by);
@@ -508,9 +508,9 @@ public class WebUI {
     }
 
     /**
-     * Upload file using sendKeys
+     * Upload file bằng sendKeys
      *
-     * @param filePaths List of file Path
+     * @param filePaths danh sách đường dẫn file
      */
     public static void uploadFileSendKeys(WebElement element, String... filePaths) {
         if (Objects.isNull(filePaths) || filePaths.length == 0) return;
@@ -520,7 +520,7 @@ public class WebUI {
     }
 
     /**
-     * Hover to element with Action
+     * Hover vào element bằng Action
      */
     public void hoverElement(WebElement element, boolean... isJavaScripts) {
         try {
@@ -532,7 +532,7 @@ public class WebUI {
     }
 
     /**
-     * Hover to element with JavaScript
+     * Hover vào element bằng JavaScript
      */
     public void hoverElementByJS(WebElement element) {
         try {
@@ -544,7 +544,7 @@ public class WebUI {
     }
 
     /**
-     * Click the Enter Keyboard
+     * Nhấn phím Enter
      */
     public static boolean pressENTER() {
         try {
@@ -574,7 +574,7 @@ public class WebUI {
 
     /**
      * Assert Element Objects.
-     * Support 3 type of Failure Handling
+     * Hỗ trợ 3 loại Failure Handling
      */
     public static void assertTrueCondition(WebElement element, boolean isResult, FailureHandling failureHandling, @Nullable String errMsg) {
         drawBorderForErrorElement(element, isResult);
@@ -623,7 +623,7 @@ public class WebUI {
     }
 
     /**
-     * Assert Fail
+     * Assert điều kiện False
      */
     public static void assertFalseCondition(WebElement element, boolean isResult, FailureHandling failureHandling, String errMsg) {
         drawBorderForErrorElement(element, isResult);
@@ -670,7 +670,7 @@ public class WebUI {
     }
 
     /**
-     * Assert Equal
+     * Assert điều kiện bằng nhau
      */
     public static void assertEqualCondition(WebElement element, Object actual, Object expected, FailureHandling failureHandling, String errMsg) {
         boolean isResult = Objects.equals(actual, expected);
@@ -720,7 +720,7 @@ public class WebUI {
     }
 
     /**
-     * Draw a border for the error element
+     * Vẽ border cho element bị lỗi
      */
     private static void drawBorderForErrorElement(WebElement element, boolean isResult) {
         if (DRAW_BORDER_ERR_ELEMENT && !isResult && Objects.nonNull(element)) {
@@ -737,7 +737,7 @@ public class WebUI {
 
 
     /**
-     * Draw a border for the error element
+     * Vẽ border cho element bị lỗi
      */
     private static void drawBorderForErrorElement(By by, boolean isResult) {
         WebElement element = findWebElement(by);
@@ -750,7 +750,7 @@ public class WebUI {
 
 
     /**
-     * Clear a border for the error element
+     * Xoá border cho element bị lỗi
      */
     private static void clearBorderForErrorElement(By by, boolean isResult) {
         WebElement element = findWebElement(by);
@@ -758,7 +758,7 @@ public class WebUI {
     }
 
     /**
-     * Clear a border for the error element
+     * Xoá border cho element bị lỗi
      */
     private static void clearBorderForErrorElement(WebElement element, boolean isResult) {
         if (DRAW_BORDER_ERR_ELEMENT && !isResult && Objects.nonNull(element)) {
@@ -771,10 +771,10 @@ public class WebUI {
     // endregion
 
     /**
-     * Wait for element visible with By object
+     * Wait element visible qua By object
      *
-     * @param by : The By object of element
-     * @return : The WebElement if it is visible, null otherwise
+     * @param by : By object của element
+     * @return : WebElement nếu visible, null nếu không
      */
     public static WebElement waitForElementVisible(By by) {
         WebElement element = null;
@@ -791,7 +791,7 @@ public class WebUI {
 
 
     /**
-     * Verify whether the element is visible or not
+     * Verify element có visible hay không
      */
     public static WebElement waitForElementVisible(WebElement element) {
         String locator = Strings.EMPTY;
@@ -805,10 +805,10 @@ public class WebUI {
     }
 
     /**
-     * Wait for element clickable
+     * Wait element clickable
      *
-     * @param by: The By object of element
-     * @return : The WebElement if it is clickable, null otherwise
+     * @param by: By object của element
+     * @return : WebElement nếu clickable, null nếu không
      */
     public static WebElement waitForElementClickable(By by) {
         WebElement webElement = findWebElement(by);
@@ -817,10 +817,10 @@ public class WebUI {
 
 
     /**
-     * Wait for element clickable
+     * Wait element clickable
      *
-     * @param element: The WebElement to wait for
-     * @return : The WebElement if it is clickable, null otherwise
+     * @param element: WebElement cần wait
+     * @return : WebElement nếu clickable, null nếu không
      */
     public static WebElement waitForElementClickable(WebElement element) {
         String locator = Strings.EMPTY;
@@ -848,7 +848,7 @@ public class WebUI {
     }
 
     /**
-     * Wait for element invisible
+     * Wait element invisible
      */
     public static void waitForElementInvisible(Object object, long... waitDuration) {
         if (object instanceof By)
@@ -889,7 +889,7 @@ public class WebUI {
     }
 
     /**
-     * Verify whether the element is visible or not
+     * Verify element có visible hay không
      */
     private static void waitToVerifyElementVisibleWithBy(By by, boolean expDisplay, FailureHandling failureHandling) {
         String msg;
@@ -953,7 +953,7 @@ public class WebUI {
     }
 
     /**
-     * Force wait
+     * Chờ cứng (force wait)
      */
     public static void waitFor(double second) {
         try {
@@ -968,11 +968,11 @@ public class WebUI {
     }
 
     /**
-     * Add more information for Report: Including Extent and Allure.
-     * You can add more report at this function.
+     * Thêm thông tin cho Report: gồm Extent và Allure.
+     * Có thể thêm loại report khác tại function này.
      */
     public static void addReportInfo(LogType logType, String extMsg, String capText, String locator) {
-        // Add for Extent Report
+        // Thêm cho Extent Report
         if (ExtentTestManager.getExtentTest() != null) {
             if (logType.equals(LogType.INFO)) ExtentReportManager.info(extMsg);
             else ExtentReportManager.pass(extMsg);
@@ -980,7 +980,7 @@ public class WebUI {
     }
 
     /**
-     * Get the element locator from WebElement
+     * Lấy locator của element từ WebElement
      */
     public static String getLocatorFromWebElement(WebElement element) {
         var list = element.toString().split("->");
@@ -992,14 +992,14 @@ public class WebUI {
 
 
     /**
-     * Upload files using EventKey
+     * Upload file bằng EventKey
      */
     public static void uploadFileUseRobot(WebElement element, String filePath) {
-        // Click to open upload dialog
+        // Click để mở form upload
         getActions().moveToElement(element).click().perform();
         waitFor(WAIT_IMPLICIT);
 
-        // Init Robot
+        // Khởi tạo Robot class
         Robot rb = null;
         try {
             rb = new Robot();
@@ -1007,11 +1007,11 @@ public class WebUI {
             log.error("Exception init robot: {}", e.getMessage());
         }
 
-        // Copy file path to clipboard
+        // Copy File path vào Clipboard
         StringSelection str = new StringSelection(filePath);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
-        // Paste via Ctrl+V
+        // Nhấn Control+V để dán
         rb.keyPress(KeyEvent.VK_CONTROL);
         rb.keyPress(KeyEvent.VK_V);
 

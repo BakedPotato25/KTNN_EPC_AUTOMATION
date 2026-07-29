@@ -24,16 +24,16 @@ public class ChromeBrowserDriver extends BrowserDriver {
         chromeOptions.addArguments("--disable-infobars");
         chromeOptions.addArguments("--disable-notifications");
         chromeOptions.addArguments("--disable-gpu");
-        chromeOptions.addArguments("--no-sandbox"); // Bypass OS security model, useful for CI
+        chromeOptions.addArguments("--no-sandbox"); // Bỏ qua OS security model, hữu ích cho CI
         chromeOptions.setAcceptInsecureCerts(true);
 
-        // Suppress first-run / restore-session popups on a fresh browser profile
+        // Ẩn popup first-run / restore-session khi dùng browser profile mới
         chromeOptions.addArguments("--no-first-run");
         chromeOptions.addArguments("--no-default-browser-check");
         chromeOptions.addArguments("--disable-session-crashed-bubble");
         chromeOptions.addArguments("--disable-features=InfiniteSessionRestore");
 
-        // Disable Chrome's native save-password / breach-warning popups
+        // Tắt popup save-password / breach-warning của Chrome - đây là UI native, không phải của trang
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);

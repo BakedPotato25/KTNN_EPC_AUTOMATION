@@ -2,7 +2,7 @@ package com.ktnn.projects.pages.locator;
 
 import lombok.Getter;
 
-// Keycloak-rendered page, not part of the app - login button is an <input>, not a <button>
+// Page do Keycloak render, không thuộc app - nút login là <input>, không phải <button>
 @Getter
 public class LoginLocator extends BaseLocator {
     @Getter

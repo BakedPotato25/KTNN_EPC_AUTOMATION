@@ -17,9 +17,9 @@ public class DatabaseFactory {
 
 
     /**
-     * Init Database Driver
+     * Khởi tạo Database Driver
      *
-     * @param databaseType : Database Type
+     * @param databaseType : Loại Database
      * @param userName     : UserName
      * @param password     : Password
      * @param databaseURL  : Database URL

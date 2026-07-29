@@ -12,8 +12,8 @@ import static com.ktnn.consts.FrameConst.ExecuteConfig.HEADLESS_FLAG;
 public class SafariBrowserDriver extends BrowserDriver {
     @Override
     public WebDriver createDriver(boolean... isLoadings) {
-        // On Windows use WebDriverManager.getInstance(DriverManagerType.SAFARI).browserInDocker()
-        // On Mac use WebDriverManager.getInstance(DriverManagerType.SAFARI).setup()
+        // Trên Windows dùng WebDriverManager.getInstance(DriverManagerType.SAFARI).browserInDocker()
+        // Trên Mac dùng WebDriverManager.getInstance(DriverManagerType.SAFARI).setup()
         return new SafariDriver();
     }
 

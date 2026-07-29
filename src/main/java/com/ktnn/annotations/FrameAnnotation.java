@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Class for test script annotation
+ * Class cho annotation của test script
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

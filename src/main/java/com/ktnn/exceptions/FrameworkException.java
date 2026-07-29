@@ -1,7 +1,7 @@
 package com.ktnn.exceptions;
 
 /**
- * Define the exception using in this project
+ * Định nghĩa exception dùng trong project này
  */
 public class FrameworkException extends RuntimeException {
     public FrameworkException(String message) {

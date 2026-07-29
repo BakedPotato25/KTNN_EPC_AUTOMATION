@@ -8,7 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.Objects;
 
 /**
- * Driver management, you can set/get Selenium Web Driver and get this info.
+ * Quản lý driver, dùng để set/get Selenium Web Driver và lấy thông tin driver.
  */
 @NoArgsConstructor
 public class DriverManager {
@@ -16,23 +16,23 @@ public class DriverManager {
     private static ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
 
     /**
-     * Get Selenium Web Driver
-     * @return The Selenium Web Driver
+     * Lấy Selenium Web Driver
+     * @return Selenium Web Driver
      */
     public static WebDriver getDriver() {
         return driverThread.get();
     }
 
     /**
-     * Set the Selenium Web Driver
-     * @param driver: The Selenium Web Driver
+     * Gán Selenium Web Driver
+     * @param driver: Selenium Web Driver
      */
     public static void setDriver(WebDriver driver) {
         DriverManager.driverThread.set(driver);
     }
 
     /**
-     * Remote Selenium WebDriver
+     * Đóng Selenium WebDriver
      */
     public static void quitDriver() {
         if (Objects.nonNull(DriverManager.getDriver())) {
@@ -42,8 +42,8 @@ public class DriverManager {
     }
 
     /**
-     * Get the running browser
-     * @return The browser information (Name, Version, Platform)
+     * Lấy thông tin browser đang chạy
+     * @return Thông tin browser (Name, Version, Platform)
      */
     public static String getBrowserInfo() {
         Capabilities cap = ((RemoteWebDriver) DriverManager.getDriver()).getCapabilities();

@@ -20,7 +20,7 @@ import static java.util.Locale.ENGLISH;
 import static java.util.Locale.JAPANESE;
 
 /**
- * Properties which loading from project configuration
+ * Properties được load từ cấu hình của project
  */
 @Slf4j
 public class PropertiesUtils extends AbsPropertyUtils {
@@ -33,7 +33,7 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Updates/Setting the language used in the website
+     * Cập nhật/thiết lập ngôn ngữ dùng cho website
      *
      * @param language :
      */
@@ -46,17 +46,17 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Create a new Properties object
+     * Tạo mới một Properties object
      */
     public static PropertiesUtils getInstance(String language) {
         return new PropertiesUtils(language);
     }
 
     /**
-     * Return the language value of keyword into data model
+     * Trả về giá trị ngôn ngữ của keyword vào data model
      *
-     * @param key : The key at bundle language
-     * @return The value of this key
+     * @param key : Key trong bundle ngôn ngữ
+     * @return Giá trị của key này
      */
     public static String getLanguageValue(String key) {
         try {
@@ -69,7 +69,7 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Update property
+     * Cập nhật property
      *
      * @param property : Properties object
      * @param key      : Key
@@ -85,10 +85,10 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Update env and property
+     * Cập nhật env và property
      */
     public void updateMavenProperties(Properties property, JSONObject configObjects) {
-        // Read properties from Maven
+        // Đọc properties từ Maven
         Properties properties = System.getProperties();
         String exeTarget = properties.getProperty("exeTarget", property.getProperty("exeTarget", "LOCAL"));
         String appLanguage = properties.getProperty("exeLanguage", property.getProperty("exeLanguage", "vi"));
@@ -98,7 +98,7 @@ public class PropertiesUtils extends AbsPropertyUtils {
         String exeJiraId = properties.getProperty("exeJiraId", property.getProperty("exeJiraId", ""));
         String exeDBVerification = properties.getProperty("exeDBVerification", property.getProperty("exeDBVerification", "false"));
 
-        // Update the property file with the values from the system properties or default values
+        // Cập nhật property file bằng giá trị từ system properties hoặc giá trị mặc định
         updateProperty(property, "exeTarget", exeTarget);
         updateProperty(property, "exeLanguage", appLanguage);
         updateProperty(property, "appVersion", appVersion);
@@ -116,7 +116,7 @@ public class PropertiesUtils extends AbsPropertyUtils {
         updateProperty(property, "exeBrowser", exeBrowser);
         updateProperty(property, "exeHeadlessMode", exeHeadlessMode);
 
-        // Application configuration
+        // Cấu hình application
         JSONObject configJSON = configObjects.getJSONObject("config");
         JSONObject appJSON = configJSON.getJSONObject("env");
         JSONObject envConfig = (JSONObject) appJSON.get(ExecuteConfig.EXE_ENV.toLowerCase());
@@ -126,7 +126,7 @@ public class PropertiesUtils extends AbsPropertyUtils {
         updateProperty(property, "password", envConfig.getString("password"));
         updateProperty(property, "apiUrl", envConfig.getString("apiUrl"));
 
-        // Common report
+        // Report chung
         PROJECT_NAME = property.getProperty("projectName", "KTNN_EPC_AUTO");
         JIRA_DOMAIN = property.getProperty("jiraDomain", "");
         DATABASE_CONNECT_CONFIG = Boolean.parseBoolean(property.getProperty("exeDBVerification", "false"));
@@ -161,12 +161,12 @@ public class PropertiesUtils extends AbsPropertyUtils {
 
         SeleniumConfig.REMOTE_URL = property.getProperty("exeRemoteURL", "http://localhost:4444/wd/hub");
         SeleniumConfig.REMOTE_PORT = property.getProperty("exeRemotePort", "4444");
-        /* Add more properties here */
+        /* Thêm property khác ở đây */
 
-        /* List of database connection */
+        /* Danh sách kết nối database */
         DATABASE_CONNECT_LIST.clear();
         if (!DATABASE_CONNECT_CONFIG) return;
-        /* TODO: Need to re-check */
+        /* TODO: Cần kiểm tra lại */
         JSONObject databaseJSON = configObjects.getJSONObject("database");
         JSONObject dbEnvJSON = databaseJSON.getJSONObject("env");
         JSONArray databaseEnvList = (JSONArray) dbEnvJSON.get(ExecuteConfig.EXE_ENV.toLowerCase());
@@ -189,14 +189,14 @@ public class PropertiesUtils extends AbsPropertyUtils {
                 locale = JAPANESE;
                 break;
             case "vi":
-            default:    // Default value: VI
+            default:    // Giá trị mặc định: VI
                 break;
         }
         resourceConfig = ResourceBundle.getBundle("language", locale);
     }
 
     /**
-     * Load all the project's properties
+     * Load toàn bộ properties của project
      */
     private static void loadConfig() {
         if (Objects.nonNull(properties)) return;
@@ -219,12 +219,12 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Load all env configuration
+     * Load toàn bộ cấu hình env
      *
-     * @return : A JSONObject
+     * @return : Một JSONObject
      */
     public static JSONObject loadEnvConfiguration() {
-        // Add all property
+        // Thêm toàn bộ property
         JSONObject envConfigJSON = new JSONObject();
 
         String configPath = "config/env.json";
@@ -251,13 +251,13 @@ public class PropertiesUtils extends AbsPropertyUtils {
 
     @Override
     public void loadAllProperties() {
-        /* Load environment configuration */
+        /* Load cấu hình environment */
         JSONObject envConfigs = loadEnvConfiguration();
 
-        /* Load all configuration */
+        /* Load toàn bộ cấu hình */
         loadConfig();
 
-        /* Update properties */
+        /* Cập nhật properties */
         updateMavenProperties(properties, envConfigs);
         executionInfo(properties);
     }
@@ -277,9 +277,9 @@ public class PropertiesUtils extends AbsPropertyUtils {
     }
 
     /**
-     * Read data from resource
+     * Đọc dữ liệu từ resource
      *
-     * @param filePath : file path
+     * @param filePath : đường dẫn file
      */
     public static String readDataFromFile(String filePath) {
         try {

@@ -25,7 +25,7 @@ import static com.ktnn.consts.FrameConst.DataConfig.DATA_ID_COL;
 
 
 /**
- * ExcelHelpers class provides the ability to read data from Excel file
+ * ExcelHelpers class cung cấp khả năng đọc data từ Excel file
  */
 @Slf4j
 public class ExcelHelpers {
@@ -45,7 +45,7 @@ public class ExcelHelpers {
     private ExcelHelpers() {
     }
 
-    //    Set Excel file
+    //    Thiết lập Excel file
     public void setExcelFile(String excelPath, String sheetName) {
         try {
             File f = new File(excelPath);
@@ -62,7 +62,7 @@ public class ExcelHelpers {
 
             excelFilePath = excelPath;
 
-            //adding all the column header names to the map 'columns'
+            // thêm tất cả tên cột header vào map 'columns'
             sh.getRow(0).forEach(cell -> columnMapper.put(cell.getStringCellValue(), cell.getColumnIndex()));
         } catch (Exception e) {
             log.info("setExcelFile: failed {}", e.getMessage());
@@ -70,11 +70,11 @@ public class ExcelHelpers {
     }
 
     /**
-     * Get the data from the Excel file
+     * Lấy data từ Excel file
      *
-     * @param excelPath : The Excel file path
-     * @param sheetName : The sheet name
-     * @return The data object
+     * @param excelPath : đường dẫn Excel file
+     * @param sheetName : tên sheet
+     * @return Data object
      */
     public Object[][] getDataArray(String excelPath, String sheetName, int startCol, int totalCols) {
         Object[][] data = null;
@@ -108,11 +108,11 @@ public class ExcelHelpers {
     }
 
     /**
-     * Get the data from the Excel file
+     * Lấy data từ Excel file
      *
-     * @param filePath  : The Excel file path
-     * @param sheetName : The sheet name
-     * @return The data object
+     * @param filePath  : đường dẫn Excel file
+     * @param sheetName : tên sheet
+     * @return Data object
      */
     public Object[][] getTableArray(String filePath, String sheetName, int iTestCaseRow) {
         String[][] tabArray = null;
@@ -120,7 +120,7 @@ public class ExcelHelpers {
         try {
             FileInputStream ExcelFile = new FileInputStream(filePath);
 
-            // Access the required test data sheet
+            // Truy cập sheet test data cần dùng
             actualWB = new XSSFWorkbook(ExcelFile);
             sh = actualWB.getSheet(sheetName);
 
@@ -160,7 +160,7 @@ public class ExcelHelpers {
             Hashtable<String, String> rowData;
             for (int rowNums = startRow; rowNums < endRow; rowNums++) {
                 rowData = new Hashtable<>();
-                // Validate and don't accept the testing data with an empty testcaseId
+                // Validate và bỏ qua data test có testcaseId rỗng
                 if (getCellData(rowNums, 0).isEmpty()) continue;
                 for (int colNum = 0; colNum < columns; colNum++) {
                     rowData.put(getCellData(0, colNum).toLowerCase(), getCellData(rowNums, colNum));
@@ -189,7 +189,7 @@ public class ExcelHelpers {
 
             List<Hashtable<String, String>> rowDataList = new ArrayList<>();
             for (int rowNums = startRow; rowNums < endRow; rowNums++) {
-                // Validate and don't accept the testing data with an empty testcaseId
+                // Validate và bỏ qua data test có testcaseId rỗng
                 String value = getCellData(rowNums, 0);
                 if (Objects.nonNull(value) && value.equalsIgnoreCase(tcName)) {
                     Hashtable<String, String> rowData = new Hashtable<>();
@@ -212,12 +212,12 @@ public class ExcelHelpers {
     }
 
     /**
-     * Read data from XLS file then return Data Object
+     * Đọc data từ XLS file rồi trả về Data Object
      *
-     * @param excelPath       : The XLS file path
-     * @param masterSheetName : The master sheet name
-     * @param tcName          : TC Name
-     * @param startRow        : Start from row
+     * @param excelPath       : đường dẫn XLS file
+     * @param masterSheetName : tên master sheet
+     * @param tcName          : tên TC
+     * @param startRow        : bắt đầu từ row
      * @return Data Provider Object
      */
     public List<Hashtable<String, Object>> vinGetDataDrivenFromXLS(String excelPath, String masterSheetName, String tcName,
@@ -235,7 +235,7 @@ public class ExcelHelpers {
             int columns = getColumnCount();
             if (Objects.isNull(startRow)) startRow = 2;
 
-            // Read header
+            // Đọc header
             String[] headers = new String[columns];
             int configIndex = -1;
             for (int i = 0; i < columns; i++) {
@@ -254,7 +254,7 @@ public class ExcelHelpers {
                     List<DataModel> rowData = new ArrayList<>();
                     Hashtable<String, Object> rowDataMap = new Hashtable<>();
 
-                    // Get Config Value
+                    // Lấy Config Value
                     DataModel configModel = new DataModel();
                     if (configIndex >= 0) {
                         String config = getCellData(row, configIndex);
@@ -271,7 +271,7 @@ public class ExcelHelpers {
                                 .value(val).build();
                         rowData.add(dataModel);
                         rowDataMap.put(dataModel.getDevName(), dataModel);
-                        // skip config
+                        // bỏ qua config
                     }
                     dataList.add(rowData);
                     dataListMap.add(rowDataMap);
@@ -306,7 +306,7 @@ public class ExcelHelpers {
     }
 
     /**
-     * Get detail data from master Sheet
+     * Lấy detail data từ master Sheet
      *
      * @param xlsFile : Data Driven File
      */
@@ -333,7 +333,7 @@ public class ExcelHelpers {
                 int endRow = getRowCount();
                 int columnCount = getColumnCount();
 
-                // collect headers first
+                // thu thập headers trước
                 String[] headers = new String[columnCount];
                 int dataIdIndex = -1;
                 int configIndex = -1;
@@ -345,17 +345,17 @@ public class ExcelHelpers {
                     }
                 }
 
-                // Get DataID
+                // Lấy DataID
                 if (Objects.isNull(jsonValue) || jsonObject.isEmpty()) return;
 
                 List<Hashtable<String, Object>> dataListMap = new ArrayList<>();
                 do {
                     Hashtable<String, Object> rowDataMap = new Hashtable<>();
 
-                    // Find the matching dataID
+                    // Tìm dataID khớp
                     String dataValue = getCellData(currentRow, dataIdIndex);
                     if (Objects.nonNull(dataValue) && jsonValue.contains(dataValue)) {
-                        // Get Config Value
+                        // Lấy Config Value
                         DataModel configModel = new DataModel();
                         if (configIndex >= 0) {
                             String config = getCellData(currentRow, configIndex);
@@ -384,27 +384,27 @@ public class ExcelHelpers {
     }
 
     /**
-     * Return the status of column, TRUE if: empty or All or correct column names; FAIL: ^[column name] (^TK -> The TK column will return false)
+     * Trả về trạng thái của column, TRUE nếu: rỗng hoặc All hoặc đúng tên column; FAIL: ^[tên column] (^TK -> column TK trả về false)
      *
-     * @param data      : Json data from config columns
-     * @param fieldName : The type of keyword (fill or verify...)
-     * @param colName   : Column Name - which had the data
+     * @param data      : Json data từ config columns
+     * @param fieldName : loại keyword (fill hoặc verify...)
+     * @param colName   : tên Column - chứa data
      */
     private boolean isExisted(String data, String fieldName, String colName) {
         var colList = new JSONObject(data).getJSONArray(fieldName).toList();
         boolean isResult = true;
-        // "^ALL" -> not fill ALL
+        // Chứa ^ALL -> Not Fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", "ALL"))))
             isResult = false;
 
-        // "ALL" -> fill ALL
+        // Chứa ALL  -> Fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase("ALL"))) isResult = true;
 
-        // "^Col" -> not fill this col
+        // Chứa ^Col -> Not fill this col
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // "Col" -> fill this column
+        // Chứa Col -> Fill this column
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }
@@ -423,16 +423,16 @@ public class ExcelHelpers {
             int endRow = getRowCount();
             int columnCount = getColumnCount();
             String[] columns = new String[columnCount];
-            // collect headers first
+            // thu thập headers trước
             for (int i = 0; i < columnCount; i++) {
                 columns[i] = getCellData(0, i);
             }
 
             data = new ArrayList<>();
-            // find row by testcase, read excel row sequentially until out of target testcase
+            // tìm row theo testcase, đọc tuần tự các row excel cho tới khi ra khỏi testcase mục tiêu
             do {
                 Hashtable<String, String> rowData = new Hashtable<>();
-                // Validate and stop looting data if testcase doesn't match the target testcase
+                // Validate và dừng lấy data nếu testcase không khớp testcase mục tiêu
 
                 String value = getCellData(currentRow, 0);
                 if (Objects.nonNull(value) && value.equalsIgnoreCase(testCase)) {
@@ -443,7 +443,7 @@ public class ExcelHelpers {
                     data.add(rowData);
                 }
 
-                // read cell in row and build row data
+                // đọc cell trong row và build row data
                 currentRow++;
             } while (currentRow <= endRow);
         } catch (Exception e) {
@@ -468,7 +468,7 @@ public class ExcelHelpers {
         }
     }
 
-    // Get cell data
+    // Lấy cell data
     public String getCellData(int rowNum, int colNum) {
         try {
             cell = sh.getRow(rowNum).getCell(colNum);
@@ -487,7 +487,7 @@ public class ExcelHelpers {
         return row.getLastCellNum();
     }
 
-    // Write data to excel sheet
+    // Ghi data vào excel sheet
     public void setCellData(String text, int rowNumber, int colNumber) {
         try {
             row = sh.getRow(rowNumber);
@@ -575,7 +575,7 @@ public class ExcelHelpers {
             sh = actualWB.getSheetAt(0);
 
             int endRow = getRowCount();
-            // Add to handle file empty
+            // Thêm để xử lý file rỗng
             if (endRow == 0) {
                 isResult = isEmptyFile;
                 failureMsg.add("File is empty");
@@ -605,15 +605,15 @@ public class ExcelHelpers {
                 FileInputStream expFis = new FileInputStream(expFile);
                 Workbook expectedWB = WorkbookFactory.create(expFis);
 
-                // TODO: 26/11/2023 Verify detail
+                // TODO: 26/11/2023 Verify chi tiết
             }
         } catch (Exception e) {
             log.error("verifyReportData: failed " + e.getMessage());
         }
 
-        // Add result
+        // Thêm result
         result.put("status", isResult);
-        result.put("message", failureMsg); // Save err msg Structure: Row 1: Wrong value num
+        result.put("message", failureMsg); // Cấu trúc err msg: Row 1: Wrong value num
         result.put("fileData", rowDataList);
         return result;
     }
@@ -660,16 +660,16 @@ public class ExcelHelpers {
 
     private boolean checkIsExist(List<Object> colList, String colName) {
         boolean isResult = colList.stream().noneMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", "ALL")));
-        // "^ALL" -> not fill ALL
+        // Chứa ^ALL -> Not Fill ALL
 
-        // "ALL" -> fill ALL
+        // Chứa ALL  -> Fill ALL
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase("ALL"))) isResult = true;
 
-        // "^Col" -> not fill this col
+        // Chứa ^Col -> Not fill this col
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(String.format("^%s", colName)))) {
             isResult = false;
         }
-        // "Col" -> fill this column
+        // Chứa Col -> Fill this column
         if (colList.stream().anyMatch(v -> ((String) v).equalsIgnoreCase(colName))) isResult = true;
         return isResult;
     }

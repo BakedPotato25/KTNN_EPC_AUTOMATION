@@ -20,8 +20,8 @@ import java.util.List;
 import static com.ktnn.report.ReportConfig.*;
 
 /**
- * Base methods used by every page object to interact with elements.
- * All Page classes (e.g. LoginPage, DashboardPage) must extend this class.
+ * Method dùng chung cho mọi page object để thao tác với element.
+ * Mọi Page class (vd LoginPage, DashboardPage) đều phải extends class này.
  */
 @Getter
 @Setter
@@ -36,10 +36,10 @@ public class BasePage extends WebUI {
     //region Redirect to Page
 
     /**
-     * Go to specific URL and verify navigation succeeded.
+     * Điều hướng tới URL cụ thể và verify đã chuyển trang thành công.
      *
      * @param URL       : URL Page
-     * @param pageTitle : Page title (for report/assert message)
+     * @param pageTitle : Tên page (dùng cho report/assert message)
      */
     protected void goToSpecificURL(String URL, String pageTitle) {
         goToURL(URL);
@@ -49,20 +49,20 @@ public class BasePage extends WebUI {
     }
 
     /**
-     * Hash deep-links get redirected back to home on this app, so we click the card instead.
+     * App này redirect về home nếu gọi hash deep-link trực tiếp, nên phải click qua card thay vì set URL.
      */
     protected void gotoModuleViaHomeCard(ProjectConst.ModuleURL module) {
-        // Close leftover module tab from the previous test, else tabs pile up across the suite
+        // Đóng tab module còn sót lại từ test trước, không sẽ tích tab đầy suốt suite
         closeActiveModuleTab();
 
-        // Don't assume we're on Home already - previous test may have left a module page open
+        // Không giả định đang ở Home - test trước có thể để lại 1 page module đang mở
         WebElement homeTab = findWebElement(HomeLocator.getInstance().getTabHome());
         clickByJS(homeTab, "Home");
         waitForElementVisible(getByXpathDynamic(HomeLocator.getInstance().getCardByName(), module.getName()));
         WebElement card = findWebElement(getByXpathDynamic(HomeLocator.getInstance().getCardByName(), module.getName()));
         clickByJS(card, module.getName());
         try {
-            // single-spa route change is async, URL updates only after the module mounts
+            // single-spa chuyển route bất đồng bộ, URL chỉ đổi sau khi module mount xong
             getWaitDriver().until(ExpectedConditions.urlContains(module.getPath()));
         } catch (Exception e) {
             log.error("gotoModuleViaHomeCard: URL never changed to contain '{}'", module.getPath());
@@ -84,14 +84,14 @@ public class BasePage extends WebUI {
     //endregion
 
     /**
-     * Wait until the 'value' attribute of an input element is not empty
+     * Chờ tới khi attribute 'value' của input element không rỗng
      */
     protected void waitForInputValueNotEmpty(WebElement element) {
         getWaitDriver().until(ExpectedConditions.attributeToBeNotEmpty(element, "value"));
     }
 
     /**
-     * Wait until the text/value of an element is not empty
+     * Chờ tới khi text/value của element không rỗng
      */
     protected void waitForElementValueNotEmpty(WebElement element) {
         getWaitDriver().until(driver -> !getValueOfElement(element).trim().isEmpty());

@@ -136,19 +136,19 @@ public final class ExtentReportManager {
     }
 
     /**
-     * Adds the screenshot.
+     * Thêm screenshot.
      *
-     * @param message the message
+     * @param message nội dung message
      */
     public static void addScreenShot(String message) {
         addScreenShot(Status.INFO, message);
     }
 
     /**
-     * Adds the screenshot.
+     * Thêm screenshot.
      *
-     * @param status  the status
-     * @param message the message
+     * @param status  trạng thái
+     * @param message nội dung message
      */
     public static void addScreenShot(Status status, String message) {
         if (ExtentTestManager.getExtentTest() != null) {
@@ -288,7 +288,7 @@ public final class ExtentReportManager {
 
     private static void updateContent() {
         String defaultLogo = "spark/logo.png";
-        String newLogo = "./css/Logo_KTNN.jpg"; // provided by report deploy step, not part of this repo
+        String newLogo = "./css/Logo_KTNN.jpg"; // do bước deploy report cung cấp, không nằm trong repo này
 
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(currentReportName), StandardCharsets.UTF_8);
@@ -316,7 +316,7 @@ public final class ExtentReportManager {
     }
 
     /**
-     * Create the report file path
+     * Tạo đường dẫn file report
      */
     public static String createExtentReportPath(String reportName) {
         String name = OVERRIDE_REPORTS ?

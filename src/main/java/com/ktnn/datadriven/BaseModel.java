@@ -3,20 +3,20 @@ package com.ktnn.datadriven;
 import lombok.*;
 
 /**
- * Create a base model for data-driven.
- * All models have to extend this base model
+ * Base model cho data-driven.
+ * Mọi model đều phải extends base model này
  */
 @Getter
 @Setter
 @AllArgsConstructor
 public class BaseModel {
-    public DataModel testId;            // ID of test case
-    public DataModel account;           // Account to execute test case
-    public DataModel testDesc;          // Description of test case
-    public DataModel testScenario;      // Scenario of test case
-    public DataModel preconditions;     // Preconditions of test case
-    public DataModel executed;          // true: executed; false: not executed with dev mode
-    public DataModel category;          // Category of test case: REGRESSION, SMOKE, SANITY, etc.
+    public DataModel testId;            // ID của test case
+    public DataModel account;           // Account dùng để chạy test case
+    public DataModel testDesc;          // Mô tả test case
+    public DataModel testScenario;      // Kịch bản test case
+    public DataModel preconditions;     // Tiền điều kiện của test case
+    public DataModel executed;          // true: đã chạy; false: chưa chạy (dev mode)
+    public DataModel category;          // Loại test case: REGRESSION, SMOKE, SANITY, ...
 
     public BaseModel() {
         testId = createDataModelObj("Id");
@@ -30,30 +30,30 @@ public class BaseModel {
 
 
     /**
-     * Generate a new instance with dev name and language key
+     * Tạo instance mới với dev name và language key
      *
-     * @param name        : The dev name of element
-     * @param languageKey : The language key of element
+     * @param name        : Dev name của element
+     * @param languageKey : Language key của element
      */
     public DataModel createModelMapperObj(String name, String languageKey) {
         return DataModel.builder().devName(name).langProperty(languageKey).build();
     }
 
     /**
-     * Generate a new instance
+     * Tạo instance mới
      *
-     * @param name        : The dev name of element
-     * @param languageKey : The language key of element
-     * @param fill        : The fill status : true - fill information; false - don't fill
+     * @param name        : Dev name của element
+     * @param languageKey : Language key của element
+     * @param fill        : Trạng thái fill : true - có fill dữ liệu; false - không fill
      */
     public DataModel createModelMapperObj(String name, boolean fill, String languageKey) {
         return DataModel.builder().devName(name).fill(fill).langProperty(languageKey).build();
     }
 
     /**
-     * Generate a new instance
+     * Tạo instance mới
      *
-     * @param name : The dev name of element
+     * @param name : Dev name của element
      */
     public DataModel createDataModelObj(String name) {
         return DataModel.builder().devName(name).build();

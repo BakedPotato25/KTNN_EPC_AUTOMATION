@@ -25,7 +25,7 @@ public class ExtentTestManager {
         extentTest.remove();
     }
     public static void addReportInfo(FrameConst.LogType logType, String extMsg, boolean isResult, String responseCodeBlock) {
-        // Add for Extent Report
+        // Thêm vào ExtentReport
         if (ExtentTestManager.getExtentTest() != null) {
             switch (logType) {
                 case INFO:

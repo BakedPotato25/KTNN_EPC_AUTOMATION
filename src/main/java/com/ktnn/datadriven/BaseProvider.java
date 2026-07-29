@@ -12,7 +12,7 @@ import java.util.*;
 public class BaseProvider {
 
     /**
-     * Merge 2 object to one object
+     * Merge 2 object thành 1 object
      *
      */
     public static <T> T mergeObjects(T first, T second) {
@@ -66,7 +66,7 @@ public class BaseProvider {
             }
         });
 
-        // Return Form
+        // Trả về Form
         Object[][] data;
         if (isFirst) {
             data = new Object[finalResult.size()][1];
@@ -77,7 +77,7 @@ public class BaseProvider {
     }
 
     /**
-     * Return data test with full Object model
+     * Trả về data test với đầy đủ Object model
      */
 
     protected <T> Object[][] updateDataModel(T className, List<Hashtable<String, Object>> dataList) {
@@ -90,12 +90,12 @@ public class BaseProvider {
     }
 
     /**
-     * Update model with data driven
+     * Cập nhật model với data driven
      *
-     * @param className : Class name
+     * @param className : Tên class
      * @param dataList  : Data driven
      * @param <T>       : Generic
-     * @return : List of object
+     * @return : List object
      */
     private <T> List<Object> updateModel(T className, List<Hashtable<String, Object>> dataList) {
         List<Object> finalResult = new ArrayList<>();
@@ -108,7 +108,7 @@ public class BaseProvider {
                     try {
                         var obj = f.get(item);
                         if (f.getType().equals(List.class)) {
-                            var shData = (List) data.get(f.getName()); // sheet name must match field name
+                            var shData = (List) data.get(f.getName()); // Cần đặt name of sheet giống với tên biến
                             if (Objects.isNull(shData) || shData.isEmpty()) return;
                             String ownerClassName = ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0].getTypeName();
                             Object itemClass = Class.forName(ownerClassName).getDeclaredConstructor().newInstance();

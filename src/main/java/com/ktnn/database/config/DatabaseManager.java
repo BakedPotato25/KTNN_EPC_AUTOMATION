@@ -13,9 +13,9 @@ public class DatabaseManager {
 
 
     /**
-     * Connect to the database using the database information
+     * Kết nối tới database bằng thông tin database
      *
-     * @param databaseInfos : List of database information {@link DatabaseInfo}
+     * @param databaseInfos : List thông tin database {@link DatabaseInfo}
      */
     public static void connectDatabases(List<DatabaseInfo> databaseInfos) {
         databaseInfos.forEach(databaseInfo -> {

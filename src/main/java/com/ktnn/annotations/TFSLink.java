@@ -5,7 +5,7 @@ import io.qameta.allure.LinkAnnotation;
 import java.lang.annotation.*;
 
 /**
- * Class for linking the bug management system
+ * Class để liên kết với hệ thống quản lý bug
  */
 @Documented
 @Inherited

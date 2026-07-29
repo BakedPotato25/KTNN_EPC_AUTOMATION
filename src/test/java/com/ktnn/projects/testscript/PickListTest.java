@@ -35,7 +35,7 @@ public class PickListTest extends TestBase {
         pickListPage = homePage.gotoPickListPage();
     }
 
-    // Safety net for mid-flow exceptions; never asserts so cleanup itself can't fail the test.
+    // Lưới an toàn cho exception giữa flow; không bao giờ assert để cleanup không làm fail test.
     @AfterMethod(alwaysRun = true)
     public void cleanupPendingTestData() {
         if (pendingCleanupKeyword == null) return;
@@ -537,7 +537,7 @@ public class PickListTest extends TestBase {
                 .fillEditForm(model)
                 .clickEditSave()
                 .verifyToastMessageContains("successfully");
-        // cleanup keyword stays the initial name - still matches if the rename didn't go through
+        // cleanup keyword vẫn giữ tên ban đầu - vẫn khớp nếu rename chưa kịp thực hiện
         pickListPage
                 .searchByKeyword(newName)
                 .verifySearchResultExactName(newName)
@@ -563,7 +563,7 @@ public class PickListTest extends TestBase {
                 .fillEditForm(model)
                 .clickEditSave()
                 .verifyToastMessageContains("successfully");
-        // cleanup keyword stays the initial name - still matches if the rename didn't go through
+        // cleanup keyword vẫn giữ tên ban đầu - vẫn khớp nếu rename chưa kịp thực hiện
         pickListPage
                 .searchByKeyword(newName)
                 .verifySearchResultExactName(newName)

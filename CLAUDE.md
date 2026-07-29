@@ -276,14 +276,14 @@ package com.ktnn.projects.pages.locator;
 import lombok.Getter;
 
 @Getter
-public class XxxLocator extends BaseLocator {     // extends BaseLocator for shared locators
+public class XxxLocator extends BaseLocator {     // extends BaseLocator nếu cần locator dùng chung
     @Getter
     public static XxxLocator instance = new XxxLocator();
 
     private XxxLocator() {}
 
-    // "ID|value" or "CSS|value" -> WebUI.findWebElement(String) auto-parses the prefix
-    // no prefix -> treated as XPath
+    // "ID|value" hoặc "CSS|value" -> WebUI.findWebElement(String) tự parse theo prefix
+    // không có prefix -> coi như XPath
     String txtSomeInput = "ID|form_item_something";
     String btnSubmit = "//button[@testek='btn-submit']";
     String rowByKeyword = "//tr[contains(@class,'row-table') and contains(.,'%s')]"; // %s = dynamic locator
@@ -337,12 +337,12 @@ public class XxxPage extends BasePage {
     private final XxxObjects xxxObjects;
 
     public XxxPage() {
-        super();                                   // or: webDriver = DriverManager.getDriver();
+        super();                                   // hoặc: webDriver = DriverManager.getDriver();
         PageFactory.initElements(webDriver, this);
         xxxObjects = XxxObjects.getInstance();
     }
 
-    /** Always returns `this` (or the next Page) so test scripts can chain calls. */
+    /** Luôn trả `this` (hoặc Page tiếp theo) để test script viết theo kiểu chain. */
     public XxxPage fillForm(XxxModel model) {
         xxxObjects.inputSomeValue(model.getSomeField().getValue());
         return this;
@@ -551,16 +551,20 @@ Cuối cùng, đăng ký class test vào `src/test/resources/suites/ExecutionSui
   `getByXpathDynamic`.
 - **Javadoc ngắn**: comment `/** ... */` 1-2 dòng mô tả *mục đích* method, không mô tả lại
   từng dòng code. Nhiều method không cần javadoc nếu tên đã đủ rõ.
-- **Mọi comment trong code phải viết bằng tiếng Anh, ngắn gọn, đi thẳng vào trọng tâm**
+- **Mọi comment trong code phải viết bằng tiếng Việt, ngắn gọn, đi thẳng vào trọng tâm**
   (không riêng javadoc) — tối đa 1-2 dòng, nêu đúng *lý do*/*quirk* không tự thấy được từ code,
   không kể lể quá trình điều tra/debug hay liệt kê từng bước suy luận, không viết dài kiểu văn
-  mẫu/AI-generated. Nếu cần giải thích dài hơn, đưa vào PR description thay vì để lại trong
-  source. Test case description trong `@Test(description = "Kiểm tra...")` là ngoại lệ — vẫn giữ
-  tiếng Việt vì đó là tên nghiệp vụ lấy trực tiếp từ `KTNN_EPC.xlsx` (mục 0.1), không phải comment.
-- **Commit message viết bằng tiếng Anh, ngắn gọn, đi thẳng vào trọng tâm** — 1 dòng summary kiểu
-  `type: what changed` (`feat`/`fix`/`refactor`/`docs`/`test`/`chore`), không diễn giải dài dòng
-  hay liệt kê từng bước như văn mẫu AI. Ví dụ: `fix: retry Search field on StaleElementReferenceException`,
-  không phải `fix: tìm lại ô Search và thử lại khi gặp StaleElementReferenceException khi DOM thay đổi`.
+  mẫu/AI-generated. Thuật ngữ/tên kỹ thuật (tên class, method, thư viện — "Vue", "sendKeys",
+  "native setter", "single-spa"...) giữ nguyên tiếng Anh trong câu tiếng Việt, theo đúng phong
+  cách trộn ngôn ngữ tự nhiên đã có sẵn trong codebase (vd `// Chứa ^ALL -> Not Fill ALL`). Nếu
+  cần giải thích dài hơn, đưa vào PR description thay vì để lại trong source. Test case
+  description trong `@Test(description = "Kiểm tra...")` viết tiếng Việt vì đó là tên nghiệp vụ
+  lấy trực tiếp từ `KTNN_EPC.xlsx` (mục 0.1).
+- **Commit message viết bằng tiếng Việt, ngắn gọn, đi thẳng vào trọng tâm** — 1 dòng summary kiểu
+  `type: nội dung thay đổi` (`feat`/`fix`/`refactor`/`docs`/`test`/`chore`), không diễn giải dài
+  dòng hay liệt kê từng bước như văn mẫu AI. Ví dụ: `fix: thử lại ô Search khi gặp
+  StaleElementReferenceException`, không phải `fix: tìm lại ô Search và thử lại khi gặp
+  StaleElementReferenceException khi DOM thay đổi để tránh lỗi trong lúc chạy test`.
 - **`region`/`endregion` comment**: dùng `//region Xxx` ... `//endregion` để nhóm method liên
   quan trong file dài (xem `WebUI`, `FrameConst`, `BasePage`).
 - **Không hard-code URL/domain** trong Page/Objects — luôn lấy qua

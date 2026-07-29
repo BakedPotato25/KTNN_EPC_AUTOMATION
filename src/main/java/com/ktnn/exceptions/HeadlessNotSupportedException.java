@@ -1,7 +1,7 @@
 package com.ktnn.exceptions;
 
 /**
- * Define the not supported exception for the Headless type
+ * Định nghĩa exception khi loại Headless không được hỗ trợ
  */
 public class HeadlessNotSupportedException extends IllegalStateException {
     public HeadlessNotSupportedException(String browser) {

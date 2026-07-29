@@ -13,10 +13,10 @@ import java.util.List;
 @Slf4j
 public class DBQueryCommand {
     /**
-     * Get data  from the database and parse to your object
+     * Lấy dữ liệu từ database và parse thành object của bạn
      *
-     * @param queryCommand     :Your query command
-     * @param targetClassName: Your mapping object
+     * @param queryCommand     :Câu query của bạn
+     * @param targetClassName: Object mapping của bạn
      * @return : Data Object
      */
     public static <R> R selectSingleNativeQueryDatabase(String dbName, String queryCommand, Class<R> targetClassName) {
@@ -35,10 +35,10 @@ public class DBQueryCommand {
     }
 
     /**
-     * Get data  from the database and parse to your object
+     * Lấy dữ liệu từ database và parse thành object của bạn
      *
-     * @param queryCommand     :Your query command
-     * @param targetClassName: Your mapping object
+     * @param queryCommand     :Câu query của bạn
+     * @param targetClassName: Object mapping của bạn
      * @return : Data Object
      */
     public static <R> List<R> selectListNativeQueryDatabase(String dbName, String queryCommand, Class<R> targetClassName) {
@@ -56,10 +56,10 @@ public class DBQueryCommand {
     }
 
     /**
-     * Get data  from the database and parse to your object
+     * Lấy dữ liệu từ database và parse thành object của bạn
      *
-     * @param queryCommand :Your query command
-     * @return : A list of Hashmap data
+     * @param queryCommand :Câu query của bạn
+     * @return : List Hashmap data
      */
     public static List<HashMap<String, Object>> selectListNativeQueryDatabase(String dbName, String queryCommand) {
         List result = new ArrayList();
@@ -76,9 +76,9 @@ public class DBQueryCommand {
     }
 
     /**
-     * Get data from the database and parse to your object
+     * Lấy dữ liệu từ database và parse thành object của bạn
      *
-     * @param queryCommand :Your query command
+     * @param queryCommand :Câu query của bạn
      * @return : Hashmap data
      */
     public static HashMap<String, Object> selectSingleNativeQueryDatabase(String dbName, String queryCommand) {
@@ -97,7 +97,7 @@ public class DBQueryCommand {
     }
 
     /**
-     * Get list data in database
+     * Lấy list dữ liệu trong database
      * @return list hashmap data
      */
     public static List<HashMap<String, Object>> selectMultipleNativeQueryDatabase(String dbName, String queryCommand) {
@@ -116,37 +116,37 @@ public class DBQueryCommand {
     }
 
     /**
-     * Update your data to the database
+     * Cập nhật dữ liệu vào database
      *
-     * @param queryCommand : Your command
-     * @return : a string result (Success or Error)
+     * @param queryCommand : Command của bạn
+     * @return : chuỗi kết quả (Success hoặc Error)
      */
     public static String updateNativeQueryDatabase(String dbName, String queryCommand) {
         return updateDatabase(dbName, queryCommand, "UPDATE");
     }
 
     /**
-     * Insert your data to the database
+     * Insert dữ liệu vào database
      *
-     * @param queryCommand : Your command
-     * @return : a string result (Success or Error)
+     * @param queryCommand : Command của bạn
+     * @return : chuỗi kết quả (Success hoặc Error)
      */
     public static String insertNativeQueryDatabase(String dbName, String queryCommand) {
         return updateDatabase(dbName, queryCommand, "INSERT");
     }
 
     /**
-     * Delete your data to the database
+     * Xoá dữ liệu khỏi database
      *
-     * @param queryCommand : Your command
-     * @return : a string result (Success or Error)
+     * @param queryCommand : Command của bạn
+     * @return : chuỗi kết quả (Success hoặc Error)
      */
     public static String deleteNativeQueryDatabase(String dbName, String queryCommand) {
         return updateDatabase(dbName, queryCommand, "DELETE");
     }
 
     /**
-     * Update your data to DB {@link #updateNativeQueryDatabase(String, String)}
+     * Cập nhật dữ liệu vào DB {@link #updateNativeQueryDatabase(String, String)}
      * {@link #insertNativeQueryDatabase(String, String)} {@link #deleteNativeQueryDatabase(String, String)}
      *
      * @param queryCommand
