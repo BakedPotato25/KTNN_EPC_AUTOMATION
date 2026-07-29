@@ -4,6 +4,7 @@ import com.ktnn.projects.pages.locator.PickListLocator;
 import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -27,13 +28,25 @@ public class PickListObjects extends BaseObjects {
         return findWebElement(pickListLocator.getTxtSearch());
     }
 
+    /**
+     * Retries once on staleness: the app re-renders the whole list area after a save or delete,
+     * which can swap out the search box between finding it and typing into it.
+     */
     public PickListObjects searchByKeyword(String keyword) {
+        try {
+            typeSearchAndSubmit(keyword);
+        } catch (StaleElementReferenceException e) {
+            typeSearchAndSubmit(keyword);
+        }
+        return this;
+    }
+
+    private void typeSearchAndSubmit(String keyword) {
         WebElement searchInput = findSearchInput();
         inputText(searchInput, "Search", keyword);
         List<String> before = getAllRowTexts();
         searchInput.sendKeys(Keys.ENTER);
         waitForGridToRerender(before);
-        return this;
     }
 
     public List<String> getAllRowTexts() {
