@@ -30,8 +30,9 @@ public class PickListObjects extends BaseObjects {
     public PickListObjects searchByKeyword(String keyword) {
         WebElement searchInput = findSearchInput();
         inputText(searchInput, "Search", keyword);
+        List<String> before = getAllRowTexts();
         searchInput.sendKeys(Keys.ENTER);
-        waitFor(1.5); // grid re-renders right after Enter, rows go stale if we read too soon
+        waitForGridToRerender(before);
         return this;
     }
 
@@ -39,6 +40,20 @@ public class PickListObjects extends BaseObjects {
         return getListWebElement(By.xpath(pickListLocator.getRowGrid())).stream()
                 .map(el -> getTextElement(el))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Grid re-renders asynchronously after search/filter/sort/refresh - polls the visible row
+     * texts instead of a blind sleep so a slow response can't be read too soon. Compares full row
+     * content (not just count) because sort only reorders rows without changing how many there
+     * are. Falls through on timeout (the rare case where the new state matches the old one)
+     * instead of failing here - the caller's own verify step catches a genuinely stale read.
+     */
+    private void waitForGridToRerender(List<String> before) {
+        try {
+            getWaitDriver().until(d -> !getAllRowTexts().equals(before));
+        } catch (Exception ignored) {
+        }
     }
 
     public List<String> getAllNameCellTexts() {
@@ -126,14 +141,16 @@ public class PickListObjects extends BaseObjects {
     }
 
     public PickListObjects clickApplyFilter() {
+        List<String> before = getAllRowTexts();
         clickByJS(findWebElement(pickListLocator.getBtnApplyFilter()), "Apply Order/Sort/Filter");
-        waitFor(1.5); // grid re-renders right after apply, rows go stale if we read too soon
+        waitForGridToRerender(before);
         return this;
     }
 
     public PickListObjects clickRefresh() {
+        List<String> before = getAllRowTexts();
         clickByJS(findWebElement(pickListLocator.getBtnRefresh()), "Refresh");
-        waitFor(1.5);
+        waitForGridToRerender(before);
         return this;
     }
 
