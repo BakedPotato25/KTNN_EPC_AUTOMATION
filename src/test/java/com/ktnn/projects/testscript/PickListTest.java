@@ -28,6 +28,8 @@ public class PickListTest extends TestBase {
     public void beforeClass() {
         super.beforeClass();
         homePage = new HomePage();
+        // fail sớm rõ ràng nếu seed data dùng chung bị mất, thay vì để nhiều case fail rải rác
+        homePage.gotoPickListPage().verifySeedDataAvailable();
     }
 
     @BeforeMethod(alwaysRun = true)

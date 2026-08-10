@@ -408,4 +408,48 @@ public class PickListPage extends BasePage {
         pickListObjects.attemptInputEditCode(value);
         return this;
     }
+
+    /**
+     * Rà nhanh 1 lần trước khi chạy suite - các case Search/Filter PL_FUNC-1,2,5,6,8,15,16,17,18,20
+     * phụ thuộc bản ghi có sẵn trên hệ thống dùng chung (không phải data tự tạo). Fail sớm rõ ràng
+     * ở đây thay vì để nhiều case fail rải rác khó truy vết nếu bản ghi bị xoá/sửa.
+     * Chi tiết từng bản ghi: data/sit/PICKLIST_SEED_DATA_INVENTORY.md.
+     */
+    public PickListPage verifySeedDataAvailable() {
+        StringBuilder missing = new StringBuilder();
+        if (!seedNameExists("Loại đường truyền")) missing.append("[Name: Loại đường truyền] ");
+        if (!seedCodeExists("LineConnect_Type")) missing.append("[Code: LineConnect_Type] ");
+        if (!seedNameExists("Test_đa_trường")) missing.append("[Name: Test_đa_trường] ");
+        if (!seedFilterHasResults("Description", "like", "test")) missing.append("[Description like 'test'] ");
+        if (!seedFilterHasResults("Version", "=", "1")) missing.append("[Version = 1] ");
+
+        boolean allPresent = missing.length() == 0;
+        assertTrueCondition(null, allPresent, FailureHandling.STOP_ON_FAILURE,
+                allPresent ? "Verify PickList seed data available"
+                        : String.format("Seed data missing: %s- see data/sit/PICKLIST_SEED_DATA_INVENTORY.md to recreate", missing));
+        return this;
+    }
+
+    private boolean seedNameExists(String name) {
+        pickListObjects.searchByKeyword(name);
+        return pickListObjects.getAllNameCellTexts().stream().anyMatch(n -> n.trim().equals(name));
+    }
+
+    private boolean seedCodeExists(String code) {
+        pickListObjects.searchByKeyword(code);
+        return pickListObjects.getAllCodeCellTexts().stream().anyMatch(c -> c.trim().equals(code));
+    }
+
+    /**
+     * Không dùng verifyFilterNarrowedResults (soft assert) - chỉ cần biết có/không kết quả.
+     * Refresh trước khi filter để xoá search text còn sót lại từ check trước đó (searchByKeyword
+     * + filter cộng dồn AND với nhau, không refresh sẽ ra sai 0 kết quả dù data vẫn còn).
+     */
+    private boolean seedFilterHasResults(String field, String operator, String value) {
+        pickListObjects.clickRefresh();
+        filterBy(field, operator, value);
+        boolean hasResults = parseResultsCount(pickListObjects.getResultsCountText()) > 0;
+        pickListObjects.clickRefresh();
+        return hasResults;
+    }
 }
