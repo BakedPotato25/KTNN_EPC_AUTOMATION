@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Cucumber Tests">
+    <listeners>
+        <listener class-name="com.ktnn.projects.common.TestListener"/>
+    </listeners>
+
+    <test name="CucumberPickList" enabled="true">
+        <classes>
+            <class name="com.ktnn.projects.cucumber.runner.PickListCucumberRunner"/>
+        </classes>
+    </test>
+</suite>
