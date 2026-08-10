@@ -220,4 +220,15 @@ public class PickListProvider extends BaseProvider {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListEditModel(), dataList);
     }
+
+    /**
+     * Đọc data test từ pickList.json cho step Cucumber - dùng lại đúng nguồn JSON của @DataProvider,
+     * không tạo data riêng. updateDataModel tạo instance mới qua reflection bên trong (không mutate
+     * object truyền vào) nên phải lấy giá trị từ Object[][] trả về, không dùng lại tham số đã truyền.
+     */
+    public PickListAddNewModel loadPickListAddNewModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListAddNewModel(), dataList);
+        return (PickListAddNewModel) data[0][0];
+    }
 }
