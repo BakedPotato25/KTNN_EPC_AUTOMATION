@@ -196,6 +196,8 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
         else browser = browser.trim().toUpperCase();
 
         AuthorType[] author = getAuthorType(iTestResult);
+        // method test không có @FrameAnnotation (vd scenario tự sinh bởi cucumber-testng) -> getAuthorType trả null
+        if (author == null) author = new AuthorType[0];
         String des = (author.length > 0 ? (author[0] + " - ") : Strings.EMPTY) + getTestDescription(iTestResult);
         iTestResult.setAttribute("author", author.length > 0 ? author[0].toString() : "");
 
