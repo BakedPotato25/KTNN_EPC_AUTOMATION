@@ -4,6 +4,7 @@ import com.ktnn.projects.cucumber.hooks.CucumberHooks;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
+import com.ktnn.projects.dataprovider.model.PickListSortModel;
 import com.ktnn.projects.dataprovider.model.PickListTwoConditionFilterModel;
 import com.ktnn.projects.dataprovider.providers.PickListProvider;
 import com.ktnn.projects.pages.pages.PickListPage;
@@ -25,6 +26,7 @@ public class PickListSteps {
     private PickListEditModel editModel;
     private PickListSearchModel searchModel;
     private PickListTwoConditionFilterModel twoConditionModel;
+    private PickListSortModel sortModel;
 
     @Before
     public void beforeScenario() {
@@ -251,5 +253,27 @@ public class PickListSteps {
     @Then("the Or option should not be available")
     public void theOrOptionShouldNotBeAvailable() {
         pickListPage.verifyOrConditionNotAvailable();
+    }
+
+    // ----- Sort (PL_FUNC-9..14) -----
+
+    @Given("PickList sort test data {string} is loaded")
+    public void pickListSortTestDataIsLoaded(String jsonKey) {
+        sortModel = pickListProvider.loadPickListSortModel(jsonKey);
+    }
+
+    @When("I sort PickList using the loaded order and direction")
+    public void iSortPickListUsingTheLoadedOrderAndDirection() {
+        pickListPage.sortBy(sortModel.getOrderField().getValue(), sortModel.getSortDirection().getValue());
+    }
+
+    @Then("the Code column should be sorted in the loaded direction")
+    public void theCodeColumnShouldBeSortedInTheLoadedDirection() {
+        pickListPage.verifyCodeColumnSorted(sortModel.getSortDirection().getValue());
+    }
+
+    @Then("the grid should still render results")
+    public void theGridShouldStillRenderResults() {
+        pickListPage.verifyGridStillRendersResults();
     }
 }

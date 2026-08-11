@@ -252,4 +252,11 @@ public class PickListProvider extends BaseProvider {
         Object[][] data = updateDataModel(new PickListTwoConditionFilterModel(), dataList);
         return (PickListTwoConditionFilterModel) data[0][0];
     }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Sort (PL_FUNC-9..14). */
+    public PickListSortModel loadPickListSortModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListSortModel(), dataList);
+        return (PickListSortModel) data[0][0];
+    }
 }
