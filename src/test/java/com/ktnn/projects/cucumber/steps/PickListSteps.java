@@ -3,6 +3,8 @@ package com.ktnn.projects.cucumber.steps;
 import com.ktnn.projects.cucumber.hooks.CucumberHooks;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
+import com.ktnn.projects.dataprovider.model.PickListSearchModel;
+import com.ktnn.projects.dataprovider.model.PickListTwoConditionFilterModel;
 import com.ktnn.projects.dataprovider.providers.PickListProvider;
 import com.ktnn.projects.pages.pages.PickListPage;
 import io.cucumber.java.After;
@@ -21,6 +23,8 @@ public class PickListSteps {
     private PickListPage pickListPage;
     private PickListAddNewModel addNewModel;
     private PickListEditModel editModel;
+    private PickListSearchModel searchModel;
+    private PickListTwoConditionFilterModel twoConditionModel;
 
     @Before
     public void beforeScenario() {
@@ -211,5 +215,41 @@ public class PickListSteps {
     @And("I delete the record by its initial name to clean up test data")
     public void iDeleteTheRecordByItsInitialNameToCleanUpTestData() {
         pickListPage.deleteRecordByExactSearch(editModel.getInitialName().getValue());
+    }
+
+    // ----- Search -----
+
+    @Given("PickList search test data {string} is loaded")
+    public void pickListSearchTestDataIsLoaded(String jsonKey) {
+        searchModel = pickListProvider.loadPickListSearchModel(jsonKey);
+    }
+
+    @When("I search PickList using the loaded keyword")
+    public void iSearchPickListUsingTheLoadedKeyword() {
+        pickListPage.searchByKeyword(searchModel.getSearchKeyword().getValue());
+    }
+
+    @Then("the grid rows should contain the trimmed keyword")
+    public void theGridRowsShouldContainTheTrimmedKeyword() {
+        pickListPage.verifySearchResultsContainKeyword(searchModel.getSearchKeyword().getValue().trim());
+    }
+
+    // ----- Filter Or (PL_FUNC-19) -----
+
+    @Given("PickList two-condition filter test data {string} is loaded")
+    public void pickListTwoConditionFilterTestDataIsLoaded(String jsonKey) {
+        twoConditionModel = pickListProvider.loadPickListTwoConditionFilterModel(jsonKey);
+    }
+
+    @When("I attempt to combine two filter conditions with Or")
+    public void iAttemptToCombineTwoFilterConditionsWithOr() {
+        pickListPage.attemptCombineConditionsWithOr(
+                twoConditionModel.getField1().getValue(), twoConditionModel.getOperator1().getValue(), twoConditionModel.getValue1().getValue(),
+                twoConditionModel.getField2().getValue(), twoConditionModel.getOperator2().getValue(), twoConditionModel.getValue2().getValue());
+    }
+
+    @Then("the Or option should not be available")
+    public void theOrOptionShouldNotBeAvailable() {
+        pickListPage.verifyOrConditionNotAvailable();
     }
 }

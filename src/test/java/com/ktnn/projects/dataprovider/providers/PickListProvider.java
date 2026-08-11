@@ -238,4 +238,18 @@ public class PickListProvider extends BaseProvider {
         Object[][] data = updateDataModel(new PickListEditModel(), dataList);
         return (PickListEditModel) data[0][0];
     }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Search. */
+    public PickListSearchModel loadPickListSearchModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListSearchModel(), dataList);
+        return (PickListSearchModel) data[0][0];
+    }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho scenario Filter kết hợp Or (PL_FUNC-19). */
+    public PickListTwoConditionFilterModel loadPickListTwoConditionFilterModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListTwoConditionFilterModel(), dataList);
+        return (PickListTwoConditionFilterModel) data[0][0];
+    }
 }
