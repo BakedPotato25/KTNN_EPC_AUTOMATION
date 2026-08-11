@@ -3,6 +3,8 @@ package com.ktnn.projects.cucumber.steps;
 import com.ktnn.projects.cucumber.hooks.CucumberHooks;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
+import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
 import com.ktnn.projects.dataprovider.model.PickListTwoConditionFilterModel;
@@ -27,6 +29,8 @@ public class PickListSteps {
     private PickListSearchModel searchModel;
     private PickListTwoConditionFilterModel twoConditionModel;
     private PickListSortModel sortModel;
+    private PickListFilterModel filterModel;
+    private PickListMultiFieldSearchModel multiFieldSearchModel;
 
     @Before
     public void beforeScenario() {
@@ -275,5 +279,91 @@ public class PickListSteps {
     @Then("the grid should still render results")
     public void theGridShouldStillRenderResults() {
         pickListPage.verifyGridStillRendersResults();
+    }
+
+    // ----- Search/Filter phụ thuộc seed data (PL_FUNC-1,2,5,6,8,15,16,17,18,20) -----
+    // Fail-fast seed data đã chạy 1 lần ở CucumberHooks.setup() (@BeforeAll) cho cả suite,
+    // không cần gọi verifySeedDataAvailable() lại ở từng scenario.
+
+    @Then("the grid rows should contain the searched keyword")
+    public void theGridRowsShouldContainTheSearchedKeyword() {
+        pickListPage.verifySearchResultsContainKeyword(searchModel.getSearchKeyword().getValue());
+    }
+
+    @Then("the grid should show exactly 1 record with the searched name")
+    public void theGridShouldShowExactly1RecordWithTheSearchedName() {
+        pickListPage.verifySearchResultExactName(searchModel.getSearchKeyword().getValue());
+    }
+
+    @Then("the grid should show exactly 1 record with the searched code")
+    public void theGridShouldShowExactly1RecordWithTheSearchedCode() {
+        pickListPage.verifySearchResultExactCode(searchModel.getSearchKeyword().getValue());
+    }
+
+    @When("I click Refresh")
+    public void iClickRefresh() {
+        pickListPage.clickRefresh();
+    }
+
+    @Then("the search and filter should be reset")
+    public void theSearchAndFilterShouldBeReset() {
+        pickListPage.verifySearchAndFilterReset();
+    }
+
+    @Given("PickList multi-field search test data {string} is loaded")
+    public void pickListMultiFieldSearchTestDataIsLoaded(String jsonKey) {
+        multiFieldSearchModel = pickListProvider.loadPickListMultiFieldSearchModel(jsonKey);
+    }
+
+    @When("I search PickList using the loaded multi-field keyword")
+    public void iSearchPickListUsingTheLoadedMultiFieldKeyword() {
+        pickListPage.searchByKeyword(multiFieldSearchModel.getSearchKeyword().getValue());
+    }
+
+    @Then("the grid should show both expected records")
+    public void theGridShouldShowBothExpectedRecords() {
+        pickListPage.verifySearchResultsContainRecords(
+                multiFieldSearchModel.getExpectedNameA().getValue(),
+                multiFieldSearchModel.getExpectedNameB().getValue());
+    }
+
+    @Given("PickList filter test data {string} is loaded")
+    public void pickListFilterTestDataIsLoaded(String jsonKey) {
+        filterModel = pickListProvider.loadPickListFilterModel(jsonKey);
+    }
+
+    @When("I filter PickList using the loaded field, operator and value")
+    public void iFilterPickListUsingTheLoadedFieldOperatorAndValue() {
+        pickListPage.filterBy(
+                filterModel.getFilterField().getValue(),
+                filterModel.getFilterOperator().getValue(),
+                filterModel.getFilterValue().getValue());
+    }
+
+    @Then("the grid rows should contain the filtered description")
+    public void theGridRowsShouldContainTheFilteredDescription() {
+        pickListPage.verifyFilterResultsContainDescription(filterModel.getFilterValue().getValue());
+    }
+
+    @Then("the Description should exactly match the filtered value")
+    public void theDescriptionShouldExactlyMatchTheFilteredValue() {
+        pickListPage.verifyFilterResultsExactDescription(filterModel.getFilterValue().getValue());
+    }
+
+    @Then("the filtered results should be narrower than before")
+    public void theFilteredResultsShouldBeNarrowerThanBefore() {
+        pickListPage.verifyFilterNarrowedResults();
+    }
+
+    @When("I filter PickList using two conditions combined with And")
+    public void iFilterPickListUsingTwoConditionsCombinedWithAnd() {
+        pickListPage.filterByTwoConditionsWithAnd(
+                twoConditionModel.getField1().getValue(), twoConditionModel.getOperator1().getValue(), twoConditionModel.getValue1().getValue(),
+                twoConditionModel.getField2().getValue(), twoConditionModel.getOperator2().getValue(), twoConditionModel.getValue2().getValue());
+    }
+
+    @Then("the grid rows should contain the first filter condition's value")
+    public void theGridRowsShouldContainTheFirstFilterConditionsValue() {
+        pickListPage.verifyFilterResultsContainDescription(twoConditionModel.getValue1().getValue());
     }
 }

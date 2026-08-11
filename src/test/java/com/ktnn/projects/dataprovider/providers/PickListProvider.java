@@ -259,4 +259,18 @@ public class PickListProvider extends BaseProvider {
         Object[][] data = updateDataModel(new PickListSortModel(), dataList);
         return (PickListSortModel) data[0][0];
     }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Filter (PL_FUNC-15,16,17). */
+    public PickListFilterModel loadPickListFilterModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListFilterModel(), dataList);
+        return (PickListFilterModel) data[0][0];
+    }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho scenario tìm kiếm khớp nhiều trường (PL_FUNC-8). */
+    public PickListMultiFieldSearchModel loadPickListMultiFieldSearchModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListMultiFieldSearchModel(), dataList);
+        return (PickListMultiFieldSearchModel) data[0][0];
+    }
 }
