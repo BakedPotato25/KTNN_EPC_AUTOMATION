@@ -36,6 +36,8 @@ public class CucumberHooks {
 
         LoginPage loginPage = PageManagement.accessWebPage();
         homePage = loginPage.login(USER_NAME, PASSWORD);
+        // fail sớm rõ ràng nếu seed data dùng chung bị mất, giống cơ chế bên PickListTest (TestNG)
+        homePage.gotoPickListPage().verifySeedDataAvailable();
     }
 
     @AfterAll
