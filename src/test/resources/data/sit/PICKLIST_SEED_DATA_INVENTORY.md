@@ -15,7 +15,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 
 | Bản ghi / điều kiện | Field | Giá trị | Case phụ thuộc | Cách nhận biết còn tồn tại | Cách tạo lại nếu mất |
 |---|---|---|---|---|---|
-| "Loại đường truyền" | Name | `Loại đường truyền` | PL_FUNC-1, 2, 5, 6, 8 | Search exact "Loại đường truyền" → đúng 1 kết quả | Add New: Name=`Loại đường truyền`, Code=`LineConnect_Type`, Description=`test` |
+| "Loại đường truyền" | Name | `Loại đường truyền` | PL_FUNC-1, 2, 4, 5, 6, 8 | Search exact "Loại đường truyền" → đúng 1 kết quả | Add New: Name=`Loại đường truyền`, Code=`LineConnect_Type`, Description=`test` |
 | (cùng bản ghi trên) | Code | `LineConnect_Type` | PL_FUNC-5, 6, 27 | Search exact theo Code "LineConnect_Type" → đúng 1 kết quả | (cùng bản ghi) |
 | "Test_đa_trường" | Name | `Test_đa_trường` | PL_FUNC-8 | Search exact "Test_đa_trường" → đúng 1 kết quả | Add New: Name=`Test_đa_trường`, Code=`Loại_đa_trường` |
 | Description = "test" | Description | `test` (exact) | PL_FUNC-16 | Filter Description = "test" → hiện có **3** bản ghi thoả (Loại đường truyền/LineConnect_Type, test/test 123124, anhnk test 1/anhnk test) — chỉ cần **≥1** bản ghi còn Description đúng "test", không bắt buộc đúng 1 | Không cần tạo riêng — bản ghi "Loại đường truyền" ở trên đã tự thoả điều kiện này (Description="test") |
@@ -25,7 +25,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 **Ghi chú quan trọng:**
 - Bản ghi "Loại đường truyền" (Code `LineConnect_Type`) đang gánh nhiều điều kiện cùng lúc
   (Name, Code, VÀ Description="test") — đây là bản ghi **quan trọng nhất** trong danh sách,
-  mất bản ghi này ảnh hưởng tới 6 case (PL_FUNC-1, 2, 5, 6, 8, 27) chứ không chỉ Search.
+  mất bản ghi này ảnh hưởng tới 7 case (PL_FUNC-1, 2, 4, 5, 6, 8, 27) chứ không chỉ Search.
   PL_FUNC-27 (Add New - nhập trùng Code) dùng chính Code `LineConnect_Type` này để kích hoạt
   lỗi validate "Code is unique" - phát hiện khi migrate case này sang Cucumber, không nằm
   trong nhóm Search/Filter ban đầu nên dễ bị bỏ sót nếu chỉ rà theo nhóm chức năng.
@@ -42,6 +42,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 |---|---|---|---|
 | PL_FUNC-1 | `KTNN_PickListSearch_001_Relative` | `SearchKeyword` | `Loại` |
 | PL_FUNC-2 | `KTNN_PickListSearch_002_Exact` | `SearchKeyword` | `Loại đường truyền` |
+| PL_FUNC-4 | `KTNN_PickListSearch_004_TrimWhitespace` | `SearchKeyword` | `" Loại "` (bỏ sót khỏi bảng lúc rà lần đầu, phát hiện khi migrate sang Cucumber - cùng phụ thuộc "Loại đường truyền" như PL_FUNC-1) |
 | PL_FUNC-5 | `KTNN_PickListSearch_005_CodeRelative` | `SearchKeyword` | `LineConnect` |
 | PL_FUNC-6 | `KTNN_PickListSearch_006_CodeExact` | `SearchKeyword` | `LineConnect_Type` |
 | PL_FUNC-8 | `KTNN_PickListSearch_008_MultiField` | `SearchKeyword` / `ExpectedNameA` / `ExpectedNameB` | `Loại` / `Loại đường truyền` / `Test_đa_trường` |
