@@ -16,7 +16,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 | Bản ghi / điều kiện | Field | Giá trị | Case phụ thuộc | Cách nhận biết còn tồn tại | Cách tạo lại nếu mất |
 |---|---|---|---|---|---|
 | "Loại đường truyền" | Name | `Loại đường truyền` | PL_FUNC-1, 2, 5, 6, 8 | Search exact "Loại đường truyền" → đúng 1 kết quả | Add New: Name=`Loại đường truyền`, Code=`LineConnect_Type`, Description=`test` |
-| (cùng bản ghi trên) | Code | `LineConnect_Type` | PL_FUNC-5, 6 | Search exact theo Code "LineConnect_Type" → đúng 1 kết quả | (cùng bản ghi) |
+| (cùng bản ghi trên) | Code | `LineConnect_Type` | PL_FUNC-5, 6, 27 | Search exact theo Code "LineConnect_Type" → đúng 1 kết quả | (cùng bản ghi) |
 | "Test_đa_trường" | Name | `Test_đa_trường` | PL_FUNC-8 | Search exact "Test_đa_trường" → đúng 1 kết quả | Add New: Name=`Test_đa_trường`, Code=`Loại_đa_trường` |
 | Description = "test" | Description | `test` (exact) | PL_FUNC-16 | Filter Description = "test" → hiện có **3** bản ghi thoả (Loại đường truyền/LineConnect_Type, test/test 123124, anhnk test 1/anhnk test) — chỉ cần **≥1** bản ghi còn Description đúng "test", không bắt buộc đúng 1 | Không cần tạo riêng — bản ghi "Loại đường truyền" ở trên đã tự thoả điều kiện này (Description="test") |
 | Description like "test" | Description | chứa `test` | PL_FUNC-15, 18 | Filter Description like "test" → ≥3 bản ghi (superset của dòng trên) | Không cần tạo riêng — cùng lý do trên |
@@ -25,7 +25,10 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 **Ghi chú quan trọng:**
 - Bản ghi "Loại đường truyền" (Code `LineConnect_Type`) đang gánh nhiều điều kiện cùng lúc
   (Name, Code, VÀ Description="test") — đây là bản ghi **quan trọng nhất** trong danh sách,
-  mất bản ghi này ảnh hưởng tới 5 case (PL_FUNC-1, 2, 5, 6, 8) chứ không chỉ Search.
+  mất bản ghi này ảnh hưởng tới 6 case (PL_FUNC-1, 2, 5, 6, 8, 27) chứ không chỉ Search.
+  PL_FUNC-27 (Add New - nhập trùng Code) dùng chính Code `LineConnect_Type` này để kích hoạt
+  lỗi validate "Code is unique" - phát hiện khi migrate case này sang Cucumber, không nằm
+  trong nhóm Search/Filter ban đầu nên dễ bị bỏ sót nếu chỉ rà theo nhóm chức năng.
 - PL_FUNC-18 (kết hợp AND: Description like "test" **và** Version=1 cùng lúc) phụ thuộc
   **tổ hợp** 2 điều kiện đồng thời trên cùng 1 bản ghi — chưa xác nhận trực tiếp có bản ghi
   nào thoả cả 2 cùng lúc hay không (có khả năng cao vì Version=1 có 14 bản ghi và Description
@@ -47,6 +50,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 | PL_FUNC-17 | `KTNN_PickListFilter_003_VersionExact` | `FilterValue` | `1` |
 | PL_FUNC-18 | `KTNN_PickListFilter_004_CombineWithAnd` | `Value1` / `Value2` | `test` (Description like) + `1` (Version =) |
 | PL_FUNC-20 | `KTNN_PickListRefresh_001_ResetSearch` | `SearchKeyword` | `Loại` (rủi ro thấp — case chỉ verify grid reset sau refresh, không assert nội dung kết quả search) |
+| PL_FUNC-27 | `KTNN_PickListAddNew_007_DuplicateCode` | `Code` | `LineConnect_Type` (verify toast lỗi "Code is unique" khi tạo mới trùng Code với bản ghi seed) |
 
 Case Sort (PL_FUNC-9..14) và Filter-Or (PL_FUNC-19) không phụ thuộc bản ghi cụ thể theo tên
 nên không đưa vào bảng này.
