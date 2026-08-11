@@ -40,6 +40,11 @@ public class PickListSteps {
         addNewModel = pickListProvider.loadPickListAddNewModel(jsonKey);
     }
 
+    @When("I capture the current results count as baseline")
+    public void iCaptureTheCurrentResultsCountAsBaseline() {
+        pickListPage.captureResultsCountBaseline();
+    }
+
     @When("I open the Add new form")
     public void iOpenTheAddNewForm() {
         pickListPage.openAddNewForm();
@@ -63,6 +68,36 @@ public class PickListSteps {
     @And("the Add new dialog should be closed")
     public void theAddNewDialogShouldBeClosed() {
         pickListPage.verifyAddNewDialogClosed();
+    }
+
+    @And("the Add new dialog should stay open")
+    public void theAddNewDialogShouldStayOpen() {
+        pickListPage.verifyAddNewDialogStillOpen();
+    }
+
+    @And("the results count should have increased by 1")
+    public void theResultsCountShouldHaveIncreasedBy1() {
+        pickListPage.verifyResultsCountIncreasedByOne();
+    }
+
+    @Then("the required-field error for {string} should be shown")
+    public void theRequiredFieldErrorForShouldBeShown(String fieldLabel) {
+        pickListPage.verifyRequiredFieldError(fieldLabel);
+    }
+
+    @When("I close the Add new form")
+    public void iCloseTheAddNewForm() {
+        pickListPage.closeAddNewForm();
+    }
+
+    @When("I close the Add new form by clicking X")
+    public void iCloseTheAddNewFormByClickingX() {
+        pickListPage.closeAddNewFormByX();
+    }
+
+    @Then("the grid should show no results")
+    public void theGridShouldShowNoResults() {
+        pickListPage.verifySearchNoResults();
     }
 
     @When("I search PickList by the created record's name")
