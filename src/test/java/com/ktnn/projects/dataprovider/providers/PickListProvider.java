@@ -231,4 +231,11 @@ public class PickListProvider extends BaseProvider {
         Object[][] data = updateDataModel(new PickListAddNewModel(), dataList);
         return (PickListAddNewModel) data[0][0];
     }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Edit. */
+    public PickListEditModel loadPickListEditModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListEditModel(), dataList);
+        return (PickListEditModel) data[0][0];
+    }
 }

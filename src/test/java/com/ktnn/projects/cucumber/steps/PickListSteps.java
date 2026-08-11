@@ -2,6 +2,7 @@ package com.ktnn.projects.cucumber.steps;
 
 import com.ktnn.projects.cucumber.hooks.CucumberHooks;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.providers.PickListProvider;
 import com.ktnn.projects.pages.pages.PickListPage;
 import io.cucumber.java.After;
@@ -19,6 +20,7 @@ public class PickListSteps {
     private final PickListProvider pickListProvider = new PickListProvider();
     private PickListPage pickListPage;
     private PickListAddNewModel addNewModel;
+    private PickListEditModel editModel;
 
     @Before
     public void beforeScenario() {
@@ -31,6 +33,10 @@ public class PickListSteps {
         // an toàn cho exception giữa flow; không assert để cleanup không làm fail scenario
         try {
             pickListPage.closeAddNewForm();
+        } catch (Exception ignored) {
+        }
+        try {
+            pickListPage.clickEditCancel();
         } catch (Exception ignored) {
         }
     }
@@ -113,5 +119,97 @@ public class PickListSteps {
     @And("I delete the record to clean up test data")
     public void iDeleteTheRecordToCleanUpTestData() {
         pickListPage.deleteRecordByExactSearch(addNewModel.getName().getValue());
+    }
+
+    // ----- Edit -----
+
+    @Given("PickList edit test data {string} is loaded")
+    public void pickListEditTestDataIsLoaded(String jsonKey) {
+        editModel = pickListProvider.loadPickListEditModel(jsonKey);
+    }
+
+    @When("I set up a record to edit")
+    public void iSetUpARecordToEdit() {
+        pickListPage.setupRecordToEdit(editModel.getInitialName().getValue(), editModel.getInitialCode().getValue());
+    }
+
+    @And("I open the Edit form for the record")
+    public void iOpenTheEditFormForTheRecord() {
+        pickListPage.openEditFormByExactSearch(editModel.getInitialName().getValue());
+    }
+
+    @And("I fill the Edit form with the loaded data")
+    public void iFillTheEditFormWithTheLoadedData() {
+        pickListPage.fillEditForm(editModel);
+    }
+
+    @And("I save the Edit form")
+    public void iSaveTheEditForm() {
+        pickListPage.clickEditSave();
+    }
+
+    @And("I clear the Name field in the Edit form")
+    public void iClearTheNameFieldInTheEditForm() {
+        pickListPage.clearEditName();
+    }
+
+    @And("I cancel the Edit form")
+    public void iCancelTheEditForm() {
+        pickListPage.clickEditCancel();
+    }
+
+    @And("I input a different Code in the Edit form")
+    public void iInputADifferentCodeInTheEditForm() {
+        pickListPage.inputEditCode(editModel.getAttemptedCode().getValue());
+    }
+
+    @Then("the Edit form should show a required-field error for {string}")
+    public void theEditFormShouldShowARequiredFieldErrorFor(String fieldLabel) {
+        pickListPage.verifyEditRequiredFieldError(fieldLabel);
+    }
+
+    @Then("the Edit panel should be closed")
+    public void theEditPanelShouldBeClosed() {
+        pickListPage.verifyEditPanelClosed();
+    }
+
+    @When("I search PickList by the record's new name")
+    public void iSearchPickListByTheRecordsNewName() {
+        pickListPage.searchByKeyword(editModel.getNewName().getValue());
+    }
+
+    @When("I search PickList by the record's initial name")
+    public void iSearchPickListByTheRecordsInitialName() {
+        pickListPage.searchByKeyword(editModel.getInitialName().getValue());
+    }
+
+    @Then("the grid should show exactly 1 record with the new name")
+    public void theGridShouldShowExactly1RecordWithTheNewName() {
+        pickListPage.verifySearchResultExactName(editModel.getNewName().getValue());
+    }
+
+    @Then("the grid should show exactly 1 record with the initial name")
+    public void theGridShouldShowExactly1RecordWithTheInitialName() {
+        pickListPage.verifySearchResultExactName(editModel.getInitialName().getValue());
+    }
+
+    @Then("the grid should show exactly 1 record with the attempted Code")
+    public void theGridShouldShowExactly1RecordWithTheAttemptedCode() {
+        pickListPage.verifySearchResultExactCode(editModel.getAttemptedCode().getValue());
+    }
+
+    @And("the Description should exactly match the new description")
+    public void theDescriptionShouldExactlyMatchTheNewDescription() {
+        pickListPage.verifyFilterResultsExactDescription(editModel.getNewDescription().getValue());
+    }
+
+    @And("I delete the record by its new name to clean up test data")
+    public void iDeleteTheRecordByItsNewNameToCleanUpTestData() {
+        pickListPage.deleteRecordByExactSearch(editModel.getNewName().getValue());
+    }
+
+    @And("I delete the record by its initial name to clean up test data")
+    public void iDeleteTheRecordByItsInitialNameToCleanUpTestData() {
+        pickListPage.deleteRecordByExactSearch(editModel.getInitialName().getValue());
     }
 }
