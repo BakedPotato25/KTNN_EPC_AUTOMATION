@@ -659,6 +659,27 @@
       "detail": {}
     }
   ],
+  "KTNN_PickListDelete_005_BlockedWhenInUse": [
+    {
+      "Description": "Kiểm tra xoá 1 bản ghi PickList đang được sử dụng ở chức năng khác (PL_FUNC-39) - Excel gốc kỳ vọng hệ thống chặn xoá và báo lỗi, nhưng thực tế hệ thống vẫn cho xoá bình thường dù PickList đang được 1 Characteristic Specification tham chiếu (Value Type = PickList) - test viết đúng theo spec gốc (bản ghi phải còn lại) nên Fail đúng thiết kế, đây là bug thật cần báo team, không phải lỗi automation",
+      "Id": "PL_FUNC-39",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_INUSE_001",
+        "PickListCode": "TEST_CODE_INUSE_001",
+        "CatalogName": "TEST_CC_LINK_001",
+        "CatalogCode": "TEST_CC_LINK_001",
+        "SpecificationName": "TEST_CS_LINK_001",
+        "SpecificationCode": "TEST_CS_LINK_001"
+      },
+      "detail": {}
+    }
+  ],
   "KTNN_PickListMultiDelete_001_SelectMultipleAndDelete": [
     {
       "Description": "Kiểm tra tích chọn nhiều bản ghi và xoá (PL_FUNC-40)",

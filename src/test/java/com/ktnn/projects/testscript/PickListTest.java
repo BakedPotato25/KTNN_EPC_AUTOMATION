@@ -5,6 +5,7 @@ import com.ktnn.consts.AuthorType;
 import com.ktnn.consts.FrameConst.CategoryType;
 import com.ktnn.projects.common.TestBase;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
@@ -14,6 +15,7 @@ import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
 import com.ktnn.projects.dataprovider.model.PickListTwoConditionFilterModel;
 import com.ktnn.projects.dataprovider.providers.PickListProvider;
+import com.ktnn.projects.pages.pages.CharacteristicCatalogPage;
 import com.ktnn.projects.pages.pages.HomePage;
 import com.ktnn.projects.pages.pages.PickListPage;
 import org.testng.annotations.AfterMethod;
@@ -737,6 +739,44 @@ public class PickListTest extends TestBase {
                 .searchByKeyword(name)
                 .verifySearchResultExactName(name)
                 .deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá 1 bản ghi PickList đang được sử dụng ở chức năng khác (PL_FUNC-39)",
+        dataProvider = "KTNN_PickListDelete_005_BlockedWhenInUse",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDelete_005_BlockedWhenInUse(PickListDeleteInUseModel model) {
+        String pickListName = model.getPickListName().getValue();
+        String catalogName = model.getCatalogName().getValue();
+        String csName = model.getSpecificationName().getValue();
+        pendingCleanupKeyword = pickListName;
+
+        pickListPage.setupRecordToEdit(pickListName, model.getPickListCode().getValue());
+
+        CharacteristicCatalogPage catalogPage = homePage.gotoCharacteristicCatalogPage();
+        catalogPage
+                .removeLeftoverCatalog(catalogName, csName)
+                .createCatalog(catalogName, model.getCatalogCode().getValue())
+                .addSpecificationLinkedToPickList(csName, model.getSpecificationCode().getValue(), pickListName);
+
+        // Excel gốc kỳ vọng hệ thống chặn xoá (bản ghi vẫn còn) - verify đúng spec, biết trước sẽ Fail vì hệ thống thật cho xoá bình thường
+        pickListPage = homePage.gotoPickListPage();
+        pickListPage
+                .searchByKeyword(pickListName)
+                .clickRowDeleteIcon()
+                .confirmDelete()
+                .searchByKeyword(pickListName)
+                .verifySearchResultExactName(pickListName);
+
+        // dọn dẹp: xoá PickList nếu vẫn còn (trường hợp bug được fix sau này); Specification/Catalog luôn phải xoá dù PickList đã mất
+        pickListPage.removeLeftoverRecords(pickListName);
+        catalogPage = homePage.gotoCharacteristicCatalogPage();
+        catalogPage.removeLeftoverCatalog(catalogName, csName);
         pendingCleanupKeyword = null;
     }
 

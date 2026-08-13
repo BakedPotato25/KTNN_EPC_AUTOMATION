@@ -22,6 +22,7 @@ public class ProjectConst {
     @Getter
     public enum ModuleURL {
         PICK_LIST("PickList", "/epc/pick-list"),
+        CHARACTERISTIC_CATALOG("Characteristic Catalog", "/epc/characteristic-catalog"),
         ;
 
         private final String name;

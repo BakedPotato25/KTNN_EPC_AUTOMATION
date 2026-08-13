@@ -6,6 +6,7 @@ import com.ktnn.consts.ProjectConst;
 import com.ktnn.controller.WebUI;
 import com.ktnn.driver.DriverManager;
 import com.ktnn.projects.pages.locator.HomeLocator;
+import com.ktnn.projects.pages.pages.CharacteristicCatalogPage;
 import com.ktnn.projects.pages.pages.PickListPage;
 import lombok.Getter;
 import lombok.Setter;
@@ -73,6 +74,11 @@ public class BasePage extends WebUI {
     public PickListPage gotoPickListPage() {
         gotoModuleViaHomeCard(ProjectConst.ModuleURL.PICK_LIST);
         return new PickListPage();
+    }
+
+    public CharacteristicCatalogPage gotoCharacteristicCatalogPage() {
+        gotoModuleViaHomeCard(ProjectConst.ModuleURL.CHARACTERISTIC_CATALOG);
+        return new CharacteristicCatalogPage();
     }
 
     private void closeActiveModuleTab() {

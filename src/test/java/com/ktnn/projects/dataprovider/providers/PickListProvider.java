@@ -3,6 +3,7 @@ package com.ktnn.projects.dataprovider.providers;
 import com.ktnn.datadriven.BaseProvider;
 import com.ktnn.projects.dataprovider.DataPath;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
@@ -245,6 +246,12 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListDelete_004_ConfirmNo(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDelete_005_BlockedWhenInUse")
+    public Object[][] KTNN_PickListDelete_005_BlockedWhenInUse(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDeleteInUseModel(), dataList);
     }
 
     @DataProvider(name = "KTNN_PickListMultiDelete_001_SelectMultipleAndDelete")
