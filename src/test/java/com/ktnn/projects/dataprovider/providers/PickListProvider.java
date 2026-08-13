@@ -317,4 +317,18 @@ public class PickListProvider extends BaseProvider {
         Object[][] data = updateDataModel(new PickListMultiFieldSearchModel(), dataList);
         return (PickListMultiFieldSearchModel) data[0][0];
     }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Delete 1 bản ghi (PL_FUNC-35,36,37,38). */
+    public PickListDeleteModel loadPickListDeleteModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListDeleteModel(), dataList);
+        return (PickListDeleteModel) data[0][0];
+    }
+
+    /** Tương tự loadPickListAddNewModel, dùng cho nhóm scenario Delete nhiều bản ghi (PL_FUNC-40,41,42). */
+    public PickListMultiDeleteModel loadPickListMultiDeleteModel(String jsonKey) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, jsonKey);
+        Object[][] data = updateDataModel(new PickListMultiDeleteModel(), dataList);
+        return (PickListMultiDeleteModel) data[0][0];
+    }
 }

@@ -2,8 +2,10 @@ package com.ktnn.projects.cucumber.steps;
 
 import com.ktnn.projects.cucumber.hooks.CucumberHooks;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
@@ -31,6 +33,8 @@ public class PickListSteps {
     private PickListSortModel sortModel;
     private PickListFilterModel filterModel;
     private PickListMultiFieldSearchModel multiFieldSearchModel;
+    private PickListDeleteModel deleteModel;
+    private PickListMultiDeleteModel multiDeleteModel;
 
     @Before
     public void beforeScenario() {
@@ -365,5 +369,104 @@ public class PickListSteps {
     @Then("the grid rows should contain the first filter condition's value")
     public void theGridRowsShouldContainTheFirstFilterConditionsValue() {
         pickListPage.verifyFilterResultsContainDescription(twoConditionModel.getValue1().getValue());
+    }
+
+    // ----- Delete (PL_FUNC-35..38, 40..42) -----
+
+    @Given("PickList delete test data {string} is loaded")
+    public void pickListDeleteTestDataIsLoaded(String jsonKey) {
+        deleteModel = pickListProvider.loadPickListDeleteModel(jsonKey);
+    }
+
+    @When("I set up a record to delete")
+    public void iSetUpARecordToDelete() {
+        pickListPage.setupRecordToEdit(deleteModel.getName().getValue(), deleteModel.getCode().getValue());
+    }
+
+    @And("I search PickList by the delete record's name")
+    public void iSearchPickListByTheDeleteRecordsName() {
+        pickListPage.searchByKeyword(deleteModel.getName().getValue());
+    }
+
+    @And("I click the row delete icon")
+    public void iClickTheRowDeleteIcon() {
+        pickListPage.clickRowDeleteIcon();
+    }
+
+    @Then("the delete confirmation dialog should be shown")
+    public void theDeleteConfirmationDialogShouldBeShown() {
+        pickListPage.verifyDeleteConfirmDialogShown();
+    }
+
+    @When("I confirm the delete")
+    public void iConfirmTheDelete() {
+        pickListPage.confirmDelete();
+    }
+
+    @And("I cancel the delete")
+    public void iCancelTheDelete() {
+        pickListPage.cancelDelete();
+    }
+
+    @Then("the results count should have decreased by {int}")
+    public void theResultsCountShouldHaveDecreasedBy(int expectedDecrease) {
+        pickListPage.verifyResultsCountDecreasedBy(expectedDecrease);
+    }
+
+    @Then("the grid should show exactly 1 record with the delete record's name")
+    public void theGridShouldShowExactly1RecordWithTheDeleteRecordsName() {
+        pickListPage.verifySearchResultExactName(deleteModel.getName().getValue());
+    }
+
+    @And("I delete the record by exact search to clean up test data")
+    public void iDeleteTheRecordByExactSearchToCleanUpTestData() {
+        pickListPage.deleteRecordByExactSearch(deleteModel.getName().getValue());
+    }
+
+    @And("I select the checkbox of row {int}")
+    public void iSelectTheCheckboxOfRow(int rowIndex) {
+        pickListPage.selectRowCheckbox(rowIndex);
+    }
+
+    @And("I click the delete icon on the toolbar")
+    public void iClickTheDeleteIconOnTheToolbar() {
+        pickListPage.clickDeleteToolbar();
+    }
+
+    @Given("PickList multi-delete test data {string} is loaded")
+    public void pickListMultiDeleteTestDataIsLoaded(String jsonKey) {
+        multiDeleteModel = pickListProvider.loadPickListMultiDeleteModel(jsonKey);
+    }
+
+    @When("I set up two records to delete")
+    public void iSetUpTwoRecordsToDelete() {
+        pickListPage.setupRecordToEdit(multiDeleteModel.getName1().getValue(), multiDeleteModel.getCode1().getValue());
+        pickListPage.setupRecordToEdit(multiDeleteModel.getName2().getValue(), multiDeleteModel.getCode2().getValue());
+    }
+
+    @And("I search PickList using the multi-delete keyword")
+    public void iSearchPickListUsingTheMultiDeleteKeyword() {
+        pickListPage.searchByKeyword(multiDeleteModel.getSearchKeyword().getValue());
+    }
+
+    @And("I select the checkboxes of both rows")
+    public void iSelectTheCheckboxesOfBothRows() {
+        pickListPage.selectRowCheckbox(1);
+        pickListPage.selectRowCheckbox(2);
+    }
+
+    @And("I select the header checkbox to select all")
+    public void iSelectTheHeaderCheckboxToSelectAll() {
+        pickListPage.selectAllCheckbox();
+    }
+
+    @Then("all {int} visible rows should be selected")
+    public void allVisibleRowsShouldBeSelected(int expectedCount) {
+        pickListPage.verifyAllVisibleRowsSelected(expectedCount);
+    }
+
+    @Then("the grid should show exactly {int} results")
+    public void theGridShouldShowExactlyResults(int expectedCount) {
+        pickListPage.verifyResultsCountEquals(expectedCount);
     }
 }
