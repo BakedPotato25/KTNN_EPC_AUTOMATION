@@ -498,6 +498,63 @@
       "detail": {}
     }
   ],
+  "KTNN_PickListAddNew_010_ValidForFromAfterTo": [
+    {
+      "Description": "Kiểm tra nhập ValidFor có ngày bắt đầu lớn hơn ngày kết thúc (PL_FUNC-44) - Excel gốc kỳ vọng hệ thống báo lỗi/không cho lưu, thực tế hệ thống tự xoá trắng ô đến ngày khi blur nếu nhỏ hơn từ ngày rồi vẫn cho lưu bình thường (chỉ còn từ ngày) - đã verify hành vi thật, viết đúng theo hành vi này",
+      "Id": "PL_FUNC-44",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_VALIDFOR_001",
+        "Code": "TEST_CODE_VALIDFOR_001",
+        "ValidForFrom": "31/12/2026",
+        "ValidForTo": "01/06/2026"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddNew_011_ValidForFromEqualsTo": [
+    {
+      "Description": "Kiểm tra nhập ValidFor có ngày bắt đầu bằng ngày kết thúc (PL_FUNC-45) - Excel gốc đánh dấu N/A vì cần hỏi lại BA/Lead, đã verify hành vi thật: hệ thống cho lưu bình thường, không báo lỗi",
+      "Id": "PL_FUNC-45",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_VALIDFOR_002",
+        "Code": "TEST_CODE_VALIDFOR_002",
+        "ValidForFrom": "01/06/2026",
+        "ValidForTo": "01/06/2026"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddNew_012_ValidForFromBeforeTo": [
+    {
+      "Description": "Kiểm tra nhập ValidFor có ngày bắt đầu nhỏ hơn ngày kết thúc (PL_FUNC-46)",
+      "Id": "PL_FUNC-46",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_VALIDFOR_003",
+        "Code": "TEST_CODE_VALIDFOR_003",
+        "ValidForFrom": "01/06/2026",
+        "ValidForTo": "31/12/2026"
+      },
+      "detail": {}
+    }
+  ],
   "KTNN_PickListEdit_001_Valid": [
     {
       "Description": "Kiểm tra sửa dữ liệu hợp lệ vào tất cả các trường có thể sửa (PL_FUNC-30) - tự tạo bản ghi riêng để sửa (bản ghi TEST_PL_001 gốc trong case đã bị PL_FUNC-21 tự xoá), không phụ thuộc case khác",
@@ -736,6 +793,30 @@
         "Name2": "TEST_PL_MULTIDEL_003B",
         "Code2": "TEST_CODE_MULTIDEL_003B",
         "SearchKeyword": "TEST_PL_MULTIDEL_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListMultiDelete_004_BlockedWhenOneInUse": [
+    {
+      "Description": "Kiểm tra xoá nhiều bản ghi, trong đó có 1 bản ghi không xoá được do đang được sử dụng ở chức năng khác (PL_FUNC-43) - Excel gốc kỳ vọng hệ thống chặn hoặc báo lỗi riêng bản ghi đang dùng, nhưng thực tế hệ thống xoá cả 2 bản ghi thành công không phân biệt (đã xác nhận cùng hành vi ở PL_FUNC-39) - test viết đúng theo hành vi thật, không theo phương án (a)/(b) mơ hồ trong Excel",
+      "Id": "PL_FUNC-43",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name1": "TEST_PL_MULTIDEL_004A",
+        "Code1": "TEST_CODE_MULTIDEL_004A",
+        "Name2": "TEST_PL_MULTIDEL_004B",
+        "Code2": "TEST_CODE_MULTIDEL_004B",
+        "SearchKeyword": "TEST_PL_MULTIDEL_004",
+        "CatalogName": "TEST_CC_LINK_002",
+        "CatalogCode": "TEST_CC_LINK_002",
+        "SpecificationName": "TEST_CS_LINK_002",
+        "SpecificationCode": "TEST_CS_LINK_002"
       },
       "detail": {}
     }

@@ -9,6 +9,7 @@ import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -530,6 +531,74 @@ public class PickListTest extends TestBase {
         author = {AuthorType.SWEETPOTATO},
         reviewer = {AuthorType.SWEETPOTATO})
     @Test(
+        description = "Kiểm tra nhập ValidFor có ngày bắt đầu lớn hơn ngày kết thúc (PL_FUNC-44)",
+        dataProvider = "KTNN_PickListAddNew_010_ValidForFromAfterTo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_010_ValidForFromAfterTo(PickListAddNewModel model) {
+        pendingCleanupKeyword = model.getName().getValue();
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                // Excel gốc kỳ vọng báo lỗi/không cho lưu - hệ thống thật tự xoá trắng "đến ngày" khi blur, vẫn cho lưu
+                .verifyValidForToClearedAsInvalid()
+                .clickAddNewSave()
+                .verifyToastMessageContains("successfully")
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập ValidFor có ngày bắt đầu bằng ngày kết thúc (PL_FUNC-45)",
+        dataProvider = "KTNN_PickListAddNew_011_ValidForFromEqualsTo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_011_ValidForFromEqualsTo(PickListAddNewModel model) {
+        pendingCleanupKeyword = model.getName().getValue();
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyToastMessageContains("successfully")
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập ValidFor có ngày bắt đầu nhỏ hơn ngày kết thúc (PL_FUNC-46)",
+        dataProvider = "KTNN_PickListAddNew_012_ValidForFromBeforeTo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListAddNew_012_ValidForFromBeforeTo(PickListAddNewModel model) {
+        pendingCleanupKeyword = model.getName().getValue();
+        pickListPage
+                .openAddNewForm()
+                .fillAddNewForm(model)
+                .clickAddNewSave()
+                .verifyToastMessageContains("successfully")
+                .verifyAddNewDialogClosed()
+                .searchByKeyword(model.getName().getValue())
+                .verifySearchResultExactName(model.getName().getValue())
+                .deleteRecordByExactSearch(model.getName().getValue());
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
         description = "Kiểm tra sửa dữ liệu hợp lệ vào tất cả các trường có thể sửa (PL_FUNC-30)",
         dataProvider = "KTNN_PickListEdit_001_Valid",
         dataProviderClass = PickListProvider.class)
@@ -855,6 +924,53 @@ public class PickListTest extends TestBase {
                 .verifyResultsCountEquals(2)
                 .clickDeleteToolbar()
                 .confirmDelete();
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá nhiều bản ghi, trong đó có 1 bản ghi không xoá được do đang được sử dụng ở chức năng khác (PL_FUNC-43)",
+        dataProvider = "KTNN_PickListMultiDelete_004_BlockedWhenOneInUse",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListMultiDelete_004_BlockedWhenOneInUse(PickListMultiDeleteInUseModel model) {
+        String name1 = model.getName1().getValue();
+        String code1 = model.getCode1().getValue();
+        String name2 = model.getName2().getValue();
+        String code2 = model.getCode2().getValue();
+        String keyword = model.getSearchKeyword().getValue();
+        String catalogName = model.getCatalogName().getValue();
+        String csName = model.getSpecificationName().getValue();
+        pendingCleanupKeyword = keyword;
+
+        pickListPage
+                .setupRecordToEdit(name1, code1)
+                .setupRecordToEdit(name2, code2);
+
+        CharacteristicCatalogPage catalogPage = homePage.gotoCharacteristicCatalogPage();
+        catalogPage
+                .removeLeftoverCatalog(catalogName, csName)
+                .createCatalog(catalogName, model.getCatalogCode().getValue())
+                .addSpecificationLinkedToPickList(csName, model.getSpecificationCode().getValue(), name2);
+
+        // Hệ thống thật không chặn xoá bản ghi đang dùng (đã xác nhận ở PL_FUNC-39) - xoá đồng loạt cả 2 đều thành công
+        pickListPage = homePage.gotoPickListPage();
+        pickListPage
+                .searchByKeyword(keyword)
+                .captureResultsCountBaseline()
+                .selectRowCheckbox(1)
+                .selectRowCheckbox(2)
+                .clickDeleteToolbar()
+                .confirmDelete()
+                .verifyToastMessageContains("successfully")
+                .verifyResultsCountDecreasedBy(2)
+                .searchByKeyword(keyword)
+                .verifySearchNoResults();
+
+        catalogPage = homePage.gotoCharacteristicCatalogPage();
+        catalogPage.removeLeftoverCatalog(catalogName, csName);
         pendingCleanupKeyword = null;
     }
 }

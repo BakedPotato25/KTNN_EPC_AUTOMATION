@@ -233,6 +233,14 @@ public class PickListPage extends BasePage {
         return this;
     }
 
+    /** PL_FUNC-44: hệ thống không chặn Save/báo lỗi mà tự xoá trắng "đến ngày" ngay khi blur nếu nhỏ hơn "từ ngày". */
+    public PickListPage verifyValidForToClearedAsInvalid() {
+        String toValue = pickListObjects.getAddValidForToValue();
+        assertTrueCondition(null, toValue == null || toValue.isEmpty(), FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify Valid For 'to' date auto-cleared when earlier than 'from' (actual: '%s')", toValue));
+        return this;
+    }
+
     public PickListPage clickAddNewSave() {
         pickListObjects.dismissAllToasts();
         pickListObjects.clickAddNewSave();

@@ -7,6 +7,7 @@ import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
@@ -194,6 +195,24 @@ public class PickListProvider extends BaseProvider {
         return updateDataModel(new PickListAddNewModel(), dataList);
     }
 
+    @DataProvider(name = "KTNN_PickListAddNew_010_ValidForFromAfterTo")
+    public Object[][] KTNN_PickListAddNew_010_ValidForFromAfterTo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_011_ValidForFromEqualsTo")
+    public Object[][] KTNN_PickListAddNew_011_ValidForFromEqualsTo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListAddNew_012_ValidForFromBeforeTo")
+    public Object[][] KTNN_PickListAddNew_012_ValidForFromBeforeTo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
     @DataProvider(name = "KTNN_PickListEdit_001_Valid")
     public Object[][] KTNN_PickListEdit_001_Valid(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
@@ -270,6 +289,12 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListMultiDelete_003_CancelDelete(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListMultiDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListMultiDelete_004_BlockedWhenOneInUse")
+    public Object[][] KTNN_PickListMultiDelete_004_BlockedWhenOneInUse(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListMultiDeleteInUseModel(), dataList);
     }
 
     /**

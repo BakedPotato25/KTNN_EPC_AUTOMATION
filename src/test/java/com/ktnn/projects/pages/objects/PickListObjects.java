@@ -209,14 +209,25 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
-    /** Click title dialog sau khi nhập để đóng popup calendar mà input ngày mở ra. */
+    /**
+     * Blur thật trước, rồi mới click title dialog để đóng popup calendar mà input ngày mở ra.
+     * clickByJS chỉ bắn synthetic MouseEvent, không di chuyển document.activeElement như click thật
+     * nên không đủ để trigger blur - app tự xoá trắng "đến ngày" khi nhỏ hơn "từ ngày" chỉ chạy đúng lúc blur thật.
+     */
     public PickListObjects inputAddValidFor(String fromDate, String toDate) {
         WebElement fromInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "1"));
         inputText(fromInput, "Add new - Valid For from", fromDate);
         WebElement toInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "2"));
         inputText(toInput, "Add new - Valid For to", toDate);
+        blurActiveElement();
         clickByJS(findWebElement(pickListLocator.getLblAddNewTitle()), "Add new (dialog title, closes calendar popup)");
         return this;
+    }
+
+    /** PL_FUNC-44: đọc lại giá trị ô "đến ngày" sau khi nhập - hệ thống tự xoá trắng nếu nhỏ hơn "từ ngày". */
+    public String getAddValidForToValue() {
+        WebElement toInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtAddValidForByIndex(), "2"));
+        return getValueOfElement(toInput);
     }
 
     public PickListObjects clickAddNewSave() {
