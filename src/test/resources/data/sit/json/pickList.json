@@ -590,5 +590,133 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListDelete_001_ConfirmDialogShown": [
+    {
+      "Description": "Kiểm tra hiển thị confirm trước khi xoá (PL_FUNC-35)",
+      "Id": "PL_FUNC-35",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DELETE_001",
+        "Code": "TEST_CODE_DELETE_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDelete_002_ConfirmYes": [
+    {
+      "Description": "Kiểm tra xoá 1 bản ghi - đồng ý xoá (PL_FUNC-36)",
+      "Id": "PL_FUNC-36",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DELETE_002",
+        "Code": "TEST_CODE_DELETE_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDelete_003_ViaToolbarCheckbox": [
+    {
+      "Description": "Kiểm tra xoá 1 bản ghi bằng icon xoá trên thanh công cụ (toolbar) (PL_FUNC-37)",
+      "Id": "PL_FUNC-37",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DELETE_003",
+        "Code": "TEST_CODE_DELETE_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDelete_004_ConfirmNo": [
+    {
+      "Description": "Kiểm tra xoá 1 bản ghi - huỷ không xoá (PL_FUNC-38)",
+      "Id": "PL_FUNC-38",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DELETE_004",
+        "Code": "TEST_CODE_DELETE_004"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListMultiDelete_001_SelectMultipleAndDelete": [
+    {
+      "Description": "Kiểm tra tích chọn nhiều bản ghi và xoá (PL_FUNC-40)",
+      "Id": "PL_FUNC-40",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name1": "TEST_PL_MULTIDEL_001A",
+        "Code1": "TEST_CODE_MULTIDEL_001A",
+        "Name2": "TEST_PL_MULTIDEL_001B",
+        "Code2": "TEST_CODE_MULTIDEL_001B",
+        "SearchKeyword": "TEST_PL_MULTIDEL_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListMultiDelete_002_SelectAllCheckbox": [
+    {
+      "Description": "Kiểm tra tích chọn tất cả bằng checkbox header (PL_FUNC-41)",
+      "Id": "PL_FUNC-41",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name1": "TEST_PL_MULTIDEL_002A",
+        "Code1": "TEST_CODE_MULTIDEL_002A",
+        "Name2": "TEST_PL_MULTIDEL_002B",
+        "Code2": "TEST_CODE_MULTIDEL_002B",
+        "SearchKeyword": "TEST_PL_MULTIDEL_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListMultiDelete_003_CancelDelete": [
+    {
+      "Description": "Kiểm tra tích chọn nhiều bản ghi - huỷ không xoá (PL_FUNC-42)",
+      "Id": "PL_FUNC-42",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name1": "TEST_PL_MULTIDEL_003A",
+        "Code1": "TEST_CODE_MULTIDEL_003A",
+        "Name2": "TEST_PL_MULTIDEL_003B",
+        "Code2": "TEST_CODE_MULTIDEL_003B",
+        "SearchKeyword": "TEST_PL_MULTIDEL_003"
+      },
+      "detail": {}
+    }
   ]
 }

@@ -5,8 +5,10 @@ import com.ktnn.consts.AuthorType;
 import com.ktnn.consts.FrameConst.CategoryType;
 import com.ktnn.projects.common.TestBase;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
@@ -642,6 +644,177 @@ public class PickListTest extends TestBase {
                 .searchByKeyword(initialName)
                 .verifySearchResultExactName(initialName)
                 .deleteRecordByExactSearch(initialName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra hiển thị confirm trước khi xoá (PL_FUNC-35)",
+        dataProvider = "KTNN_PickListDelete_001_ConfirmDialogShown",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDelete_001_ConfirmDialogShown(PickListDeleteModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .searchByKeyword(name)
+                .clickRowDeleteIcon()
+                .verifyDeleteConfirmDialogShown()
+                .cancelDelete()
+                .deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá 1 bản ghi - đồng ý xoá (PL_FUNC-36)",
+        dataProvider = "KTNN_PickListDelete_002_ConfirmYes",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDelete_002_ConfirmYes(PickListDeleteModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .searchByKeyword(name)
+                .captureResultsCountBaseline()
+                .clickRowDeleteIcon()
+                .confirmDelete()
+                .verifyToastMessageContains("successfully")
+                .verifyResultsCountDecreasedBy(1)
+                .searchByKeyword(name)
+                .verifySearchNoResults();
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá 1 bản ghi bằng icon xoá trên thanh công cụ (toolbar) (PL_FUNC-37)",
+        dataProvider = "KTNN_PickListDelete_003_ViaToolbarCheckbox",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDelete_003_ViaToolbarCheckbox(PickListDeleteModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .searchByKeyword(name)
+                .captureResultsCountBaseline()
+                .selectRowCheckbox(1)
+                .clickDeleteToolbar()
+                .verifyDeleteConfirmDialogShown()
+                .confirmDelete()
+                .verifyToastMessageContains("successfully")
+                .verifyResultsCountDecreasedBy(1)
+                .searchByKeyword(name)
+                .verifySearchNoResults();
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xoá 1 bản ghi - huỷ không xoá (PL_FUNC-38)",
+        dataProvider = "KTNN_PickListDelete_004_ConfirmNo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDelete_004_ConfirmNo(PickListDeleteModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .searchByKeyword(name)
+                .clickRowDeleteIcon()
+                .cancelDelete()
+                .searchByKeyword(name)
+                .verifySearchResultExactName(name)
+                .deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tích chọn nhiều bản ghi và xoá (PL_FUNC-40)",
+        dataProvider = "KTNN_PickListMultiDelete_001_SelectMultipleAndDelete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListMultiDelete_001_SelectMultipleAndDelete(PickListMultiDeleteModel model) {
+        String keyword = model.getSearchKeyword().getValue();
+        pendingCleanupKeyword = keyword;
+        pickListPage
+                .setupRecordToEdit(model.getName1().getValue(), model.getCode1().getValue())
+                .setupRecordToEdit(model.getName2().getValue(), model.getCode2().getValue())
+                .searchByKeyword(keyword)
+                .captureResultsCountBaseline()
+                .selectRowCheckbox(1)
+                .selectRowCheckbox(2)
+                .clickDeleteToolbar()
+                .confirmDelete()
+                .verifyToastMessageContains("successfully")
+                .verifyResultsCountDecreasedBy(2)
+                .searchByKeyword(keyword)
+                .verifySearchNoResults();
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tích chọn tất cả bằng checkbox header (PL_FUNC-41)",
+        dataProvider = "KTNN_PickListMultiDelete_002_SelectAllCheckbox",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListMultiDelete_002_SelectAllCheckbox(PickListMultiDeleteModel model) {
+        String keyword = model.getSearchKeyword().getValue();
+        pendingCleanupKeyword = keyword;
+        pickListPage
+                .setupRecordToEdit(model.getName1().getValue(), model.getCode1().getValue())
+                .setupRecordToEdit(model.getName2().getValue(), model.getCode2().getValue())
+                .searchByKeyword(keyword)
+                .selectAllCheckbox()
+                .verifyAllVisibleRowsSelected(2)
+                .clickDeleteToolbar()
+                .confirmDelete()
+                .searchByKeyword(keyword)
+                .verifySearchNoResults();
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tích chọn nhiều bản ghi - huỷ không xoá (PL_FUNC-42)",
+        dataProvider = "KTNN_PickListMultiDelete_003_CancelDelete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListMultiDelete_003_CancelDelete(PickListMultiDeleteModel model) {
+        String keyword = model.getSearchKeyword().getValue();
+        pendingCleanupKeyword = keyword;
+        pickListPage
+                .setupRecordToEdit(model.getName1().getValue(), model.getCode1().getValue())
+                .setupRecordToEdit(model.getName2().getValue(), model.getCode2().getValue())
+                .searchByKeyword(keyword)
+                .selectRowCheckbox(1)
+                .selectRowCheckbox(2)
+                .clickDeleteToolbar()
+                .cancelDelete()
+                // Cancel không đổi selection - 2 checkbox vẫn đang tick, không search/selectAll lại
+                // (selectAll lần 2 trên checkbox đã tick sẽ toggle OFF thay vì giữ nguyên chọn)
+                .verifyResultsCountEquals(2)
+                .clickDeleteToolbar()
+                .confirmDelete();
         pendingCleanupKeyword = null;
     }
 }

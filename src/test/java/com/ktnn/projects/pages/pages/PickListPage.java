@@ -452,4 +452,81 @@ public class PickListPage extends BasePage {
         pickListObjects.clickRefresh();
         return hasResults;
     }
+
+    public PickListPage clickRowDeleteIcon() {
+        pickListObjects.clickRowDeleteIcon();
+        return this;
+    }
+
+    public PickListPage verifyDeleteConfirmDialogShown() {
+        boolean shown = pickListObjects.isConfirmDialogOpen();
+        assertTrueCondition(null, shown, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify delete confirmation dialog is shown with Yes/No");
+        return this;
+    }
+
+    public PickListPage confirmDelete() {
+        pickListObjects.dismissAllToasts();
+        pickListObjects.clickConfirmYes();
+        lastToastMessage = pickListObjects.getLatestToastMessage();
+        return this;
+    }
+
+    public PickListPage cancelDelete() {
+        pickListObjects.clickConfirmNo();
+        return this;
+    }
+
+    public PickListPage selectRowCheckbox(int rowIndex) {
+        pickListObjects.clickRowCheckbox(rowIndex);
+        return this;
+    }
+
+    public PickListPage selectAllCheckbox() {
+        pickListObjects.clickSelectAllCheckbox();
+        return this;
+    }
+
+    public PickListPage clickDeleteToolbar() {
+        pickListObjects.clickDeleteToolbar();
+        return this;
+    }
+
+    public PickListPage verifyAllVisibleRowsSelected(int expectedCount) {
+        boolean allChecked = true;
+        for (int i = 1; i <= expectedCount; i++) {
+            if (!pickListObjects.isRowCheckboxChecked(i)) {
+                allChecked = false;
+                break;
+            }
+        }
+        assertTrueCondition(null, allChecked, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify all %d visible rows are selected after clicking select-all checkbox", expectedCount));
+        return this;
+    }
+
+    public PickListPage verifyResultsCountEquals(int expected) {
+        int actual = parseResultsCount(pickListObjects.getResultsCountText());
+        assertTrueCondition(null, actual == expected, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify grid shows exactly %d results (actual: %d)", expected, actual));
+        return this;
+    }
+
+    /** Count fetch lại bất đồng bộ sau Delete - poll tới giá trị mong đợi thay vì đọc 1 lần. */
+    public PickListPage verifyResultsCountDecreasedBy(int expectedDecrease) {
+        int before = parseResultsCount(baselineResultsCount);
+        int expected = before - expectedDecrease;
+        int after;
+        try {
+            after = getWaitDriver().until(d -> {
+                int current = parseResultsCount(pickListObjects.getResultsCountText());
+                return current == expected ? current : null;
+            });
+        } catch (Exception e) {
+            after = parseResultsCount(pickListObjects.getResultsCountText());
+        }
+        assertTrueCondition(null, before >= 0 && after == expected, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify results count decreased by %d (before: %d, after: %d)", expectedDecrease, before, after));
+        return this;
+    }
 }

@@ -71,6 +71,15 @@ public class PickListLocator extends BaseLocator {
     String icoRowDelete = "(//table//tbody//tr)[1]//span[contains(@class,'pi-trash')]";
     // nút confirm Yes/No không có aria-label, chỉ có text hiển thị thường
     String btnConfirmYes = "//button[normalize-space()='Yes']";
+    String btnConfirmNo = "//button[normalize-space()='No']";
+
+    // checkbox chọn dòng: input thật ẩn (opacity 0) giống switch Is Active - click bằng JS trực tiếp vào input,
+    // đọc trạng thái checked qua wrapper div.p-checkbox (data-p-checked) vì input ẩn
+    String chkRowByIndex = "(//table//tbody//tr)[%s]//input[@type='checkbox']";
+    String wrapperCheckboxByRowIndex = "(//table//tbody//tr)[%s]//div[contains(@class,'p-checkbox')]";
+    String chkSelectAll = "//table//thead//input[@type='checkbox']";
+    // nút addon thứ 2 cạnh search (fa-trash) - xoá (các) bản ghi đã tick checkbox, khác icoRowDelete (icon riêng từng dòng)
+    String btnDeleteToolbar = "(//div[contains(@class,'p-inputgroupaddon')]//button)[2]";
 
     // icon edit (pi-pen-to-square) của dòng đầu tiên - mở Edit side panel cho record đó
     String icoRowEdit = "(//table//tbody//tr)[1]//span[contains(@class,'pi-pen-to-square')]";

@@ -250,10 +250,53 @@ public class PickListObjects extends BaseObjects {
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));
     }
 
+    public PickListObjects clickRowDeleteIcon() {
+        clickByJS(findWebElement(pickListLocator.getIcoRowDelete()), "Delete (row icon)");
+        return this;
+    }
+
+    public boolean isConfirmDialogOpen() {
+        return !getListWebElement(By.xpath(pickListLocator.getBtnConfirmYes())).isEmpty();
+    }
+
+    public PickListObjects clickConfirmYes() {
+        clickByJS(findWebElement(pickListLocator.getBtnConfirmYes()), "Yes (confirm delete)");
+        return this;
+    }
+
+    public PickListObjects clickConfirmNo() {
+        clickByJS(findWebElement(pickListLocator.getBtnConfirmNo()), "No (cancel delete)");
+        return this;
+    }
+
     /** Xoá đúng 1 row còn lại sau khi search thu hẹp về record vừa tạo. */
     public PickListObjects deleteFirstRowResult() {
-        clickByJS(findWebElement(pickListLocator.getIcoRowDelete()), "Delete (row)");
-        clickByJS(findWebElement(pickListLocator.getBtnConfirmYes()), "Yes (confirm delete)");
+        clickRowDeleteIcon();
+        clickConfirmYes();
+        return this;
+    }
+
+    /** Checkbox chọn dòng - input thật ẩn nên click qua getListWebElement thay vì findWebElement (đòi visible). */
+    public PickListObjects clickRowCheckbox(int rowIndex) {
+        List<WebElement> matches = getListWebElement(getByXpathDynamic(pickListLocator.getChkRowByIndex(), String.valueOf(rowIndex)));
+        clickByJS(matches.isEmpty() ? null : matches.get(0), "Checkbox row " + rowIndex);
+        return this;
+    }
+
+    public PickListObjects clickSelectAllCheckbox() {
+        List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getChkSelectAll()));
+        clickByJS(matches.isEmpty() ? null : matches.get(0), "Select all checkbox");
+        return this;
+    }
+
+    /** Đọc trạng thái qua wrapper div (data-p-checked) - input thật ẩn nên không đáng tin cậy để đọc. */
+    public boolean isRowCheckboxChecked(int rowIndex) {
+        WebElement wrapper = findWebElement(getByXpathDynamic(pickListLocator.getWrapperCheckboxByRowIndex(), String.valueOf(rowIndex)));
+        return "true".equals(wrapper.getAttribute("data-p-checked"));
+    }
+
+    public PickListObjects clickDeleteToolbar() {
+        clickByJS(findWebElement(pickListLocator.getBtnDeleteToolbar()), "Delete (toolbar)");
         return this;
     }
 

@@ -3,8 +3,10 @@ package com.ktnn.projects.dataprovider.providers;
 import com.ktnn.datadriven.BaseProvider;
 import com.ktnn.projects.dataprovider.DataPath;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
@@ -219,6 +221,48 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListEdit_005_CancelDiscardsChanges(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDelete_001_ConfirmDialogShown")
+    public Object[][] KTNN_PickListDelete_001_ConfirmDialogShown(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDelete_002_ConfirmYes")
+    public Object[][] KTNN_PickListDelete_002_ConfirmYes(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDelete_003_ViaToolbarCheckbox")
+    public Object[][] KTNN_PickListDelete_003_ViaToolbarCheckbox(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDelete_004_ConfirmNo")
+    public Object[][] KTNN_PickListDelete_004_ConfirmNo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListMultiDelete_001_SelectMultipleAndDelete")
+    public Object[][] KTNN_PickListMultiDelete_001_SelectMultipleAndDelete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListMultiDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListMultiDelete_002_SelectAllCheckbox")
+    public Object[][] KTNN_PickListMultiDelete_002_SelectAllCheckbox(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListMultiDeleteModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListMultiDelete_003_CancelDelete")
+    public Object[][] KTNN_PickListMultiDelete_003_CancelDelete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListMultiDeleteModel(), dataList);
     }
 
     /**
