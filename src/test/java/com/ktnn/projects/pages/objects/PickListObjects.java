@@ -492,5 +492,57 @@ public class PickListObjects extends BaseObjects {
     public boolean isPickListItemTabActive() {
         return !getListWebElement(By.xpath(pickListLocator.getBtnAddItem())).isEmpty();
     }
+
+    /** Check nhanh 3 field bắt buộc + nút xác nhận/huỷ đã hiện đủ, không cần phân biệt Add hay Edit-via-eye (dùng chung 1 class). */
+    public boolean isAddItemFormDisplayed() {
+        return !getListWebElement(By.xpath(pickListLocator.getBtnItemConfirm())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getBtnItemCancelForm())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getTxtItemNameLabel())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getTxtItemValue())).isEmpty();
+    }
+
+    public boolean isAddItemFormFieldsComplete() {
+        boolean validForPresent = getListWebElement(getByXpathDynamic(pickListLocator.getTxtItemValidForByIndex(), "2")).size() == 1;
+        boolean isDefaultPresent = !getListWebElement(By.xpath(pickListLocator.getSwtItemIsDefault())).isEmpty();
+        return isAddItemFormDisplayed() && validForPresent && isDefaultPresent;
+    }
+
+    /** aria-checked đọc thẳng trên input, không cần leo lên wrapper như checkbox dòng lưới (input ở đây không ẩn). */
+    public boolean isItemIsDefaultChecked() {
+        List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtItemIsDefault()));
+        return !matches.isEmpty() && "true".equals(getAttributeOfElement(matches.get(0), "aria-checked"));
+    }
+
+    /**
+     * blurActiveElement() không tự đóng được popup calendar (đã verify qua Playwright: chỉ real click mới đóng),
+     * nhưng không cần thiết vì clickByJS bước sau (Confirm/Save) không quan tâm popup có che phủ hay không -
+     * click vào header form chỉ để nhất quán với pattern inputAddValidFor, không bắt buộc phải đóng được popup.
+     */
+    public PickListObjects inputItemValidFor(String fromDate, String toDate) {
+        WebElement fromInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtItemValidForByIndex(), "1"));
+        inputText(fromInput, "Item - Valid For from", fromDate);
+        WebElement toInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtItemValidForByIndex(), "2"));
+        inputText(toInput, "Item - Valid For to", toDate);
+        blurActiveElement();
+        clickByJS(findWebElement(pickListLocator.getLblAddItemFormHeader()), "Item form header (closes calendar popup)");
+        return this;
+    }
+
+    public PickListObjects clickItemCancelForm() {
+        clickByJS(findWebElement(pickListLocator.getBtnItemCancelForm()), "Cancel (✗) item form");
+        return this;
+    }
+
+    public String getItemRequiredFieldError(String fieldLabel) {
+        List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrItemMessageContaining(), fieldLabel));
+        return errors.isEmpty() ? "" : getTextElement(errors.get(0));
+    }
+
+    /** Mỗi row-item chứa cả 3 dòng Name/Label-Code-Value trong text - verify bằng contains() giống getAllRowTexts() của lưới chính. */
+    public List<String> getAllItemRowTexts() {
+        return getListWebElement(By.xpath(pickListLocator.getRowItemGrid())).stream()
+                .map(el -> getTextElement(el))
+                .collect(Collectors.toList());
+    }
 }
 

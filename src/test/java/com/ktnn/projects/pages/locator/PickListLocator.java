@@ -127,4 +127,16 @@ public class PickListLocator extends BaseLocator {
     // nút [✓]/[✗] xác nhận/huỷ form thêm item cùng class gốc, phân biệt bằng class phụ btn-cancel
     String btnItemConfirm = "//button[contains(@class,'btn-pl-item') and not(contains(@class,'btn-cancel'))]";
     String btnItemCancelForm = "//button[contains(@class,'btn-pl-item') and contains(@class,'btn-cancel')]";
+
+    // form Add item (sau khi bấm [+]) - scope theo pane KHÔNG ẩn để tránh bắt nhầm input/switch trùng
+    // placeholder của tab General đang ẩn cùng DOM (cùng quirk đã gặp ở cboEditDataType)
+    String txtItemValidForByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//input[@placeholder='dd/mm/yyyy'])[%s]";
+    String swtItemIsDefault = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//input[@type='checkbox'][@role='switch']";
+    // text "General" trong header form Add item - dùng làm điểm blur đóng popup calendar Valid For (giống lblAddNewTitle),
+    // đã verify click vào đây không collapse form (không phải accordion trigger như "General" ở header danh sách item)
+    String lblAddItemFormHeader = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//span[contains(@class,'title')][normalize-space()='General']";
+    String errItemMessageContaining = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//small[contains(@class,'text-red-500')][contains(.,'%s')]";
+
+    // mỗi item trong danh sách PickList Item là 1 .row-item (Name/Label, Code, Value + icon ⋮)
+    String rowItemGrid = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')]";
 }

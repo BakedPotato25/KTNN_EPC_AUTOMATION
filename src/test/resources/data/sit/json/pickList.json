@@ -909,5 +909,175 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListAddItem_001_FormDisplaysInline": [
+    {
+      "Description": "Kiểm tra kích [+] → form Add item hiện inline trong side panel (PL_FUNC-67)",
+      "Id": "PL_FUNC-67",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_001",
+        "PickListCode": "TEST_CODE_ADDITEM_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_002_FormFieldsComplete": [
+    {
+      "Description": "Kiểm tra tính đủ các field trong form Add item (PL_FUNC-68)",
+      "Id": "PL_FUNC-68",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_002",
+        "PickListCode": "TEST_CODE_ADDITEM_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_003_IsDefaultOnByDefault": [
+    {
+      "Description": "Kiểm tra toggle Is Default mặc định ON khi Add (PL_FUNC-69)",
+      "Id": "PL_FUNC-69",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_003",
+        "PickListCode": "TEST_CODE_ADDITEM_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_004_ValidAllFields": [
+    {
+      "Description": "Kiểm tra thêm item hợp lệ - tất cả các trường (PL_FUNC-70)",
+      "Id": "PL_FUNC-70",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_004",
+        "PickListCode": "TEST_CODE_ADDITEM_004",
+        "ItemNameLabel": "TEST_ITEM_004",
+        "ItemCode": "TEST_ITEM_CODE_004",
+        "ItemValue": "test_val_004",
+        "ItemValidForFrom": "01/06/2025",
+        "ItemValidForTo": "31/12/2025"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_005_RequiredFieldsOnly": [
+    {
+      "Description": "Kiểm tra thêm item chỉ với các trường bắt buộc (PL_FUNC-71)",
+      "Id": "PL_FUNC-71",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_005",
+        "PickListCode": "TEST_CODE_ADDITEM_005",
+        "ItemNameLabel": "TEST_ITEM_005",
+        "ItemCode": "TEST_ITEM_CODE_005",
+        "ItemValue": "test_val_005"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_006_EmptyNameLabel": [
+    {
+      "Description": "Kiểm tra để trống trường Name/Label (PL_FUNC-72)",
+      "Id": "PL_FUNC-72",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_006",
+        "PickListCode": "TEST_CODE_ADDITEM_006",
+        "ItemCode": "TEST_ITEM_CODE_006",
+        "ItemValue": "test_val_006"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_007_EmptyCode": [
+    {
+      "Description": "Kiểm tra để trống trường Code (PL_FUNC-73)",
+      "Id": "PL_FUNC-73",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_007",
+        "PickListCode": "TEST_CODE_ADDITEM_007",
+        "ItemNameLabel": "TEST_ITEM_007",
+        "ItemValue": "test_val_007"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_008_EmptyValue": [
+    {
+      "Description": "Kiểm tra để trống trường Value (PL_FUNC-74)",
+      "Id": "PL_FUNC-74",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_008",
+        "PickListCode": "TEST_CODE_ADDITEM_008",
+        "ItemNameLabel": "TEST_ITEM_008",
+        "ItemCode": "TEST_ITEM_CODE_008"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListAddItem_009_CancelDiscardsItem": [
+    {
+      "Description": "Kiểm tra kích [✗] hủy Add - không lưu item (PL_FUNC-75)",
+      "Id": "PL_FUNC-75",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ADDITEM_009",
+        "PickListCode": "TEST_CODE_ADDITEM_009",
+        "ItemNameLabel": "TEST_ITEM_CANCEL",
+        "ItemCode": "TEST_ITEM_CANCEL_CODE",
+        "ItemValue": "1"
+      },
+      "detail": {}
+    }
   ]
 }

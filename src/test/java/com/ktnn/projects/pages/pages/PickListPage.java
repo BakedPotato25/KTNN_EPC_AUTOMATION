@@ -3,6 +3,7 @@ package com.ktnn.projects.pages.pages;
 import com.ktnn.consts.FrameConst.FailureHandling;
 import com.ktnn.datadriven.DataModel;
 import com.ktnn.projects.common.BasePage;
+import com.ktnn.projects.dataprovider.model.PickListAddItemModel;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.pages.objects.PickListObjects;
@@ -626,6 +627,76 @@ public class PickListPage extends BasePage {
         boolean active = pickListObjects.isPickListItemTabActive();
         assertTrueCondition(null, active, FailureHandling.CONTINUE_ON_FAILURE,
                 "Verify side panel switched to PickList Item tab (Add item button visible)");
+        return this;
+    }
+
+    public PickListPage openAddItemForm() {
+        pickListObjects.clickEditPickListItemTab().clickAddItem();
+        return this;
+    }
+
+    public PickListPage verifyAddItemFormDisplayed() {
+        boolean displayed = pickListObjects.isAddItemFormDisplayed();
+        assertTrueCondition(null, displayed, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Add item form displayed inline in side panel (Name/Label, Code, Value, Confirm/Cancel)");
+        return this;
+    }
+
+    public PickListPage verifyAddItemFormFieldsComplete() {
+        boolean complete = pickListObjects.isAddItemFormFieldsComplete();
+        assertTrueCondition(null, complete, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Add item form has all fields (Name/Label, Code, Value, Valid For, Is Default)");
+        return this;
+    }
+
+    public PickListPage verifyItemIsDefaultOnByDefault() {
+        boolean checked = pickListObjects.isItemIsDefaultChecked();
+        assertTrueCondition(null, checked, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Is Default toggle defaults to ON when adding a new item");
+        return this;
+    }
+
+    public PickListPage fillAddItemForm(PickListAddItemModel model) {
+        if (hasValue(model.getItemNameLabel())) pickListObjects.inputItemNameLabel(model.getItemNameLabel().getValue());
+        if (hasValue(model.getItemCode())) pickListObjects.inputItemCode(model.getItemCode().getValue());
+        if (hasValue(model.getItemValue())) pickListObjects.inputItemValue(model.getItemValue().getValue());
+        if (hasValue(model.getItemValidForFrom()) && hasValue(model.getItemValidForTo())) {
+            pickListObjects.inputItemValidFor(model.getItemValidForFrom().getValue(), model.getItemValidForTo().getValue());
+        }
+        return this;
+    }
+
+    public PickListPage clickItemConfirm() {
+        pickListObjects.clickItemConfirm();
+        return this;
+    }
+
+    public PickListPage clickItemCancelForm() {
+        pickListObjects.clickItemCancelForm();
+        return this;
+    }
+
+    public PickListPage verifyItemRequiredFieldError(String fieldLabel) {
+        String errorText = pickListObjects.getItemRequiredFieldError(fieldLabel);
+        boolean hasError = errorText.toLowerCase(Locale.ROOT).contains("required");
+        assertTrueCondition(null, hasError, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify required-field error shown for item field '%s' (actual: '%s')", fieldLabel, errorText));
+        return this;
+    }
+
+    public PickListPage verifyItemInList(String nameLabel, String code, String value) {
+        List<String> rows = pickListObjects.getAllItemRowTexts();
+        boolean found = rows.stream().anyMatch(r -> r.contains(nameLabel) && r.contains(code) && r.contains(value));
+        assertTrueCondition(null, found, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item (Name/Label='%s', Code='%s', Value='%s') appears in PickList Item list", nameLabel, code, value));
+        return this;
+    }
+
+    public PickListPage verifyItemNotInList(String nameLabel) {
+        List<String> rows = pickListObjects.getAllItemRowTexts();
+        boolean found = rows.stream().anyMatch(r -> r.contains(nameLabel));
+        assertFalseCondition(null, found, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item Name/Label='%s' does NOT appear in PickList Item list", nameLabel));
         return this;
     }
 }
