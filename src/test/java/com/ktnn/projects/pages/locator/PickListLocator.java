@@ -131,7 +131,10 @@ public class PickListLocator extends BaseLocator {
     // form Add item (sau khi bấm [+]) - scope theo pane KHÔNG ẩn để tránh bắt nhầm input/switch trùng
     // placeholder của tab General đang ẩn cùng DOM (cùng quirk đã gặp ở cboEditDataType)
     String txtItemValidForByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//input[@placeholder='dd/mm/yyyy'])[%s]";
-    String swtItemIsDefault = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//input[@type='checkbox'][@role='switch']";
+    // KHÔNG scope theo .add-new vì sub-section Edit-via-eye (PL_FUNC-77+) nằm trong .row-item, không
+    // phải .add-new - cả 2 dùng chung 1 component nên chỉ cần scope theo pane picklist-item không ẩn
+    // là đủ an toàn (tối đa 1 form Add/Edit item mở tại 1 thời điểm, không lo bắt nhầm)
+    String swtItemIsDefault = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//input[@type='checkbox'][@role='switch']";
     // text "General" trong header form Add item - dùng làm điểm blur đóng popup calendar Valid For (giống lblAddNewTitle),
     // đã verify click vào đây không collapse form (không phải accordion trigger như "General" ở header danh sách item)
     String lblAddItemFormHeader = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//span[contains(@class,'title')][normalize-space()='General']";
@@ -165,4 +168,7 @@ public class PickListLocator extends BaseLocator {
     // (hover cả .row-item KHÔNG đủ - đã verify qua Playwright, khác quirk đã ghi cho hover thường)
     String icoFirstRowItemEye = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[1]//i[contains(@class,'fa-eye')]";
     String icoFirstRowItemTrash = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[1]//i[contains(@class,'fa-trash')]";
+    // bản %s theo index - dùng khi cần thao tác dòng thứ N (PL_FUNC-86/101 cần đọc Is Default của cả item 1 và 2)
+    String icoRowItemMoreByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[%s]//i[contains(@class,'fa-ellipsis-v')]";
+    String icoRowItemEyeByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[%s]//i[contains(@class,'fa-eye')]";
 }

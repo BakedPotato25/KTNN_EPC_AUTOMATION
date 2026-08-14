@@ -1498,5 +1498,150 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListItemSearch_001_ByNameLabel": [
+    {
+      "Description": "Kiểm tra tìm kiếm item theo Name/Label - có kết quả (PL_FUNC-84) - đã verify qua Playwright: search item CHỈ khớp theo Code, KHÔNG khớp Name/Label như spec mô tả - test viết đúng theo spec gốc (search bằng Name/Label) nên Fail đúng thiết kế, đây là bug thật cần báo team, không phải lỗi automation",
+      "Id": "PL_FUNC-84",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMSEARCH_001",
+        "PickListCode": "TEST_CODE_ITEMSEARCH_001",
+        "ItemNameLabel": "TEST_ITEM_SEARCH_001",
+        "ItemCode": "TEST_ITEM_CODE_SEARCH_001",
+        "ItemValue": "val_search_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemSearch_002_NotFound": [
+    {
+      "Description": "Kiểm tra tìm kiếm từ khóa không tồn tại (PL_FUNC-85)",
+      "Id": "PL_FUNC-85",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMSEARCH_002",
+        "Code": "TEST_CODE_ITEMSEARCH_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemIsDefault_001_MultipleAllowed": [
+    {
+      "Description": "Kiểm tra chỉ 1 item được set Is Default = ON tại 1 thời điểm (PL_FUNC-86) - Excel gốc N/A vì QA không chắc mục đích chức năng; đã verify qua Playwright hành vi thật: hệ thống cho phép nhiều item cùng Is Default=true, không tự tắt item cũ, không báo lỗi - test viết theo hành vi thật đã xác nhận",
+      "Id": "PL_FUNC-86",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ISDEFAULT_001",
+        "PickListCode": "TEST_CODE_ISDEFAULT_001",
+        "Item1NameLabel": "TEST_ITEM_ISDEFAULT_001A",
+        "Item1Code": "TEST_ITEM_CODE_ISDEFAULT_001A",
+        "Item1Value": "val_isdefault_001a",
+        "Item2NameLabel": "TEST_ITEM_ISDEFAULT_001B",
+        "Item2Code": "TEST_ITEM_CODE_ISDEFAULT_001B",
+        "Item2Value": "val_isdefault_001b"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemIsDefault_002_ToggleOff": [
+    {
+      "Description": "Kiểm tra tắt toggle Is Default của item đang ON (PL_FUNC-87)",
+      "Id": "PL_FUNC-87",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ISDEFAULT_002",
+        "PickListCode": "TEST_CODE_ISDEFAULT_002",
+        "ItemNameLabel": "TEST_ITEM_ISDEFAULT_002",
+        "ItemCode": "TEST_ITEM_CODE_ISDEFAULT_002",
+        "ItemValue": "val_isdefault_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemIsDefault_003_MultiplePersistAfterSave": [
+    {
+      "Description": "Kiểm tra hệ thống có cho phép nhiều Item cùng có Is Default = true trong 1 PickList (PL_FUNC-101)",
+      "Id": "PL_FUNC-101",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ISDEFAULT_003",
+        "PickListCode": "TEST_CODE_ISDEFAULT_003",
+        "Item1NameLabel": "TEST_ITEM_ISDEFAULT_003A",
+        "Item1Code": "TEST_ITEM_CODE_ISDEFAULT_003A",
+        "Item1Value": "val_isdefault_003a",
+        "Item2NameLabel": "TEST_ITEM_ISDEFAULT_003B",
+        "Item2Code": "TEST_ITEM_CODE_ISDEFAULT_003B",
+        "Item2Value": "val_isdefault_003b"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListPanel_001_SavePersistsChanges": [
+    {
+      "Description": "Kiểm tra kích [Save] lưu toàn bộ thay đổi PickList (PL_FUNC-88) - đã verify qua Playwright: Save chỉ lưu thay đổi của tab General/PickList Item đang ACTIVE lúc bấm Save, tab còn lại bị mất thay đổi dù toast vẫn báo thành công (thử cả 2 chiều: đang ở tab Item thì mất Description, quay lại tab General thì mất Item) - test viết đúng theo spec (kỳ vọng lưu đồng thời cả 2 loại thay đổi) nên Fail đúng thiết kế, đây là bug thật cần báo team, không phải lỗi automation",
+      "Id": "PL_FUNC-88",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_PANEL_SAVE_001",
+        "PickListCode": "TEST_CODE_PANEL_SAVE_001",
+        "NewDescription": "Updated via overall Save",
+        "ItemNameLabel": "TEST_ITEM_PANEL_SAVE_001",
+        "ItemCode": "TEST_ITEM_CODE_PANEL_SAVE_001",
+        "ItemValue": "val_panel_save_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListPanel_002_CancelDiscardsChanges": [
+    {
+      "Description": "Kiểm tra kích [Cancel] hủy toàn bộ thay đổi PickList (PL_FUNC-89)",
+      "Id": "PL_FUNC-89",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_PANEL_CANCEL_001",
+        "PickListCode": "TEST_CODE_PANEL_CANCEL_001",
+        "NewDescription": "Should not be saved",
+        "ItemNameLabel": "TEST_ITEM_PANEL_CANCEL_001",
+        "ItemCode": "TEST_ITEM_CODE_PANEL_CANCEL_001",
+        "ItemValue": "val_panel_cancel_001"
+      },
+      "detail": {}
+    }
   ]
 }

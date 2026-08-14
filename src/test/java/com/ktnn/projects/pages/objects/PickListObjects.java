@@ -722,5 +722,40 @@ public class PickListObjects extends BaseObjects {
         Object innerText = getJsExecutor().executeScript("return document.body.innerText;");
         return innerText != null && innerText.toString().toLowerCase(java.util.Locale.ROOT).contains("undo");
     }
+
+    /** PL_FUNC-84/85: gõ keyword vào ô search riêng của tab PickList Item rồi bấm icon 🔍 (không dùng Enter, khác lưới chính). */
+    public PickListObjects searchItemByKeyword(String keyword) {
+        WebElement input = findWebElement(pickListLocator.getTxtItemSearch());
+        inputText(input, "Item Search", keyword);
+        List<String> before = getAllItemRowTexts();
+        clickByJS(findWebElement(pickListLocator.getIcoItemSearchButton()), "Search icon (item)");
+        try {
+            getWaitDriver().until(d -> !getAllItemRowTexts().equals(before));
+        } catch (Exception ignored) {
+        }
+        return this;
+    }
+
+    public PickListObjects hoverRowItemMore(int rowIndex) {
+        hoverElement(findWebElement(getByXpathDynamic(pickListLocator.getIcoRowItemMoreByIndex(), String.valueOf(rowIndex))));
+        return this;
+    }
+
+    public PickListObjects clickRowItemEye(int rowIndex) {
+        hoverRowItemMore(rowIndex);
+        clickByJS(findWebElement(getByXpathDynamic(pickListLocator.getIcoRowItemEyeByIndex(), String.valueOf(rowIndex))), "Eye (row " + rowIndex + ")");
+        return this;
+    }
+
+    /**
+     * clickByJS KHÔNG đủ cho toggle này - đã verify qua Playwright: dispatch synthetic event chỉ đổi
+     * được property `checked` gốc của input, KHÔNG đồng bộ được state nội bộ Vue (`aria-checked` giữ
+     * nguyên giá trị cũ) - phải dùng clickTo (click thật qua Selenium binding chuẩn).
+     */
+    public PickListObjects toggleItemIsDefault() {
+        List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtItemIsDefault()));
+        clickTo(matches.isEmpty() ? null : matches.get(0), "Is Default toggle (item)");
+        return this;
+    }
 }
 

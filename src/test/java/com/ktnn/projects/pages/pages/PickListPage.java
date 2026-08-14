@@ -375,6 +375,11 @@ public class PickListPage extends BasePage {
         return this;
     }
 
+    public PickListPage inputEditDescription(String value) {
+        pickListObjects.inputEditDescription(value);
+        return this;
+    }
+
     public PickListPage clickEditSave() {
         pickListObjects.dismissAllToasts();
         pickListObjects.clickEditSave();
@@ -907,6 +912,42 @@ public class PickListPage extends BasePage {
         boolean present = pickListObjects.isUndoButtonPresent();
         assertFalseCondition(null, present, FailureHandling.CONTINUE_ON_FAILURE,
                 "Verify no Undo button/text present after deleting an item");
+        return this;
+    }
+
+    public PickListPage searchItemByKeyword(String keyword) {
+        pickListObjects.searchItemByKeyword(keyword);
+        return this;
+    }
+
+    public PickListPage verifyItemSearchResultsContain(String keyword) {
+        List<String> rows = pickListObjects.getAllItemRowTexts();
+        boolean allMatch = !rows.isEmpty() && rows.stream()
+                .allMatch(r -> r.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT)));
+        assertTrueCondition(null, allMatch, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item search results contain keyword '%s' (actual rows: %s)", keyword, rows));
+        return this;
+    }
+
+    public PickListPage verifyItemSearchNoResults() {
+        int rowCount = pickListObjects.getItemRowCount();
+        assertTrueCondition(null, rowCount == 0, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item search shows no results (actual row count: %d)", rowCount));
+        return this;
+    }
+
+    public PickListPage toggleItemIsDefault() {
+        pickListObjects.toggleItemIsDefault();
+        return this;
+    }
+
+    /** Bundle hover+mở eye+đọc Is Default+đóng lại - dùng để kiểm tra trạng thái Is Default của 1 item cụ thể theo index (PL_FUNC-86/101). */
+    public PickListPage verifyRowItemIsDefaultChecked(int rowIndex, boolean expected) {
+        pickListObjects.clickRowItemEye(rowIndex);
+        boolean actual = pickListObjects.isItemIsDefaultChecked();
+        assertTrueCondition(null, actual == expected, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item #%d Is Default = %b (actual: %b)", rowIndex, expected, actual));
+        pickListObjects.clickItemCancelForm();
         return this;
     }
 }

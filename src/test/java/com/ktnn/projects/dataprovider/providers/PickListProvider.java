@@ -15,6 +15,7 @@ import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
+import com.ktnn.projects.dataprovider.model.PickListOverallSaveModel;
 import com.ktnn.projects.dataprovider.model.PickListSearchModel;
 import com.ktnn.projects.dataprovider.model.PickListSortModel;
 import com.ktnn.projects.dataprovider.model.PickListTwoConditionFilterModel;
@@ -522,6 +523,48 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListItemDelete_002_NoUndoButton(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemSearch_001_ByNameLabel")
+    public Object[][] KTNN_PickListItemSearch_001_ByNameLabel(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeLockedModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemSearch_002_NotFound")
+    public Object[][] KTNN_PickListItemSearch_002_NotFound(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemIsDefault_001_MultipleAllowed")
+    public Object[][] KTNN_PickListItemIsDefault_001_MultipleAllowed(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemOrderModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemIsDefault_002_ToggleOff")
+    public Object[][] KTNN_PickListItemIsDefault_002_ToggleOff(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeLockedModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemIsDefault_003_MultiplePersistAfterSave")
+    public Object[][] KTNN_PickListItemIsDefault_003_MultiplePersistAfterSave(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemOrderModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListPanel_001_SavePersistsChanges")
+    public Object[][] KTNN_PickListPanel_001_SavePersistsChanges(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListOverallSaveModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListPanel_002_CancelDiscardsChanges")
+    public Object[][] KTNN_PickListPanel_002_CancelDiscardsChanges(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListOverallSaveModel(), dataList);
     }
 
     /**
