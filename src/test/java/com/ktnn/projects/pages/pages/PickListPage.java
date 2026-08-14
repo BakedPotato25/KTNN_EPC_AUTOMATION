@@ -538,6 +538,36 @@ public class PickListPage extends BasePage {
         return this;
     }
 
+    public PickListPage selectAddDataType(String value) {
+        pickListObjects.selectAddDataType(value);
+        return this;
+    }
+
+    public PickListPage selectEditDataType(String value) {
+        pickListObjects.selectEditDataType(value);
+        return this;
+    }
+
+    /** aria-disabled cập nhật bất đồng bộ sau khi Save item - poll thay vì đọc ngay lúc vừa chuyển tab. */
+    public PickListPage verifyEditDataTypeDisabled() {
+        boolean disabled;
+        try {
+            disabled = getWaitDriver().until(d -> pickListObjects.isEditDataTypeDisabled());
+        } catch (Exception e) {
+            disabled = false;
+        }
+        assertTrueCondition(null, disabled, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Data Type field is disabled when PickList already has Item(s)");
+        return this;
+    }
+
+    public PickListPage verifyEditDataTypeValue(String expected) {
+        String actual = pickListObjects.getEditDataTypeValue();
+        assertTrueCondition(null, expected.equals(actual), FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify Data Type value = '%s' (actual: '%s')", expected, actual));
+        return this;
+    }
+
     public PickListPage clickEditGeneralTab() {
         pickListObjects.clickEditGeneralTab();
         return this;
@@ -545,6 +575,20 @@ public class PickListPage extends BasePage {
 
     public PickListPage clickEditPickListItemTab() {
         pickListObjects.clickEditPickListItemTab();
+        return this;
+    }
+
+    /** Thêm nhanh 1 Item vào PickList đang mở Edit - setup cho case cần PickList đã có Item (PL_FUNC-47). */
+    public PickListPage addItemToCurrentEdit(String nameLabel, String code, String value) {
+        pickListObjects
+                .clickEditPickListItemTab()
+                .clickAddItem()
+                .inputItemNameLabel(nameLabel)
+                .inputItemCode(code)
+                .inputItemValue(value)
+                .clickItemConfirm();
+        clickEditSave();
+        pickListObjects.clickEditGeneralTab();
         return this;
     }
 

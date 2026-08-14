@@ -414,6 +414,28 @@ public class PickListObjects extends BaseObjects {
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));
     }
 
+    public PickListObjects selectAddDataType(String value) {
+        selectDropdownOption(findWebElement(pickListLocator.getCboAddDataType()), value);
+        return this;
+    }
+
+    /**
+     * ChromeDriver isDisplayed() báo sai (invisible) cho combobox này ngay sau khi chuyển tab -
+     * cùng quirk đã gặp ở CharacteristicCatalog (xem project-ktnn-epc-ui-findings), dùng presence thay vì visible.
+     */
+    public PickListObjects selectEditDataType(String value) {
+        selectDropdownOption(waitForElementPresent(By.xpath(pickListLocator.getCboEditDataType())), value);
+        return this;
+    }
+
+    public boolean isEditDataTypeDisabled() {
+        return "true".equals(getAttributeOfElement(waitForElementPresent(By.xpath(pickListLocator.getCboEditDataType())), "aria-disabled"));
+    }
+
+    public String getEditDataTypeValue() {
+        return getTextElement(waitForElementPresent(By.xpath(pickListLocator.getCboEditDataType())));
+    }
+
     public PickListObjects clickEditGeneralTab() {
         clickByJS(findWebElement(pickListLocator.getTabEditGeneral()), "General tab");
         return this;
@@ -438,6 +460,32 @@ public class PickListObjects extends BaseObjects {
     /** Panel thu nhỏ vẫn giữ 2 icon tab, chỉ ẩn field - dùng field Name (chỉ có ở tab General, panel mở rộng) để biết trạng thái. */
     public boolean isEditPanelExpanded() {
         return !getListWebElement(By.xpath(pickListLocator.getTxtEditName())).isEmpty();
+    }
+
+    /** App có bug DOM trùng id "page-picklist-item" - luôn tìm nút [+] trong pane đang thật sự hiển thị. */
+    public PickListObjects clickAddItem() {
+        clickByJS(findWebElement(pickListLocator.getBtnAddItem()), "Add (+) PickList Item");
+        return this;
+    }
+
+    public PickListObjects inputItemNameLabel(String value) {
+        inputText(findWebElement(pickListLocator.getTxtItemNameLabel()), "Item - Name/Label", value);
+        return this;
+    }
+
+    public PickListObjects inputItemCode(String value) {
+        inputText(findWebElement(pickListLocator.getTxtItemCode()), "Item - Code", value);
+        return this;
+    }
+
+    public PickListObjects inputItemValue(String value) {
+        inputText(findWebElement(pickListLocator.getTxtItemValue()), "Item - Value", value);
+        return this;
+    }
+
+    public PickListObjects clickItemConfirm() {
+        clickByJS(findWebElement(pickListLocator.getBtnItemConfirm()), "Confirm (✓) item");
+        return this;
     }
 
     /** Nút [+] Add item chỉ hiện khi tab PickList Item đang active - dùng làm tín hiệu xác nhận đã chuyển tab. */

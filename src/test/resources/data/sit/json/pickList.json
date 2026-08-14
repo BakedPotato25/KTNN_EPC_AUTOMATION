@@ -648,6 +648,44 @@
       "detail": {}
     }
   ],
+  "KTNN_PickListEdit_006_DataTypeLockedWithItem": [
+    {
+      "Description": "Kiểm tra không thể thay đổi Data Type khi PickList đã có Item (PL_FUNC-47)",
+      "Id": "PL_FUNC-47",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_LOCK_001",
+        "PickListCode": "TEST_CODE_DTYPE_LOCK_001",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_LOCK_001",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_LOCK_001",
+        "ItemValue": "test_val_dtype_lock_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_007_DataTypeChangeableWithoutItem": [
+    {
+      "Description": "Kiểm tra thay đổi Data Type thành công khi PickList chưa có Item (PL_FUNC-48)",
+      "Id": "PL_FUNC-48",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_CHANGE_001",
+        "PickListCode": "TEST_CODE_DTYPE_CHANGE_001",
+        "NewDataType": "Number"
+      },
+      "detail": {}
+    }
+  ],
   "KTNN_PickListEdit_008_SidePanelGeneralOpens": [
     {
       "Description": "Kiểm tra kích icon trên bản ghi → side panel General hiện ra (PL_FUNC-49)",

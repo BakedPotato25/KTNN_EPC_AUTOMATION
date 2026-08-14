@@ -5,6 +5,8 @@ import com.ktnn.consts.AuthorType;
 import com.ktnn.consts.FrameConst.CategoryType;
 import com.ktnn.projects.common.TestBase;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeChangeModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeLockedModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
@@ -715,6 +717,53 @@ public class PickListTest extends TestBase {
                 .searchByKeyword(initialName)
                 .verifySearchResultExactName(initialName)
                 .deleteRecordByExactSearch(initialName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra không thể thay đổi Data Type khi PickList đã có Item (PL_FUNC-47)",
+        dataProvider = "KTNN_PickListEdit_006_DataTypeLockedWithItem",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_006_DataTypeLockedWithItem(PickListDataTypeLockedModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .addItemToCurrentEdit(model.getItemNameLabel().getValue(), model.getItemCode().getValue(), model.getItemValue().getValue())
+                .verifyEditDataTypeDisabled()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra thay đổi Data Type thành công khi PickList chưa có Item (PL_FUNC-48)",
+        dataProvider = "KTNN_PickListEdit_007_DataTypeChangeableWithoutItem",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_007_DataTypeChangeableWithoutItem(PickListDataTypeChangeModel model) {
+        String pickListName = model.getPickListName().getValue();
+        String newDataType = model.getNewDataType().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .selectEditDataType(newDataType)
+                .clickEditSave()
+                .verifyToastMessageContains("successfully")
+                .clickEditCancel()
+                .openEditFormByExactSearch(pickListName)
+                .verifyEditDataTypeValue(newDataType)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
         pendingCleanupKeyword = null;
     }
 

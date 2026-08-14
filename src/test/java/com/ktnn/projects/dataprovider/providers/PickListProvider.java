@@ -3,6 +3,8 @@ package com.ktnn.projects.dataprovider.providers;
 import com.ktnn.datadriven.BaseProvider;
 import com.ktnn.projects.dataprovider.DataPath;
 import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeChangeModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeLockedModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
@@ -241,6 +243,18 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListEdit_005_CancelDiscardsChanges(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListEditModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_006_DataTypeLockedWithItem")
+    public Object[][] KTNN_PickListEdit_006_DataTypeLockedWithItem(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeLockedModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_007_DataTypeChangeableWithoutItem")
+    public Object[][] KTNN_PickListEdit_007_DataTypeChangeableWithoutItem(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeChangeModel(), dataList);
     }
 
     @DataProvider(name = "KTNN_PickListEdit_008_SidePanelGeneralOpens")

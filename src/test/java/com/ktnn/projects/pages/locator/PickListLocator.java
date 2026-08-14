@@ -112,4 +112,19 @@ public class PickListLocator extends BaseLocator {
     // 1 bản active), phải scope theo pane KHÔNG display:none để không bắt trúng bản ẩn/stale.
     // Cũng dùng làm tín hiệu xác nhận đã chuyển sang tab PickList Item (nút chỉ hiện khi tab active).
     String btnAddItem = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'icon-action')]";
+
+    // Data Type dropdown ở dialog Add new
+    String cboAddDataType = "//*[normalize-space()='Data Type *']/following::span[@role='combobox'][1]";
+    // Data Type dropdown ở Edit panel - label KHÔNG có khoảng trắng trước dấu * (khác Add new), 2 label khác text nhau hoàn toàn.
+    // Phải scope qua following-sibling::div (cùng hàng với label) thay vì following:: (toàn document) - PickList đã có
+    // Item thì tab PickList Item render thêm 1 dropdown "Show x" phân trang, following:: không scope sẽ bắt nhầm dropdown đó.
+    String cboEditDataType = "(//label[.//span[normalize-space()='Data Type*']]/following-sibling::div//span[@role='combobox'])[last()]";
+
+    String txtItemNameLabel = "//input[@placeholder='Enter name/label']";
+    // trùng placeholder với Code của tab General nên phải lấy input cuối cùng
+    String txtItemCode = "(//input[@placeholder='Enter code'])[last()]";
+    String txtItemValue = "//input[@placeholder='Enter value']";
+    // nút [✓]/[✗] xác nhận/huỷ form thêm item cùng class gốc, phân biệt bằng class phụ btn-cancel
+    String btnItemConfirm = "//button[contains(@class,'btn-pl-item') and not(contains(@class,'btn-cancel'))]";
+    String btnItemCancelForm = "//button[contains(@class,'btn-pl-item') and contains(@class,'btn-cancel')]";
 }
