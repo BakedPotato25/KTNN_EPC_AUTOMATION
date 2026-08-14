@@ -10,6 +10,7 @@ import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
@@ -382,6 +383,96 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListAddItem_009_CancelDiscardsItem(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListAddItemModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemUI_001_ControlsComplete")
+    public Object[][] KTNN_PickListItemUI_001_ControlsComplete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemUI_002_RowFieldsComplete")
+    public Object[][] KTNN_PickListItemUI_002_RowFieldsComplete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemUI_003_SearchControlsComplete")
+    public Object[][] KTNN_PickListItemUI_003_SearchControlsComplete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemUI_004_OrderAscending")
+    public Object[][] KTNN_PickListItemUI_004_OrderAscending(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemOrderModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemUI_005_OrderDescending")
+    public Object[][] KTNN_PickListItemUI_005_OrderDescending(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemOrderModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_001_ShowOptionsComplete")
+    public Object[][] KTNN_PickListItemPaging_001_ShowOptionsComplete(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_002_Show5Default")
+    public Object[][] KTNN_PickListItemPaging_002_Show5Default(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_003_Show10")
+    public Object[][] KTNN_PickListItemPaging_003_Show10(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_004_Show25")
+    public Object[][] KTNN_PickListItemPaging_004_Show25(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_005_Show50")
+    public Object[][] KTNN_PickListItemPaging_005_Show50(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_006_Show100")
+    public Object[][] KTNN_PickListItemPaging_006_Show100(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_007_NextPage")
+    public Object[][] KTNN_PickListItemPaging_007_NextPage(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_008_PrevPage")
+    public Object[][] KTNN_PickListItemPaging_008_PrevPage(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_009_FirstLastPage")
+    public Object[][] KTNN_PickListItemPaging_009_FirstLastPage(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemPaging_010_ItemsRangeText")
+    public Object[][] KTNN_PickListItemPaging_010_ItemsRangeText(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
     }
 
     /**

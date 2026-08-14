@@ -544,5 +544,133 @@ public class PickListObjects extends BaseObjects {
                 .map(el -> getTextElement(el))
                 .collect(Collectors.toList());
     }
+
+    public int getItemRowCount() {
+        return getListWebElement(By.xpath(pickListLocator.getRowItemGrid())).size();
+    }
+
+    /** Check nhanh toàn bộ control của tab PickList Item hiện đủ (PL_FUNC-52) - cần có sẵn ≥1 item vì search/paginator chỉ render khi có item. */
+    public boolean isPickListItemListControlsComplete() {
+        return !getListWebElement(By.xpath(pickListLocator.getBtnAddItem())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getTxtItemSearch())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getIcoItemSearchButton())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getIcoItemOrderToggle())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getRowItemGrid())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getLblItemPaginatorText())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getCboItemShowTrigger())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getBtnEditSave())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getBtnEditCancel())).isEmpty();
+    }
+
+    /** PL_FUNC-53: dòng item đầu tiên phải có đủ text 3 field + icon ⋮ (more). */
+    public boolean isItemRowFieldsComplete() {
+        List<WebElement> rows = getListWebElement(By.xpath(pickListLocator.getRowItemGrid()));
+        if (rows.isEmpty()) return false;
+        String text = getTextElement(rows.get(0));
+        boolean hasMoreIcon = !getListWebElement(By.xpath(pickListLocator.getIcoFirstRowItemMore())).isEmpty();
+        return text.contains("Name/Label") && text.contains("Code") && text.contains("Value") && hasMoreIcon;
+    }
+
+    public boolean isItemSearchControlsComplete() {
+        return !getListWebElement(By.xpath(pickListLocator.getTxtItemSearch())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getIcoItemSearchButton())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getIcoItemOrderToggle())).isEmpty();
+    }
+
+    public boolean isItemOrderAscending() {
+        List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getIcoItemOrderToggle()));
+        return !matches.isEmpty() && getAttributeOfElement(matches.get(0), "class").contains("fa-sort-numeric-asc");
+    }
+
+    /** Click 1 phát toggle asc/desc (khác panel Order/Sort của lưới chính) - chờ danh sách re-sort xong. */
+    public PickListObjects clickItemOrderToggle() {
+        List<String> before = getAllItemRowTexts();
+        clickByJS(findWebElement(pickListLocator.getIcoItemOrderToggle()), "Order toggle (item)");
+        try {
+            getWaitDriver().until(d -> !getAllItemRowTexts().equals(before));
+        } catch (Exception ignored) {
+        }
+        return this;
+    }
+
+    /**
+     * Mở dropdown Show đọc hết option rồi đóng lại bằng cách chọn "5" (mặc định) - PickList mới tạo
+     * luôn mặc định Show=5 nên chọn lại "5" không đổi state, an toàn cho các bước sau.
+     */
+    public List<String> getItemShowOptionTexts() {
+        clickByJS(findWebElement(pickListLocator.getCboItemShowTrigger()), "Show dropdown (item) trigger");
+        List<String> options = getListWebElement(By.xpath(pickListLocator.getLiAllDropdownOptions())).stream()
+                .map(el -> getTextElement(el))
+                .collect(Collectors.toList());
+        clickByJS(findWebElement(getByXpathDynamic(pickListLocator.getOptionByText(), "5")), "5");
+        return options;
+    }
+
+    public String getItemShowValue() {
+        return getTextElement(findWebElement(pickListLocator.getCboItemShowTrigger()));
+    }
+
+    public PickListObjects selectItemShowPageSize(String value) {
+        selectDropdownOption(findWebElement(pickListLocator.getCboItemShowTrigger()), value);
+        try {
+            getWaitDriver().until(d -> value.equals(getItemShowValue()));
+        } catch (Exception ignored) {
+        }
+        return this;
+    }
+
+    public String getItemPaginatorText() {
+        return getTextElement(findWebElement(pickListLocator.getLblItemPaginatorText()));
+    }
+
+    private void clickItemPageNavButton(String locator, String title) {
+        List<String> before = getAllItemRowTexts();
+        clickByJS(findWebElement(locator), title);
+        try {
+            getWaitDriver().until(d -> !getAllItemRowTexts().equals(before));
+        } catch (Exception ignored) {
+        }
+    }
+
+    public PickListObjects clickItemPageFirst() {
+        clickItemPageNavButton(pickListLocator.getBtnItemPageFirst(), "First page (item)");
+        return this;
+    }
+
+    public PickListObjects clickItemPagePrev() {
+        clickItemPageNavButton(pickListLocator.getBtnItemPagePrev(), "Previous page (item)");
+        return this;
+    }
+
+    public PickListObjects clickItemPageNext() {
+        clickItemPageNavButton(pickListLocator.getBtnItemPageNext(), "Next page (item)");
+        return this;
+    }
+
+    public PickListObjects clickItemPageLast() {
+        clickItemPageNavButton(pickListLocator.getBtnItemPageLast(), "Last page (item)");
+        return this;
+    }
+
+    /** Trạng thái disable của nút phân trang đọc qua class p-disabled - nút vẫn còn "disabled" attribute native nên dùng class cho chắc. */
+    private boolean isItemPageButtonDisabled(String locator) {
+        return getAttributeOfElement(findWebElement(locator), "class").contains("p-disabled");
+    }
+
+    public boolean isItemPageFirstDisabled() {
+        return isItemPageButtonDisabled(pickListLocator.getBtnItemPageFirst());
+    }
+
+    public boolean isItemPagePrevDisabled() {
+        return isItemPageButtonDisabled(pickListLocator.getBtnItemPagePrev());
+    }
+
+    public boolean isItemPageNextDisabled() {
+        return isItemPageButtonDisabled(pickListLocator.getBtnItemPageNext());
+    }
+
+    public boolean isItemPageLastDisabled() {
+        return isItemPageButtonDisabled(pickListLocator.getBtnItemPageLast());
+    }
 }
 

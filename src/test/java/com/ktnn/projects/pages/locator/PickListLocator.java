@@ -139,4 +139,25 @@ public class PickListLocator extends BaseLocator {
 
     // mỗi item trong danh sách PickList Item là 1 .row-item (Name/Label, Code, Value + icon ⋮)
     String rowItemGrid = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')]";
+
+    // thanh search + icon trong tab PickList Item (PL_FUNC-54) - khác ô search của lưới PickList chính
+    String txtItemSearch = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'search-item')]//input[@placeholder='Search']";
+    String icoItemSearchButton = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'search-item')]//i[contains(@class,'pi-search')]";
+    // icon Order - click 1 phát toggle asc(fa-sort-numeric-asc)/desc(fa-sort-numeric-desc) và tự re-sort ngay,
+    // KHÔNG phải panel+dropdown như Order/Sort của lưới PickList chính (đã verify qua Playwright)
+    String icoItemOrderToggle = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'search-item')]//i[contains(@class,'fa-sort-numeric')]";
+
+    // icon ⋮ (more) của dòng item đầu tiên - PL_FUNC-53
+    String icoFirstRowItemMore = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[1]//i[contains(@class,'fa-ellipsis-v')]";
+
+    // paginator của tab PickList Item - dòng "Items x-y/z" là div con đầu tiên, trước thẻ nav
+    String lblItemPaginatorText = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'paginator')]/div[1]";
+    String cboItemShowTrigger = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'p-paginator-rpp-dropdown')]";
+    String btnItemPageFirst = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//button[contains(@class,'p-paginator-first')]";
+    String btnItemPagePrev = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//button[contains(@class,'p-paginator-prev')]";
+    String btnItemPageNext = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//button[contains(@class,'p-paginator-next')]";
+    String btnItemPageLast = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//button[contains(@class,'p-paginator-last')]";
+
+    // đọc toàn bộ option đang mở của 1 dropdown PrimeVue Select bất kỳ (dùng cho PL_FUNC-57 - đếm đủ 5/10/25/50/100)
+    String liAllDropdownOptions = "//li[@role='option']";
 }

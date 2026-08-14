@@ -12,6 +12,7 @@ import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
+import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiFieldSearchModel;
@@ -1305,6 +1306,364 @@ public class PickListTest extends TestBase {
                 .verifyItemNotInList(model.getItemNameLabel().getValue())
                 .clickEditCancel();
         pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tính đủ của các control trong tab PickList Item (PL_FUNC-52)",
+        dataProvider = "KTNN_PickListItemUI_001_ControlsComplete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemUI_001_ControlsComplete(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .verifyPickListItemControlsComplete()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra tính đủ của các trường trong mỗi item (PL_FUNC-53)",
+        dataProvider = "KTNN_PickListItemUI_002_RowFieldsComplete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemUI_002_RowFieldsComplete(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .verifyItemRowFieldsComplete()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra ô Search và các icon bên trong (PL_FUNC-54)",
+        dataProvider = "KTNN_PickListItemUI_003_SearchControlsComplete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemUI_003_SearchControlsComplete(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .verifyItemSearchControlsComplete()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra icon Order sắp xếp tăng dần (1→9) (PL_FUNC-55)",
+        dataProvider = "KTNN_PickListItemUI_004_OrderAscending",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemUI_004_OrderAscending(PickListItemOrderModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(model.getItem1NameLabel().getValue(), model.getItem1Code().getValue(), model.getItem1Value().getValue())
+                .addSimpleItem(model.getItem2NameLabel().getValue(), model.getItem2Code().getValue(), model.getItem2Value().getValue())
+                // Tăng dần (item cũ nhất lên đầu) là trạng thái MẶC ĐỊNH của icon Order - không cần click,
+                // xem chi tiết quirk "Order icon là toggle 1-click" ở PickListObjects.clickItemOrderToggle
+                .verifyFirstItemRowContains(model.getItem1NameLabel().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra icon Order sắp xếp giảm dần (9→1) (PL_FUNC-56)",
+        dataProvider = "KTNN_PickListItemUI_005_OrderDescending",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemUI_005_OrderDescending(PickListItemOrderModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(model.getItem1NameLabel().getValue(), model.getItem1Code().getValue(), model.getItem1Value().getValue())
+                .addSimpleItem(model.getItem2NameLabel().getValue(), model.getItem2Code().getValue(), model.getItem2Value().getValue())
+                .clickItemOrderToggle()
+                .verifyFirstItemRowContains(model.getItem2NameLabel().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra dropdown Show có đủ tùy chọn (PL_FUNC-57)",
+        dataProvider = "KTNN_PickListItemPaging_001_ShowOptionsComplete",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_001_ShowOptionsComplete(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .verifyItemShowOptionsComplete()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra chọn Show = 5 (mặc định) (PL_FUNC-58)",
+        dataProvider = "KTNN_PickListItemPaging_002_Show5Default",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_002_Show5Default(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .selectItemShowPageSize("5")
+                .verifyItemShowPageSizeApplied(5)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra chọn Show = 10 (PL_FUNC-59)",
+        dataProvider = "KTNN_PickListItemPaging_003_Show10",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_003_Show10(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .selectItemShowPageSize("10")
+                .verifyItemShowPageSizeApplied(10)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra chọn Show = 25 (PL_FUNC-60)",
+        dataProvider = "KTNN_PickListItemPaging_004_Show25",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_004_Show25(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .selectItemShowPageSize("25")
+                .verifyItemShowPageSizeApplied(25)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra chọn Show = 50 (PL_FUNC-61)",
+        dataProvider = "KTNN_PickListItemPaging_005_Show50",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_005_Show50(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .selectItemShowPageSize("50")
+                .verifyItemShowPageSizeApplied(50)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra chọn Show = 100 (PL_FUNC-62)",
+        dataProvider = "KTNN_PickListItemPaging_006_Show100",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_006_Show100(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .selectItemShowPageSize("100")
+                .verifyItemShowPageSizeApplied(100)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nút [>] trang sau (PL_FUNC-63)",
+        dataProvider = "KTNN_PickListItemPaging_007_NextPage",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_007_NextPage(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .verifyItemPageNavState(true, true, false, false)
+                .clickItemPageNext()
+                .verifyItemPageNavState(false, false, true, true)
+                .verifyItemPaginatorRange(6, 6, 6)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nút [<] trang trước (PL_FUNC-64)",
+        dataProvider = "KTNN_PickListItemPaging_008_PrevPage",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_008_PrevPage(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .clickItemPageNext()
+                .clickItemPagePrev()
+                .verifyItemPageNavState(true, true, false, false)
+                .verifyItemPaginatorRange(1, 5, 6)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nút [>>] trang cuối và [<<] trang đầu (PL_FUNC-65)",
+        dataProvider = "KTNN_PickListItemPaging_009_FirstLastPage",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_009_FirstLastPage(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .clickItemPageLast()
+                .verifyItemPaginatorRange(6, 6, 6)
+                .clickItemPageFirst()
+                .verifyItemPaginatorRange(1, 5, 6)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra thông tin Items x-y/z hiển thị đúng (PL_FUNC-66)",
+        dataProvider = "KTNN_PickListItemPaging_010_ItemsRangeText",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemPaging_010_ItemsRangeText(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        String code = model.getCode().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, code)
+                .openEditFormByExactSearch(name)
+                .seedItems(code, 6)
+                .clickEditPickListItemTab()
+                .verifyItemPaginatorRange(1, 5, 6)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
         pendingCleanupKeyword = null;
     }
 }

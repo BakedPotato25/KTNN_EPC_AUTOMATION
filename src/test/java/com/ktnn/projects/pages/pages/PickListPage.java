@@ -699,4 +699,140 @@ public class PickListPage extends BasePage {
                 String.format("Verify item Name/Label='%s' does NOT appear in PickList Item list", nameLabel));
         return this;
     }
+
+    /** Thêm 1 item với 3 field bắt buộc - dùng khi test chỉ cần vài item cụ thể (PL_FUNC-55/56), không cần Model đầy đủ như fillAddItemForm. Gọi sau khi đã ở tab PickList Item. */
+    public PickListPage addSimpleItem(String nameLabel, String code, String value) {
+        pickListObjects
+                .clickAddItem()
+                .inputItemNameLabel(nameLabel)
+                .inputItemCode(code)
+                .inputItemValue(value)
+                .clickItemConfirm();
+        return this;
+    }
+
+    /** Seed nhanh N item chỉ để có đủ dữ liệu test phân trang - nội dung item không quan trọng nên đặt tên theo pickListCode + index cho dễ trace, không cần JSON riêng cho từng item. */
+    public PickListPage seedItems(String pickListCode, int count) {
+        pickListObjects.clickEditPickListItemTab();
+        for (int i = 1; i <= count; i++) {
+            pickListObjects
+                    .clickAddItem()
+                    .inputItemNameLabel(pickListCode + "_ITEM_" + i)
+                    .inputItemCode(pickListCode + "_ITEM_CODE_" + i)
+                    .inputItemValue("val_" + i)
+                    .clickItemConfirm();
+        }
+        clickEditSave();
+        pickListObjects.clickEditGeneralTab();
+        return this;
+    }
+
+    public PickListPage verifyPickListItemControlsComplete() {
+        boolean complete = pickListObjects.isPickListItemListControlsComplete();
+        assertTrueCondition(null, complete, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify PickList Item tab shows all controls (Add button, Search+Order, item list, paginator, Save/Cancel)");
+        return this;
+    }
+
+    public PickListPage verifyItemRowFieldsComplete() {
+        boolean complete = pickListObjects.isItemRowFieldsComplete();
+        assertTrueCondition(null, complete, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify each item row shows Name/Label, Code, Value and the more (⋮) icon");
+        return this;
+    }
+
+    public PickListPage verifyItemSearchControlsComplete() {
+        boolean complete = pickListObjects.isItemSearchControlsComplete();
+        assertTrueCondition(null, complete, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify item search bar shows input, search icon and order icon");
+        return this;
+    }
+
+    public PickListPage clickItemOrderToggle() {
+        pickListObjects.clickItemOrderToggle();
+        return this;
+    }
+
+    public PickListPage verifyFirstItemRowContains(String expectedNameLabel) {
+        List<String> rows = pickListObjects.getAllItemRowTexts();
+        boolean matches = !rows.isEmpty() && rows.get(0).contains(expectedNameLabel);
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify first item row contains Name/Label '%s' (actual first row: '%s')",
+                        expectedNameLabel, rows.isEmpty() ? "" : rows.get(0)));
+        return this;
+    }
+
+    public PickListPage verifyItemShowOptionsComplete() {
+        List<String> options = pickListObjects.getItemShowOptionTexts();
+        boolean complete = options.containsAll(Arrays.asList("5", "10", "25", "50", "100"));
+        assertTrueCondition(null, complete, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify Show dropdown has options 5/10/25/50/100 (actual: %s)", options));
+        return this;
+    }
+
+    public PickListPage selectItemShowPageSize(String value) {
+        pickListObjects.selectItemShowPageSize(value);
+        return this;
+    }
+
+    /** "hiển thị tối đa N item/trang" - verify không vượt cap, không đòi hỏi seed đủ >N item để chứng minh tràn trang (không thực tế với N=50/100). */
+    public PickListPage verifyItemShowPageSizeApplied(int expectedPageSize) {
+        int rowCount = pickListObjects.getItemRowCount();
+        boolean capped = rowCount > 0 && rowCount <= expectedPageSize;
+        assertTrueCondition(null, capped, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify at most %d items shown per page after selecting Show=%d (actual: %d)",
+                        expectedPageSize, expectedPageSize, rowCount));
+        return this;
+    }
+
+    public PickListPage clickItemPageFirst() {
+        pickListObjects.clickItemPageFirst();
+        return this;
+    }
+
+    public PickListPage clickItemPagePrev() {
+        pickListObjects.clickItemPagePrev();
+        return this;
+    }
+
+    public PickListPage clickItemPageNext() {
+        pickListObjects.clickItemPageNext();
+        return this;
+    }
+
+    public PickListPage clickItemPageLast() {
+        pickListObjects.clickItemPageLast();
+        return this;
+    }
+
+    public PickListPage verifyItemPageNavState(boolean firstDisabled, boolean prevDisabled, boolean nextDisabled, boolean lastDisabled) {
+        boolean actualFirst = pickListObjects.isItemPageFirstDisabled();
+        boolean actualPrev = pickListObjects.isItemPagePrevDisabled();
+        boolean actualNext = pickListObjects.isItemPageNextDisabled();
+        boolean actualLast = pickListObjects.isItemPageLastDisabled();
+        boolean matches = actualFirst == firstDisabled && actualPrev == prevDisabled
+                && actualNext == nextDisabled && actualLast == lastDisabled;
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify pagination nav disabled-state (expected first=%b prev=%b next=%b last=%b, actual first=%b prev=%b next=%b last=%b)",
+                        firstDisabled, prevDisabled, nextDisabled, lastDisabled, actualFirst, actualPrev, actualNext, actualLast));
+        return this;
+    }
+
+    /** "Items x-y/z" nối bằng \n giữa các node - regex bỏ qua xuống dòng (DOTALL) giống parseResultsCount của lưới chính. */
+    private static int[] parseItemPaginatorRange(String text) {
+        Matcher matcher = Pattern.compile("(\\d+)\\s*-\\s*(\\d+)\\s*/\\s*(\\d+)", Pattern.DOTALL).matcher(text);
+        if (matcher.find()) {
+            return new int[]{Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3))};
+        }
+        return new int[]{-1, -1, -1};
+    }
+
+    public PickListPage verifyItemPaginatorRange(int expectedStart, int expectedEnd, int expectedTotal) {
+        int[] actual = parseItemPaginatorRange(pickListObjects.getItemPaginatorText());
+        boolean matches = actual[0] == expectedStart && actual[1] == expectedEnd && actual[2] == expectedTotal;
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item paginator shows 'Items %d - %d / %d' (actual: %d - %d / %d)",
+                        expectedStart, expectedEnd, expectedTotal, actual[0], actual[1], actual[2]));
+        return this;
+    }
 }

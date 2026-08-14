@@ -1079,5 +1079,272 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListItemUI_001_ControlsComplete": [
+    {
+      "Description": "Kiểm tra tính đủ của các control trong tab PickList Item (PL_FUNC-52)",
+      "Id": "PL_FUNC-52",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMUI_001",
+        "Code": "TEST_CODE_ITEMUI_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemUI_002_RowFieldsComplete": [
+    {
+      "Description": "Kiểm tra tính đủ của các trường trong mỗi item (PL_FUNC-53)",
+      "Id": "PL_FUNC-53",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMUI_002",
+        "Code": "TEST_CODE_ITEMUI_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemUI_003_SearchControlsComplete": [
+    {
+      "Description": "Kiểm tra ô Search và các icon bên trong (PL_FUNC-54)",
+      "Id": "PL_FUNC-54",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMUI_003",
+        "Code": "TEST_CODE_ITEMUI_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemUI_004_OrderAscending": [
+    {
+      "Description": "Kiểm tra icon Order sắp xếp tăng dần (1→9) (PL_FUNC-55)",
+      "Id": "PL_FUNC-55",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMORDER_001",
+        "PickListCode": "TEST_CODE_ITEMORDER_001",
+        "Item1NameLabel": "TEST_ITEM_ORDER_001A",
+        "Item1Code": "TEST_ITEM_ORDER_CODE_001A",
+        "Item1Value": "val_001a",
+        "Item2NameLabel": "TEST_ITEM_ORDER_001B",
+        "Item2Code": "TEST_ITEM_ORDER_CODE_001B",
+        "Item2Value": "val_001b"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemUI_005_OrderDescending": [
+    {
+      "Description": "Kiểm tra icon Order sắp xếp giảm dần (9→1) (PL_FUNC-56)",
+      "Id": "PL_FUNC-56",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMORDER_002",
+        "PickListCode": "TEST_CODE_ITEMORDER_002",
+        "Item1NameLabel": "TEST_ITEM_ORDER_002A",
+        "Item1Code": "TEST_ITEM_ORDER_CODE_002A",
+        "Item1Value": "val_002a",
+        "Item2NameLabel": "TEST_ITEM_ORDER_002B",
+        "Item2Code": "TEST_ITEM_ORDER_CODE_002B",
+        "Item2Value": "val_002b"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_001_ShowOptionsComplete": [
+    {
+      "Description": "Kiểm tra dropdown Show có đủ tùy chọn (PL_FUNC-57)",
+      "Id": "PL_FUNC-57",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_001",
+        "Code": "TEST_CODE_PAGING_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_002_Show5Default": [
+    {
+      "Description": "Kiểm tra chọn Show = 5 (mặc định) (PL_FUNC-58)",
+      "Id": "PL_FUNC-58",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_002",
+        "Code": "TEST_CODE_PAGING_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_003_Show10": [
+    {
+      "Description": "Kiểm tra chọn Show = 10 (PL_FUNC-59)",
+      "Id": "PL_FUNC-59",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_003",
+        "Code": "TEST_CODE_PAGING_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_004_Show25": [
+    {
+      "Description": "Kiểm tra chọn Show = 25 (PL_FUNC-60)",
+      "Id": "PL_FUNC-60",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_004",
+        "Code": "TEST_CODE_PAGING_004"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_005_Show50": [
+    {
+      "Description": "Kiểm tra chọn Show = 50 (PL_FUNC-61) - Excel gốc N/A vì QA không seed đủ dữ liệu; automation verify được phần 'không vượt quá 50 item/trang' dù không seed đủ >50 item để chứng minh tràn trang, do tạo thủ công 51+ item qua UI không thực tế",
+      "Id": "PL_FUNC-61",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_005",
+        "Code": "TEST_CODE_PAGING_005"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_006_Show100": [
+    {
+      "Description": "Kiểm tra chọn Show = 100 (PL_FUNC-62) - cùng lý do như PL_FUNC-61, chỉ verify không vượt cap",
+      "Id": "PL_FUNC-62",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_006",
+        "Code": "TEST_CODE_PAGING_006"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_007_NextPage": [
+    {
+      "Description": "Kiểm tra nút [>] trang sau (PL_FUNC-63)",
+      "Id": "PL_FUNC-63",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_007",
+        "Code": "TEST_CODE_PAGING_007"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_008_PrevPage": [
+    {
+      "Description": "Kiểm tra nút [<] trang trước (PL_FUNC-64)",
+      "Id": "PL_FUNC-64",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_008",
+        "Code": "TEST_CODE_PAGING_008"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_009_FirstLastPage": [
+    {
+      "Description": "Kiểm tra nút [>>] trang cuối và [<<] trang đầu (PL_FUNC-65)",
+      "Id": "PL_FUNC-65",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_009",
+        "Code": "TEST_CODE_PAGING_009"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemPaging_010_ItemsRangeText": [
+    {
+      "Description": "Kiểm tra thông tin Items x-y/z hiển thị đúng (PL_FUNC-66)",
+      "Id": "PL_FUNC-66",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PAGING_010",
+        "Code": "TEST_CODE_PAGING_010"
+      },
+      "detail": {}
+    }
   ]
 }
