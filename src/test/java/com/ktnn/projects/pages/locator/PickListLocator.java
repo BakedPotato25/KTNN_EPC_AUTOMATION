@@ -171,4 +171,10 @@ public class PickListLocator extends BaseLocator {
     // bản %s theo index - dùng khi cần thao tác dòng thứ N (PL_FUNC-86/101 cần đọc Is Default của cả item 1 và 2)
     String icoRowItemMoreByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[%s]//i[contains(@class,'fa-ellipsis-v')]";
     String icoRowItemEyeByIndex = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[%s]//i[contains(@class,'fa-eye')]";
+
+    // field chỉ xuất hiện khi PickList Data Type = Number - không bắt buộc, không có dấu *
+    String txtItemUnitOfMeasure = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//input[@placeholder='Enter unit of measure']";
+    // Value field khi Data Type = Object là CodeMirror contenteditable (svelte-jsoneditor), KHÔNG phải input/textarea -
+    // sendKeys thẳng vào .cm-content vẫn ăn (Selenium tự focus trước khi gõ), đọc lại qua getTextElement (textContent)
+    String txtItemValueJsonEditor = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'add-new')]//div[contains(@class,'cm-content')]";
 }

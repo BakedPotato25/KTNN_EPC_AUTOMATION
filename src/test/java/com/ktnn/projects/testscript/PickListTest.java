@@ -9,9 +9,11 @@ import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListDataTypeChangeModel;
 import com.ktnn.projects.dataprovider.model.PickListDataTypeLockedModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeComparisonModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditItemModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
+import com.ktnn.projects.dataprovider.model.PickListItemValueModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
@@ -2066,6 +2068,289 @@ public class PickListTest extends TestBase {
                 .openEditFormByExactSearch(pickListName)
                 .clickEditPickListItemTab()
                 .verifyItemRowCount(0)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra form Add item của PickList Data Type = String (PL_FUNC-90)",
+        dataProvider = "KTNN_PickListDataTypeForm_001_String",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeForm_001_String(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("String")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Value chấp nhận tự do mọi loại ký tự khi Data Type = String (PL_FUNC-91)",
+        dataProvider = "KTNN_PickListDataTypeValue_001_StringFreeText",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeValue_001_StringFreeText(PickListDataTypeLockedModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(model.getItemNameLabel().getValue(), model.getItemCode().getValue(), model.getItemValue().getValue())
+                .verifyFirstItemRowContains(model.getItemValue().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra form Add item của PickList Data Type = Number (PL_FUNC-92)",
+        dataProvider = "KTNN_PickListDataTypeForm_002_Number",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeForm_002_Number(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEditWithDataType(name, model.getCode().getValue(), "Number")
+                .openEditFormByExactSearch(name)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("Number")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Value chỉ cho phép nhập ký tự số khi Data Type = Number (PL_FUNC-93)",
+        dataProvider = "KTNN_PickListDataTypeValue_002_NumberFilters",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeValue_002_NumberFilters(PickListItemValueModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEditWithDataType(pickListName, model.getPickListCode().getValue(), "Number")
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .inputItemNameLabel(model.getItemNameLabel().getValue())
+                .inputItemCode(model.getItemCode().getValue())
+                .inputItemValue(model.getValueInput().getValue())
+                .verifyItemValueFieldShows(model.getExpectedValue().getValue())
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Unit of Measure không bắt buộc khi Data Type = Number (PL_FUNC-94)",
+        dataProvider = "KTNN_PickListDataTypeValue_003_NumberUnitOptional",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeValue_003_NumberUnitOptional(PickListDataTypeLockedModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEditWithDataType(pickListName, model.getPickListCode().getValue(), "Number")
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .inputItemNameLabel(model.getItemNameLabel().getValue())
+                .inputItemCode(model.getItemCode().getValue())
+                .inputItemValue(model.getItemValue().getValue())
+                .clickItemConfirm()
+                .verifyFirstItemRowContains(model.getItemNameLabel().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra form Add item của PickList Data Type = Object (PL_FUNC-95)",
+        dataProvider = "KTNN_PickListDataTypeForm_004_Object",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeForm_004_Object(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEditWithDataType(name, model.getCode().getValue(), "Object")
+                .openEditFormByExactSearch(name)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("Object")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Value (code editor) hỗ trợ nhập dữ liệu nhiều dòng dạng JSON (PL_FUNC-96)",
+        dataProvider = "KTNN_PickListDataTypeValue_004_ObjectMultilineJson",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeValue_004_ObjectMultilineJson(PickListItemValueModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEditWithDataType(pickListName, model.getPickListCode().getValue(), "Object")
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .inputItemNameLabel(model.getItemNameLabel().getValue())
+                .inputItemCode(model.getItemCode().getValue())
+                .inputItemValueJsonEditor(model.getValueInput().getValue())
+                .verifyItemValueJsonEditorShows(model.getExpectedValue().getValue())
+                .clickItemConfirm()
+                .verifyFirstItemRowContains(model.getItemNameLabel().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra trường Value (Object) không validate định dạng JSON khi nhập text tự do (PL_FUNC-97)",
+        dataProvider = "KTNN_PickListDataTypeValue_005_ObjectInvalidJsonBlocked",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeValue_005_ObjectInvalidJsonBlocked(PickListItemValueModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEditWithDataType(pickListName, model.getPickListCode().getValue(), "Object")
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .inputItemNameLabel(model.getItemNameLabel().getValue())
+                .inputItemCode(model.getItemCode().getValue())
+                .inputItemValueJsonEditor(model.getValueInput().getValue())
+                .clickItemConfirm()
+                .verifyItemFormClosed()
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra so sánh sự khác nhau giữa form Add item của 3 Data Type: String, Number, Object (PL_FUNC-98)",
+        dataProvider = "KTNN_PickListDataTypeForm_003_CompareAllTypes",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListDataTypeForm_003_CompareAllTypes(PickListDataTypeComparisonModel model) {
+        String stringName = model.getStringPickListName().getValue();
+        pendingCleanupKeyword = stringName;
+        pickListPage
+                .setupRecordToEdit(stringName, model.getStringPickListCode().getValue())
+                .openEditFormByExactSearch(stringName)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("String")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(stringName);
+
+        String numberName = model.getNumberPickListName().getValue();
+        pendingCleanupKeyword = numberName;
+        pickListPage
+                .setupRecordToEditWithDataType(numberName, model.getNumberPickListCode().getValue(), "Number")
+                .openEditFormByExactSearch(numberName)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("Number")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(numberName);
+
+        String objectName = model.getObjectPickListName().getValue();
+        pendingCleanupKeyword = objectName;
+        pickListPage
+                .setupRecordToEditWithDataType(objectName, model.getObjectPickListCode().getValue(), "Object")
+                .openEditFormByExactSearch(objectName)
+                .openAddItemForm()
+                .verifyItemValueFieldMatchesDataType("Object")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(objectName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập ValidFor của Item có ngày bắt đầu lớn hơn ngày kết thúc (PL_FUNC-99)",
+        dataProvider = "KTNN_PickListItemValidFor_001_FromAfterTo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemValidFor_001_FromAfterTo(PickListAddItemModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .fillAddItemForm(model)
+                .verifyItemValidForToCleared()
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra nhập ValidFor của Item có ngày bắt đầu bằng ngày kết thúc (PL_FUNC-100)",
+        dataProvider = "KTNN_PickListItemValidFor_002_FromEqualsTo",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemValidFor_002_FromEqualsTo(PickListAddItemModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .openAddItemForm()
+                .fillAddItemForm(model)
+                .clickItemConfirm()
+                // Excel gốc kỳ vọng bị chặn (form còn mở) khi từ ngày = đến ngày - hệ thống thật CHO PHÉP,
+                // Confirm thành công nên form item đã đóng (không còn nút Cancel riêng để bấm) - Cancel
+                // panel tổng thể sẽ discard toàn bộ thay đổi (item chưa Save nên không bị persist)
+                .verifyAddItemFormStillOpen()
                 .clickEditCancel();
         pickListPage.deleteRecordByExactSearch(pickListName);
         pendingCleanupKeyword = null;

@@ -950,4 +950,105 @@ public class PickListPage extends BasePage {
         pickListObjects.clickItemCancelForm();
         return this;
     }
+
+    /** Giống setupRecordToEdit nhưng chọn thêm Data Type - dùng khi cần PickList Number/Object thay vì mặc định String. */
+    public PickListPage setupRecordToEditWithDataType(String name, String code, String dataType) {
+        removeLeftoverRecords(name);
+        openAddNewForm();
+        pickListObjects.inputAddName(name);
+        pickListObjects.inputAddCode(code);
+        pickListObjects.selectAddDataType(dataType);
+        clickAddNewSave();
+        pickListObjects.clickEditCancel();
+        return this;
+    }
+
+    public PickListPage inputItemNameLabel(String value) {
+        pickListObjects.inputItemNameLabel(value);
+        return this;
+    }
+
+    public PickListPage inputItemCode(String value) {
+        pickListObjects.inputItemCode(value);
+        return this;
+    }
+
+    public PickListPage inputItemValue(String value) {
+        pickListObjects.inputItemValue(value);
+        return this;
+    }
+
+    public PickListPage inputItemUnitOfMeasure(String value) {
+        pickListObjects.inputItemUnitOfMeasure(value);
+        return this;
+    }
+
+    public PickListPage inputItemValueJsonEditor(String jsonText) {
+        pickListObjects.inputItemValueJsonEditor(jsonText);
+        return this;
+    }
+
+    public PickListPage verifyItemValueFieldShows(String expected) {
+        String actual = pickListObjects.getItemValueValue();
+        assertTrueCondition(null, expected.equals(actual), FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item Value field shows '%s' (actual: '%s')", expected, actual));
+        return this;
+    }
+
+    public PickListPage verifyItemValueJsonEditorShows(String expected) {
+        String actual = pickListObjects.getItemValueJsonEditorText();
+        assertTrueCondition(null, expected.equals(actual), FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item Value JSON editor shows '%s' (actual: '%s')", expected, actual));
+        return this;
+    }
+
+    /**
+     * Kiểm tra field Value có đúng loại control theo Data Type của PickList (PL_FUNC-90/92/95/98):
+     * String = input text thường; Number = input text (đã có sẵn isAddItemFormDisplayed) + thêm Unit of Measure;
+     * Object = code editor JSON (không có input Value thường, không có Unit of Measure).
+     */
+    public PickListPage verifyItemValueFieldMatchesDataType(String dataType) {
+        boolean matches;
+        switch (dataType) {
+            case "Number":
+                matches = pickListObjects.isAddItemFormDisplayed()
+                        && pickListObjects.isItemUnitOfMeasureFieldPresent()
+                        && !pickListObjects.isItemValueJsonEditorPresent();
+                break;
+            case "Object":
+                matches = pickListObjects.isItemValueJsonEditorPresent()
+                        && !pickListObjects.isItemUnitOfMeasureFieldPresent();
+                break;
+            default:
+                matches = pickListObjects.isAddItemFormDisplayed()
+                        && !pickListObjects.isItemUnitOfMeasureFieldPresent()
+                        && !pickListObjects.isItemValueJsonEditorPresent();
+        }
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify Add item form Value field matches Data Type = %s", dataType));
+        return this;
+    }
+
+    /** PL_FUNC-100: Excel gốc kỳ vọng bị chặn lưu (form còn mở) khi Valid For from=to - hệ thống thật cho lưu bình thường. */
+    public PickListPage verifyAddItemFormStillOpen() {
+        boolean stillOpen = pickListObjects.isAddItemFormDisplayed() || pickListObjects.isItemValueJsonEditorPresent();
+        assertTrueCondition(null, stillOpen, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Add item form stays open (blocked by validation)");
+        return this;
+    }
+
+    /** PL_FUNC-97: Excel gốc kỳ vọng Object Value không validate JSON (Confirm thành công, form đóng) - hệ thống thật CÓ validate và chặn lại. */
+    public PickListPage verifyItemFormClosed() {
+        boolean closed = !pickListObjects.isAddItemFormDisplayed() && !pickListObjects.isItemValueJsonEditorPresent();
+        assertTrueCondition(null, closed, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify item form closed successfully after Confirm (per spec expectation - no JSON format validation)");
+        return this;
+    }
+
+    public PickListPage verifyItemValidForToCleared() {
+        String toValue = pickListObjects.getItemValidForToValue();
+        assertTrueCondition(null, toValue == null || toValue.isEmpty(), FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item Valid For 'to' date auto-cleared when earlier than 'from' (actual: '%s')", toValue));
+        return this;
+    }
 }

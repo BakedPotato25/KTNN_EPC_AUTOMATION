@@ -7,9 +7,11 @@ import com.ktnn.projects.dataprovider.model.PickListAddNewModel;
 import com.ktnn.projects.dataprovider.model.PickListDataTypeChangeModel;
 import com.ktnn.projects.dataprovider.model.PickListDataTypeLockedModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
+import com.ktnn.projects.dataprovider.model.PickListDataTypeComparisonModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
 import com.ktnn.projects.dataprovider.model.PickListEditItemModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
+import com.ktnn.projects.dataprovider.model.PickListItemValueModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
 import com.ktnn.projects.dataprovider.model.PickListMultiDeleteInUseModel;
@@ -565,6 +567,72 @@ public class PickListProvider extends BaseProvider {
     public Object[][] KTNN_PickListPanel_002_CancelDiscardsChanges(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
         return updateDataModel(new PickListOverallSaveModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeForm_001_String")
+    public Object[][] KTNN_PickListDataTypeForm_001_String(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeValue_001_StringFreeText")
+    public Object[][] KTNN_PickListDataTypeValue_001_StringFreeText(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeLockedModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeForm_002_Number")
+    public Object[][] KTNN_PickListDataTypeForm_002_Number(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeValue_002_NumberFilters")
+    public Object[][] KTNN_PickListDataTypeValue_002_NumberFilters(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemValueModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeValue_003_NumberUnitOptional")
+    public Object[][] KTNN_PickListDataTypeValue_003_NumberUnitOptional(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeLockedModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeForm_004_Object")
+    public Object[][] KTNN_PickListDataTypeForm_004_Object(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeValue_004_ObjectMultilineJson")
+    public Object[][] KTNN_PickListDataTypeValue_004_ObjectMultilineJson(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemValueModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeValue_005_ObjectInvalidJsonBlocked")
+    public Object[][] KTNN_PickListDataTypeValue_005_ObjectInvalidJsonBlocked(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListItemValueModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListDataTypeForm_003_CompareAllTypes")
+    public Object[][] KTNN_PickListDataTypeForm_003_CompareAllTypes(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListDataTypeComparisonModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemValidFor_001_FromAfterTo")
+    public Object[][] KTNN_PickListItemValidFor_001_FromAfterTo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddItemModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListItemValidFor_002_FromEqualsTo")
+    public Object[][] KTNN_PickListItemValidFor_002_FromEqualsTo(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddItemModel(), dataList);
     }
 
     /**

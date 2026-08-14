@@ -1643,5 +1643,223 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListDataTypeForm_001_String": [
+    {
+      "Description": "Kiểm tra form Add item của PickList Data Type = String (PL_FUNC-90)",
+      "Id": "PL_FUNC-90",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DTYPE_STRING_001",
+        "Code": "TEST_CODE_DTYPE_STRING_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeValue_001_StringFreeText": [
+    {
+      "Description": "Kiểm tra trường Value chấp nhận tự do mọi loại ký tự khi Data Type = String (PL_FUNC-91)",
+      "Id": "PL_FUNC-91",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_STRING_002",
+        "PickListCode": "TEST_CODE_DTYPE_STRING_002",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_STRING_002",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_STRING_002",
+        "ItemValue": "Test giá trị String !@#$%^&*()_+ 123"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeForm_002_Number": [
+    {
+      "Description": "Kiểm tra form Add item của PickList Data Type = Number (PL_FUNC-92)",
+      "Id": "PL_FUNC-92",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DTYPE_NUMBER_001",
+        "Code": "TEST_CODE_DTYPE_NUMBER_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeValue_002_NumberFilters": [
+    {
+      "Description": "Kiểm tra trường Value chỉ cho phép nhập ký tự số khi Data Type = Number (PL_FUNC-93)",
+      "Id": "PL_FUNC-93",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_NUMBER_002",
+        "PickListCode": "TEST_CODE_DTYPE_NUMBER_002",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_NUMBER_002",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_NUMBER_002",
+        "ValueInput": "12a3.5b",
+        "ExpectedValue": "1,235"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeValue_003_NumberUnitOptional": [
+    {
+      "Description": "Kiểm tra trường Unit of Measure không bắt buộc khi Data Type = Number (PL_FUNC-94)",
+      "Id": "PL_FUNC-94",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_NUMBER_003",
+        "PickListCode": "TEST_CODE_DTYPE_NUMBER_003",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_NUMBER_003",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_NUMBER_003",
+        "ItemValue": "100"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeForm_004_Object": [
+    {
+      "Description": "Kiểm tra form Add item của PickList Data Type = Object (PL_FUNC-95)",
+      "Id": "PL_FUNC-95",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_DTYPE_OBJECT_001",
+        "Code": "TEST_CODE_DTYPE_OBJECT_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeValue_004_ObjectMultilineJson": [
+    {
+      "Description": "Kiểm tra trường Value (code editor) hỗ trợ nhập dữ liệu nhiều dòng dạng JSON (PL_FUNC-96)",
+      "Id": "PL_FUNC-96",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_OBJECT_002",
+        "PickListCode": "TEST_CODE_DTYPE_OBJECT_002",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_OBJECT_002",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_OBJECT_002",
+        "ValueInput": "{\"key\": \"value\", \"num\": 123}",
+        "ExpectedValue": "{\"key\": \"value\", \"num\": 123}"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeValue_005_ObjectInvalidJsonBlocked": [
+    {
+      "Description": "Kiểm tra trường Value (Object) không validate định dạng JSON khi nhập text tự do (PL_FUNC-97) - đã verify qua Playwright: hệ thống thật HIỂN THỊ lỗi 'Invalid JSON format.' và chặn Confirm, trái với spec gốc (kỳ vọng không báo lỗi, cho lưu tự do) - khớp với Fail đã ghi sẵn trong Excel gốc, không phải lỗi automation",
+      "Id": "PL_FUNC-97",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_DTYPE_OBJECT_003",
+        "PickListCode": "TEST_CODE_DTYPE_OBJECT_003",
+        "ItemNameLabel": "TEST_ITEM_DTYPE_OBJECT_003",
+        "ItemCode": "TEST_ITEM_CODE_DTYPE_OBJECT_003",
+        "ValueInput": "just plain text not json"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListDataTypeForm_003_CompareAllTypes": [
+    {
+      "Description": "Kiểm tra so sánh sự khác nhau giữa form Add item của 3 Data Type: String, Number, Object (PL_FUNC-98)",
+      "Id": "PL_FUNC-98",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "StringPickListName": "TEST_PL_DTYPE_CMP_STRING",
+        "StringPickListCode": "TEST_CODE_DTYPE_CMP_STRING",
+        "NumberPickListName": "TEST_PL_DTYPE_CMP_NUMBER",
+        "NumberPickListCode": "TEST_CODE_DTYPE_CMP_NUMBER",
+        "ObjectPickListName": "TEST_PL_DTYPE_CMP_OBJECT",
+        "ObjectPickListCode": "TEST_CODE_DTYPE_CMP_OBJECT"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemValidFor_001_FromAfterTo": [
+    {
+      "Description": "Kiểm tra nhập ValidFor của Item có ngày bắt đầu lớn hơn ngày kết thúc (PL_FUNC-99)",
+      "Id": "PL_FUNC-99",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMVALIDFOR_001",
+        "PickListCode": "TEST_CODE_ITEMVALIDFOR_001",
+        "ItemNameLabel": "TEST_ITEM_VALIDFOR_001",
+        "ItemCode": "TEST_ITEM_CODE_VALIDFOR_001",
+        "ItemValue": "val_validfor_001",
+        "ItemValidForFrom": "31/12/2026",
+        "ItemValidForTo": "01/06/2026"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemValidFor_002_FromEqualsTo": [
+    {
+      "Description": "Kiểm tra nhập ValidFor của Item có ngày bắt đầu bằng ngày kết thúc (PL_FUNC-100) - đã verify qua Playwright: hệ thống thật CHO PHÉP từ ngày = đến ngày (không báo lỗi), khớp với Fail đã ghi sẵn trong Excel gốc (kỳ vọng phải báo lỗi), không phải lỗi automation",
+      "Id": "PL_FUNC-100",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMVALIDFOR_002",
+        "PickListCode": "TEST_CODE_ITEMVALIDFOR_002",
+        "ItemNameLabel": "TEST_ITEM_VALIDFOR_002",
+        "ItemCode": "TEST_ITEM_CODE_VALIDFOR_002",
+        "ItemValue": "val_validfor_002",
+        "ItemValidForFrom": "15/07/2026",
+        "ItemValidForTo": "15/07/2026"
+      },
+      "detail": {}
+    }
   ]
 }

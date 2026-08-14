@@ -483,8 +483,14 @@ public class PickListObjects extends BaseObjects {
         return this;
     }
 
+    /**
+     * clickByJS KHÔNG đủ khi field cuối cùng gõ vào là JSON code editor (CodeMirror contenteditable,
+     * Data Type=Object) - đã verify qua Playwright: click thật thêm item thành công, clickByJS thì
+     * item không được thêm vào danh sách dù không báo lỗi gì (cùng loại quirk với toggle Is Default và
+     * nút toggle minimize/expand panel). Đổi sang clickTo (click thật) cho an toàn với mọi Data Type.
+     */
     public PickListObjects clickItemConfirm() {
-        clickByJS(findWebElement(pickListLocator.getBtnItemConfirm()), "Confirm (✓) item");
+        clickTo(findWebElement(pickListLocator.getBtnItemConfirm()), "Confirm (✓) item");
         return this;
     }
 
@@ -756,6 +762,42 @@ public class PickListObjects extends BaseObjects {
         List<WebElement> matches = getListWebElement(By.xpath(pickListLocator.getSwtItemIsDefault()));
         clickTo(matches.isEmpty() ? null : matches.get(0), "Is Default toggle (item)");
         return this;
+    }
+
+    public PickListObjects inputItemUnitOfMeasure(String value) {
+        inputText(findWebElement(pickListLocator.getTxtItemUnitOfMeasure()), "Item - Unit of Measure", value);
+        return this;
+    }
+
+    public boolean isItemUnitOfMeasureFieldPresent() {
+        return !getListWebElement(By.xpath(pickListLocator.getTxtItemUnitOfMeasure())).isEmpty();
+    }
+
+    public boolean isItemValueJsonEditorPresent() {
+        return !getListWebElement(By.xpath(pickListLocator.getTxtItemValueJsonEditor())).isEmpty();
+    }
+
+    /**
+     * Value field Data Type=Object là contenteditable (CodeMirror/svelte-jsoneditor), không phải input/textarea -
+     * form Add luôn rỗng sẵn nên không cần clear. Editor này tự parse/commit nội dung bất đồng bộ sau khi gõ xong -
+     * blur + chờ ngắn để chắc chắn đã commit xong trước khi Confirm đọc form state, nếu không item được thêm vào
+     * list rỗng dù DOM editor vẫn hiển thị đúng JSON (đã verify qua nhiều lần chạy thật, không có điều kiện DOM rõ
+     * ràng nào để poll thay thế).
+     */
+    public PickListObjects inputItemValueJsonEditor(String jsonText) {
+        inputText(findWebElement(pickListLocator.getTxtItemValueJsonEditor()), "Item - Value (JSON editor)", jsonText, true);
+        blurActiveElement();
+        waitFor(1);
+        return this;
+    }
+
+    public String getItemValueJsonEditorText() {
+        return getTextElement(findWebElement(pickListLocator.getTxtItemValueJsonEditor()));
+    }
+
+    public String getItemValidForToValue() {
+        WebElement toInput = findWebElement(getByXpathDynamic(pickListLocator.getTxtItemValidForByIndex(), "2"));
+        return getValueOfElement(toInput);
     }
 }
 
