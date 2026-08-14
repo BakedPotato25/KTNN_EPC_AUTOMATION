@@ -648,6 +648,57 @@
       "detail": {}
     }
   ],
+  "KTNN_PickListEdit_008_SidePanelGeneralOpens": [
+    {
+      "Description": "Kiểm tra kích icon trên bản ghi → side panel General hiện ra (PL_FUNC-49)",
+      "Id": "PL_FUNC-49",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PANEL_001",
+        "Code": "TEST_CODE_PANEL_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_009_SidePanelSwitchToItemTab": [
+    {
+      "Description": "Kiểm tra kích icon PickList Item → side panel chuyển sang tab PickList Item (PL_FUNC-50)",
+      "Id": "PL_FUNC-50",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PANEL_002",
+        "Code": "TEST_CODE_PANEL_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListEdit_010_SidePanelMinimizeExpand": [
+    {
+      "Description": "Kiểm tra 2 nút minimize/expand side panel (PL_FUNC-51)",
+      "Id": "PL_FUNC-51",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_PANEL_003",
+        "Code": "TEST_CODE_PANEL_003"
+      },
+      "detail": {}
+    }
+  ],
   "KTNN_PickListDelete_001_ConfirmDialogShown": [
     {
       "Description": "Kiểm tra hiển thị confirm trước khi xoá (PL_FUNC-35)",

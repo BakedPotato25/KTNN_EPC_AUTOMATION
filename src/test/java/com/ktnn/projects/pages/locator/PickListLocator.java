@@ -99,4 +99,17 @@ public class PickListLocator extends BaseLocator {
 
     // thông báo validation inline của Edit panel - là span thường, khác với block dựa trên ancestor của Add new
     String errEditMessageContaining = "//span[contains(@class,'text-red-500')][contains(.,'%s')]";
+
+    // 2 icon tab của Edit side panel, định vị qua attribute title (không phải role=tab)
+    String tabEditGeneral = "//div[@title='General']";
+    String tabEditPickListItem = "//div[@title='PickList Item']";
+    // nút thu nhỏ/mở rộng side panel - link icon lưới, con trực tiếp của .head, TOGGLE được cả 2 chiều
+    // (không dùng div.actions chứa icon chevron: div đó bị Vue tháo bỏ hoàn toàn khỏi DOM khi panel đã thu nhỏ,
+    // không bấm lại được để mở rộng - link này ổn định, luôn tồn tại ở cả 2 trạng thái)
+    String btnPanelToggle = "//div[contains(@class,'head')]/a";
+
+    // nút [+] Add item trong tab PickList Item - app có bug DOM trùng id "page-picklist-item" (1 bản ẩn,
+    // 1 bản active), phải scope theo pane KHÔNG display:none để không bắt trúng bản ẩn/stale.
+    // Cũng dùng làm tín hiệu xác nhận đã chuyển sang tab PickList Item (nút chỉ hiện khi tab active).
+    String btnAddItem = "//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'icon-action')]";
 }

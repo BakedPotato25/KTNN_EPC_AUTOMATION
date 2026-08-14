@@ -413,5 +413,36 @@ public class PickListObjects extends BaseObjects {
         List<WebElement> errors = getListWebElement(getByXpathDynamic(pickListLocator.getErrEditMessageContaining(), anchorText));
         return errors.isEmpty() ? "" : getTextElement(errors.get(0));
     }
+
+    public PickListObjects clickEditGeneralTab() {
+        clickByJS(findWebElement(pickListLocator.getTabEditGeneral()), "General tab");
+        return this;
+    }
+
+    public PickListObjects clickEditPickListItemTab() {
+        clickByJS(findWebElement(pickListLocator.getTabEditPickListItem()), "PickList Item tab");
+        return this;
+    }
+
+    /**
+     * clickByJS (synthetic event) không kích hoạt được toggle này - phải click thật qua Selenium binding chuẩn.
+     * Toast còn sót lại từ action trước (Save/Delete) có thể che đúng vị trí nút, click thật bị chặn
+     * (ElementClickIntercepted) nên phải dismiss hết toast trước.
+     */
+    public PickListObjects clickPanelToggle() {
+        dismissAllToasts();
+        clickTo(findWebElement(pickListLocator.getBtnPanelToggle()), "Panel minimize/expand toggle");
+        return this;
+    }
+
+    /** Panel thu nhỏ vẫn giữ 2 icon tab, chỉ ẩn field - dùng field Name (chỉ có ở tab General, panel mở rộng) để biết trạng thái. */
+    public boolean isEditPanelExpanded() {
+        return !getListWebElement(By.xpath(pickListLocator.getTxtEditName())).isEmpty();
+    }
+
+    /** Nút [+] Add item chỉ hiện khi tab PickList Item đang active - dùng làm tín hiệu xác nhận đã chuyển tab. */
+    public boolean isPickListItemTabActive() {
+        return !getListWebElement(By.xpath(pickListLocator.getBtnAddItem())).isEmpty();
+    }
 }
 

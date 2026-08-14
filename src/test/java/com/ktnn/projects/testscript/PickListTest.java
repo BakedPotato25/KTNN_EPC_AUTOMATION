@@ -723,6 +723,70 @@ public class PickListTest extends TestBase {
         author = {AuthorType.SWEETPOTATO},
         reviewer = {AuthorType.SWEETPOTATO})
     @Test(
+        description = "Kiểm tra kích icon trên bản ghi → side panel General hiện ra (PL_FUNC-49)",
+        dataProvider = "KTNN_PickListEdit_008_SidePanelGeneralOpens",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_008_SidePanelGeneralOpens(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .verifyEditPanelExpanded()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích icon PickList Item → side panel chuyển sang tab PickList Item (PL_FUNC-50)",
+        dataProvider = "KTNN_PickListEdit_009_SidePanelSwitchToItemTab",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_009_SidePanelSwitchToItemTab(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .clickEditPickListItemTab()
+                .verifyPickListItemTabActive()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra 2 nút minimize/expand side panel (PL_FUNC-51)",
+        dataProvider = "KTNN_PickListEdit_010_SidePanelMinimizeExpand",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListEdit_010_SidePanelMinimizeExpand(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .clickPanelToggle()
+                .verifyEditPanelCollapsed()
+                .clickPanelToggle()
+                .verifyEditPanelExpanded()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
         description = "Kiểm tra hiển thị confirm trước khi xoá (PL_FUNC-35)",
         dataProvider = "KTNN_PickListDelete_001_ConfirmDialogShown",
         dataProviderClass = PickListProvider.class)

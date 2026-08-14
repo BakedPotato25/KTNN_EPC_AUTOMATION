@@ -243,6 +243,24 @@ public class PickListProvider extends BaseProvider {
         return updateDataModel(new PickListEditModel(), dataList);
     }
 
+    @DataProvider(name = "KTNN_PickListEdit_008_SidePanelGeneralOpens")
+    public Object[][] KTNN_PickListEdit_008_SidePanelGeneralOpens(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_009_SidePanelSwitchToItemTab")
+    public Object[][] KTNN_PickListEdit_009_SidePanelSwitchToItemTab(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
+    @DataProvider(name = "KTNN_PickListEdit_010_SidePanelMinimizeExpand")
+    public Object[][] KTNN_PickListEdit_010_SidePanelMinimizeExpand(Method method) {
+        var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());
+        return updateDataModel(new PickListAddNewModel(), dataList);
+    }
+
     @DataProvider(name = "KTNN_PickListDelete_001_ConfirmDialogShown")
     public Object[][] KTNN_PickListDelete_001_ConfirmDialogShown(Method method) {
         var dataList = jsonUtils.readDataTestFromJSON(DataPath.DATA_PICK_LIST, method.getName());

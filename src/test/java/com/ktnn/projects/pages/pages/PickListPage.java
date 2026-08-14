@@ -537,4 +537,51 @@ public class PickListPage extends BasePage {
                 String.format("Verify results count decreased by %d (before: %d, after: %d)", expectedDecrease, before, after));
         return this;
     }
+
+    public PickListPage clickEditGeneralTab() {
+        pickListObjects.clickEditGeneralTab();
+        return this;
+    }
+
+    public PickListPage clickEditPickListItemTab() {
+        pickListObjects.clickEditPickListItemTab();
+        return this;
+    }
+
+    public PickListPage clickPanelToggle() {
+        pickListObjects.clickPanelToggle();
+        return this;
+    }
+
+    /** Panel thu/mở re-render bất đồng bộ sau click - poll thay vì check ngay lập tức. */
+    public PickListPage verifyEditPanelCollapsed() {
+        boolean collapsed;
+        try {
+            collapsed = getWaitDriver().until(d -> !pickListObjects.isEditPanelExpanded());
+        } catch (Exception e) {
+            collapsed = false;
+        }
+        assertTrueCondition(null, collapsed, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Edit side panel collapsed to icon column");
+        return this;
+    }
+
+    public PickListPage verifyEditPanelExpanded() {
+        boolean expanded;
+        try {
+            expanded = getWaitDriver().until(d -> pickListObjects.isEditPanelExpanded());
+        } catch (Exception e) {
+            expanded = false;
+        }
+        assertTrueCondition(null, expanded, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify Edit side panel expanded showing General tab fields");
+        return this;
+    }
+
+    public PickListPage verifyPickListItemTabActive() {
+        boolean active = pickListObjects.isPickListItemTabActive();
+        assertTrueCondition(null, active, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify side panel switched to PickList Item tab (Add item button visible)");
+        return this;
+    }
 }
