@@ -835,4 +835,78 @@ public class PickListPage extends BasePage {
                         expectedStart, expectedEnd, expectedTotal, actual[0], actual[1], actual[2]));
         return this;
     }
+
+    public PickListPage hoverFirstRowItemMore() {
+        pickListObjects.hoverFirstRowItemMore();
+        return this;
+    }
+
+    public PickListPage verifyItemHoverIconsVisible() {
+        boolean visible = pickListObjects.areItemHoverIconsVisible();
+        assertTrueCondition(null, visible, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify eye/trash icons become visible after hovering the more (⋮) icon");
+        return this;
+    }
+
+    public PickListPage clickFirstRowItemEye() {
+        pickListObjects.clickFirstRowItemEye();
+        return this;
+    }
+
+    public PickListPage clickFirstRowItemTrash() {
+        pickListObjects.clickFirstRowItemTrash();
+        return this;
+    }
+
+    /** Sub-section Edit-via-eye dùng chung component với form Add item nên tái dùng luôn check isAddItemFormDisplayed. */
+    public PickListPage verifyItemSubSectionDisplayed() {
+        boolean displayed = pickListObjects.isAddItemFormDisplayed();
+        assertTrueCondition(null, displayed, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify item sub-section (view/edit) displayed inline below the item row");
+        return this;
+    }
+
+    public PickListPage verifyItemFieldsLoadedCorrectly(String expectedNameLabel, String expectedCode, String expectedValue) {
+        String actualNameLabel = pickListObjects.getItemNameLabelValue();
+        String actualCode = pickListObjects.getItemCodeValue();
+        String actualValue = pickListObjects.getItemValueValue();
+        boolean matches = expectedNameLabel.equals(actualNameLabel) && expectedCode.equals(actualCode) && expectedValue.equals(actualValue);
+        assertTrueCondition(null, matches, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item sub-section loaded current values (expected Name/Label='%s' Code='%s' Value='%s', actual '%s'/'%s'/'%s')",
+                        expectedNameLabel, expectedCode, expectedValue, actualNameLabel, actualCode, actualValue));
+        return this;
+    }
+
+    public PickListPage fillEditItemForm(String newNameLabel, String newValue) {
+        pickListObjects.inputItemNameLabel(newNameLabel);
+        pickListObjects.inputItemValue(newValue);
+        return this;
+    }
+
+    public PickListPage clearItemNameLabel() {
+        pickListObjects.clearItemNameLabel();
+        return this;
+    }
+
+    public PickListPage verifyItemRowCount(int expected) {
+        int actual = pickListObjects.getItemRowCount();
+        assertTrueCondition(null, actual == expected, FailureHandling.CONTINUE_ON_FAILURE,
+                String.format("Verify item list shows %d row(s) (actual: %d)", expected, actual));
+        return this;
+    }
+
+    /** PL_FUNC-82: xoá item qua icon 🗑 không hiện dialog xác nhận - tái dùng isConfirmDialogOpen (locator Yes/No của lưới chính). */
+    public PickListPage verifyNoDeleteConfirmDialog() {
+        boolean shown = pickListObjects.isConfirmDialogOpen();
+        assertFalseCondition(null, shown, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify NO confirmation dialog shown when deleting an item via trash icon");
+        return this;
+    }
+
+    public PickListPage verifyNoUndoButton() {
+        boolean present = pickListObjects.isUndoButtonPresent();
+        assertFalseCondition(null, present, FailureHandling.CONTINUE_ON_FAILURE,
+                "Verify no Undo button/text present after deleting an item");
+        return this;
+    }
 }

@@ -1346,5 +1346,157 @@
       },
       "detail": {}
     }
+  ],
+  "KTNN_PickListItemView_001_HoverRevealsIcons": [
+    {
+      "Description": "Kiểm tra hover vào icon ⋮ → hiện icon 👁 và icon 🗑 (PL_FUNC-76)",
+      "Id": "PL_FUNC-76",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMVIEW_001",
+        "Code": "TEST_CODE_ITEMVIEW_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemView_002_EyeOpensSubSection": [
+    {
+      "Description": "Kiểm tra kích icon 👁 → sub-section edit hiện ngay dưới item (PL_FUNC-77)",
+      "Id": "PL_FUNC-77",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMVIEW_002",
+        "Code": "TEST_CODE_ITEMVIEW_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemView_003_DataLoadedCorrectly": [
+    {
+      "Description": "Kiểm tra dữ liệu cũ được load đúng vào sub-section (PL_FUNC-78)",
+      "Id": "PL_FUNC-78",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMVIEW_003",
+        "PickListCode": "TEST_CODE_ITEMVIEW_003",
+        "ItemNameLabel": "TEST_ITEM_VIEW_003",
+        "ItemCode": "TEST_ITEM_CODE_VIEW_003",
+        "ItemValue": "val_view_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemEdit_001_ValidSaveViaConfirm": [
+    {
+      "Description": "Kiểm tra sửa item hợp lệ - kích [✓] lưu thay đổi (PL_FUNC-79)",
+      "Id": "PL_FUNC-79",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMEDIT_001",
+        "PickListCode": "TEST_CODE_ITEMEDIT_001",
+        "InitialNameLabel": "TEST_ITEM_EDIT_001",
+        "InitialCode": "TEST_ITEM_CODE_EDIT_001",
+        "InitialValue": "val_edit_001",
+        "NewNameLabel": "TEST_ITEM_EDIT_001_EDITED",
+        "NewValue": "val_edited_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemEdit_002_EmptyNameLabel": [
+    {
+      "Description": "Kiểm tra xóa trắng trường Name/Label khi sửa → validate lỗi (PL_FUNC-80)",
+      "Id": "PL_FUNC-80",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMEDIT_002",
+        "PickListCode": "TEST_CODE_ITEMEDIT_002",
+        "ItemNameLabel": "TEST_ITEM_EDIT_002",
+        "ItemCode": "TEST_ITEM_CODE_EDIT_002",
+        "ItemValue": "val_edit_002"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemEdit_003_CancelDiscardsChanges": [
+    {
+      "Description": "Kiểm tra kích [✗] hủy sửa - không lưu thay đổi (PL_FUNC-81)",
+      "Id": "PL_FUNC-81",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "PickListName": "TEST_PL_ITEMEDIT_003",
+        "PickListCode": "TEST_CODE_ITEMEDIT_003",
+        "InitialNameLabel": "TEST_ITEM_EDIT_003",
+        "InitialCode": "TEST_ITEM_CODE_EDIT_003",
+        "InitialValue": "val_edit_003",
+        "NewNameLabel": "TEST_ITEM_EDIT_003_ATTEMPTED",
+        "NewValue": "val_attempted_003"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemDelete_001_NoConfirmDialog": [
+    {
+      "Description": "Kiểm tra kích icon 🗑 → xóa item ngay lập tức không có confirm (PL_FUNC-82)",
+      "Id": "PL_FUNC-82",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMDEL_001",
+        "Code": "TEST_CODE_ITEMDEL_001"
+      },
+      "detail": {}
+    }
+  ],
+  "KTNN_PickListItemDelete_002_NoUndoButton": [
+    {
+      "Description": "Kiểm tra không có nút Undo sau khi xóa item (PL_FUNC-83)",
+      "Id": "PL_FUNC-83",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": { "isFill": [], "isVerify": [] },
+        "Name": "TEST_PL_ITEMDEL_002",
+        "Code": "TEST_CODE_ITEMDEL_002"
+      },
+      "detail": {}
+    }
   ]
 }

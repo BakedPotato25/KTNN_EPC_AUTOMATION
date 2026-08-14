@@ -160,4 +160,9 @@ public class PickListLocator extends BaseLocator {
 
     // đọc toàn bộ option đang mở của 1 dropdown PrimeVue Select bất kỳ (dùng cho PL_FUNC-57 - đếm đủ 5/10/25/50/100)
     String liAllDropdownOptions = "//li[@role='option']";
+
+    // icon eye/trash của dòng item đầu tiên - CHỈ hiện sau khi hover đúng vào icoFirstRowItemMore
+    // (hover cả .row-item KHÔNG đủ - đã verify qua Playwright, khác quirk đã ghi cho hover thường)
+    String icoFirstRowItemEye = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[1]//i[contains(@class,'fa-eye')]";
+    String icoFirstRowItemTrash = "(//div[@id='page-picklist-item'][not(contains(@style,'display: none'))]//div[contains(@class,'row-item')])[1]//i[contains(@class,'fa-trash')]";
 }

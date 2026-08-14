@@ -10,6 +10,7 @@ import com.ktnn.projects.dataprovider.model.PickListDataTypeChangeModel;
 import com.ktnn.projects.dataprovider.model.PickListDataTypeLockedModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteInUseModel;
 import com.ktnn.projects.dataprovider.model.PickListDeleteModel;
+import com.ktnn.projects.dataprovider.model.PickListEditItemModel;
 import com.ktnn.projects.dataprovider.model.PickListEditModel;
 import com.ktnn.projects.dataprovider.model.PickListFilterModel;
 import com.ktnn.projects.dataprovider.model.PickListItemOrderModel;
@@ -1662,6 +1663,204 @@ public class PickListTest extends TestBase {
                 .seedItems(code, 6)
                 .clickEditPickListItemTab()
                 .verifyItemPaginatorRange(1, 5, 6)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra hover vào icon ⋮ → hiện icon 👁 và icon 🗑 (PL_FUNC-76)",
+        dataProvider = "KTNN_PickListItemView_001_HoverRevealsIcons",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemView_001_HoverRevealsIcons(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .hoverFirstRowItemMore()
+                .verifyItemHoverIconsVisible()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích icon 👁 → sub-section edit hiện ngay dưới item (PL_FUNC-77)",
+        dataProvider = "KTNN_PickListItemView_002_EyeOpensSubSection",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemView_002_EyeOpensSubSection(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .clickFirstRowItemEye()
+                .verifyItemSubSectionDisplayed()
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra dữ liệu cũ được load đúng vào sub-section (PL_FUNC-78)",
+        dataProvider = "KTNN_PickListItemView_003_DataLoadedCorrectly",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemView_003_DataLoadedCorrectly(PickListDataTypeLockedModel model) {
+        String pickListName = model.getPickListName().getValue();
+        String itemNameLabel = model.getItemNameLabel().getValue();
+        String itemCode = model.getItemCode().getValue();
+        String itemValue = model.getItemValue().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(itemNameLabel, itemCode, itemValue)
+                .clickFirstRowItemEye()
+                .verifyItemFieldsLoadedCorrectly(itemNameLabel, itemCode, itemValue)
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra sửa item hợp lệ - kích [✓] lưu thay đổi (PL_FUNC-79)",
+        dataProvider = "KTNN_PickListItemEdit_001_ValidSaveViaConfirm",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemEdit_001_ValidSaveViaConfirm(PickListEditItemModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(model.getInitialNameLabel().getValue(), model.getInitialCode().getValue(), model.getInitialValue().getValue())
+                .clickFirstRowItemEye()
+                .fillEditItemForm(model.getNewNameLabel().getValue(), model.getNewValue().getValue())
+                .clickItemConfirm()
+                .verifyFirstItemRowContains(model.getNewNameLabel().getValue())
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra xóa trắng trường Name/Label khi sửa → validate lỗi (PL_FUNC-80)",
+        dataProvider = "KTNN_PickListItemEdit_002_EmptyNameLabel",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemEdit_002_EmptyNameLabel(PickListDataTypeLockedModel model) {
+        String pickListName = model.getPickListName().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(model.getItemNameLabel().getValue(), model.getItemCode().getValue(), model.getItemValue().getValue())
+                .clickFirstRowItemEye()
+                .clearItemNameLabel()
+                .clickItemConfirm()
+                .verifyItemRequiredFieldError("Name")
+                .clickItemCancelForm()
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích [✗] hủy sửa - không lưu thay đổi (PL_FUNC-81)",
+        dataProvider = "KTNN_PickListItemEdit_003_CancelDiscardsChanges",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemEdit_003_CancelDiscardsChanges(PickListEditItemModel model) {
+        String pickListName = model.getPickListName().getValue();
+        String initialNameLabel = model.getInitialNameLabel().getValue();
+        pendingCleanupKeyword = pickListName;
+        pickListPage
+                .setupRecordToEdit(pickListName, model.getPickListCode().getValue())
+                .openEditFormByExactSearch(pickListName)
+                .clickEditPickListItemTab()
+                .addSimpleItem(initialNameLabel, model.getInitialCode().getValue(), model.getInitialValue().getValue())
+                .clickFirstRowItemEye()
+                .fillEditItemForm(model.getNewNameLabel().getValue(), model.getNewValue().getValue())
+                .clickItemCancelForm()
+                .verifyFirstItemRowContains(initialNameLabel)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(pickListName);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra kích icon 🗑 → xóa item ngay lập tức không có confirm (PL_FUNC-82)",
+        dataProvider = "KTNN_PickListItemDelete_001_NoConfirmDialog",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemDelete_001_NoConfirmDialog(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .clickFirstRowItemTrash()
+                .verifyNoDeleteConfirmDialog()
+                .verifyItemRowCount(0)
+                .clickEditCancel();
+        pickListPage.deleteRecordByExactSearch(name);
+        pendingCleanupKeyword = null;
+    }
+
+    @FrameAnnotation(
+        category = {CategoryType.REGRESSION},
+        author = {AuthorType.SWEETPOTATO},
+        reviewer = {AuthorType.SWEETPOTATO})
+    @Test(
+        description = "Kiểm tra không có nút Undo sau khi xóa item (PL_FUNC-83)",
+        dataProvider = "KTNN_PickListItemDelete_002_NoUndoButton",
+        dataProviderClass = PickListProvider.class)
+    public void KTNN_PickListItemDelete_002_NoUndoButton(PickListAddNewModel model) {
+        String name = model.getName().getValue();
+        pendingCleanupKeyword = name;
+        pickListPage
+                .setupRecordToEdit(name, model.getCode().getValue())
+                .openEditFormByExactSearch(name)
+                .seedItems(model.getCode().getValue(), 1)
+                .clickEditPickListItemTab()
+                .clickFirstRowItemTrash()
+                .verifyNoUndoButton()
                 .clickEditCancel();
         pickListPage.deleteRecordByExactSearch(name);
         pendingCleanupKeyword = null;

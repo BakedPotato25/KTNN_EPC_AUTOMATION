@@ -672,5 +672,55 @@ public class PickListObjects extends BaseObjects {
     public boolean isItemPageLastDisabled() {
         return isItemPageButtonDisabled(pickListLocator.getBtnItemPageLast());
     }
+
+    /**
+     * Icon eye/trash CHỈ hiện sau khi hover đúng vào icon ⋮ (icoFirstRowItemMore) - hover cả .row-item
+     * KHÔNG đủ (đã verify qua Playwright). Dùng hoverElement thật (Actions.moveToElement), KHÔNG dùng
+     * JS dispatch mouseover vì Vue không nhận sự kiện synthetic (cùng quirk clickByJS không tự blur).
+     */
+    public PickListObjects hoverFirstRowItemMore() {
+        hoverElement(findWebElement(pickListLocator.getIcoFirstRowItemMore()));
+        return this;
+    }
+
+    public PickListObjects clickFirstRowItemEye() {
+        hoverFirstRowItemMore();
+        clickByJS(findWebElement(pickListLocator.getIcoFirstRowItemEye()), "Eye (view/edit item)");
+        return this;
+    }
+
+    public PickListObjects clickFirstRowItemTrash() {
+        hoverFirstRowItemMore();
+        clickByJS(findWebElement(pickListLocator.getIcoFirstRowItemTrash()), "Trash (delete item)");
+        return this;
+    }
+
+    public String getItemNameLabelValue() {
+        return getValueOfElement(findWebElement(pickListLocator.getTxtItemNameLabel()));
+    }
+
+    public String getItemCodeValue() {
+        return getValueOfElement(findWebElement(pickListLocator.getTxtItemCode()));
+    }
+
+    public String getItemValueValue() {
+        return getValueOfElement(findWebElement(pickListLocator.getTxtItemValue()));
+    }
+
+    /** Xoá trắng Name/Label để trigger validation required-field - clear()+sendKeys("") không notify Vue, giống clearEditName. */
+    public PickListObjects clearItemNameLabel() {
+        setValueByNativeSetter(findWebElement(pickListLocator.getTxtItemNameLabel()), "");
+        return this;
+    }
+
+    public boolean areItemHoverIconsVisible() {
+        return !getListWebElement(By.xpath(pickListLocator.getIcoFirstRowItemEye())).isEmpty()
+                && !getListWebElement(By.xpath(pickListLocator.getIcoFirstRowItemTrash())).isEmpty();
+    }
+
+    public boolean isUndoButtonPresent() {
+        Object innerText = getJsExecutor().executeScript("return document.body.innerText;");
+        return innerText != null && innerText.toString().toLowerCase(java.util.Locale.ROOT).contains("undo");
+    }
 }
 
