@@ -18,7 +18,7 @@ Dữ liệu chốt lúc kiểm tra trực tiếp trên UI ngày 2026-08-10.
 | "Loại đường truyền" | Name | `Loại đường truyền` | PL_FUNC-1, 2, 4, 5, 6, 8 | Search exact "Loại đường truyền" → đúng 1 kết quả | Add New: Name=`Loại đường truyền`, Code=`LineConnect_Type`, Description=`test` |
 | (cùng bản ghi trên) | Code | `LineConnect_Type` | PL_FUNC-5, 6, 27 | Search exact theo Code "LineConnect_Type" → đúng 1 kết quả | (cùng bản ghi) |
 | "Test_đa_trường" | Name | `Test_đa_trường` | PL_FUNC-8 | Search exact "Test_đa_trường" → đúng 1 kết quả | Add New: Name=`Test_đa_trường`, Code=`Loại_đa_trường` |
-| Description = "test" | Description | `test` (exact) | PL_FUNC-16 | Filter Description = "test" → hiện có **3** bản ghi thoả (Loại đường truyền/LineConnect_Type, test/test 123124, anhnk test 1/anhnk test) — chỉ cần **≥1** bản ghi còn Description đúng "test", không bắt buộc đúng 1 | Không cần tạo riêng — bản ghi "Loại đường truyền" ở trên đã tự thoả điều kiện này (Description="test") |
+| Description = "test" | Description | `test` (exact) | PL_FUNC-16 | Filter Description = "test" → hiện có **3** bản ghi thoả — chỉ cần **≥1** bản ghi còn Description đúng "test", không bắt buộc đúng 1 | Không cần tạo riêng — bản ghi "Loại đường truyền" ở trên đã tự thoả điều kiện này (Description="test") |
 | Description like "test" | Description | chứa `test` | PL_FUNC-15, 18 | Filter Description like "test" → ≥3 bản ghi (superset của dòng trên) | Không cần tạo riêng — cùng lý do trên |
 | Version = 1 | Version | `1` | PL_FUNC-17, 18 | Filter Version = "1" → hiện có **14** bản ghi, dư khá nhiều so với yêu cầu ≥1 | Rủi ro thấp — cần rất nhiều bản ghi Version=1 biến mất cùng lúc mới ảnh hưởng case |
 
