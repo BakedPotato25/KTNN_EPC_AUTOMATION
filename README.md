@@ -75,9 +75,11 @@ src/test/resources/
 └── suites/ExecutionSuite.xml   Entry point chạy bằng TestNG
 ```
 
-Scaffold hiện tại mới có framework layer, chưa có page nghiệp vụ nào. Theo
-[CLAUDE.md](CLAUDE.md) để thêm page đầu tiên (Locator → Objects → Page → Model → Provider →
-Test) đúng convention.
+Scaffold hiện đã có automation đầy đủ cho module **PickList** (`PickListTest.java`, 101 test
+case theo `PL_FUNC-1..101`, kèm bộ `PickListLocator`/`PickListObjects`/`PickListPage` tương
+ứng). **Characteristic Catalog** và **Characteristic Category** (`CC_FUNC`/`CCG_FUNC`) chưa bắt
+đầu automation. Theo [CLAUDE.md](CLAUDE.md) để thêm page mới đúng convention (Locator →
+Objects → Page → Model → Provider → Test).
 
 ## Yêu cầu môi trường
 
